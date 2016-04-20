@@ -1,0 +1,156 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-selector/iron-selector.html">
+<!-- <link rel="import" href="../iron-pages/iron-pages.html"> -->
+
+<!--
+An element attempting to provide a solution to material design steppers.
+
+Example:
+
+    <paper-steps>
+    </paper-steps>
+
+Example:
+
+    <paper-steps>
+      <paper-step></paper-step>
+      <paper-step></paper-step>
+      <paper-step optional></paper-step>
+    </paper-steps>
+
+@demo demo/index.html
+@hero hero.svg
+-->
+
+<dom-module id="paper-steps">
+  <template>
+    <style>
+      :host {
+        display: block;
+        box-sizing: border-box;
+      }
+
+      :host #selector {
+        display: block;
+        width: 100%;
+      }
+
+      :host #selector.vertical {
+
+      }
+
+      :host /deep/ paper-step {
+        display: inline-block;
+        margin: auto;
+      }
+
+      :host /deep/ .vertical paper-step {
+        display: block;
+      }
+
+      :host /deep/ #content.horrizontal paper-step .step,
+      :host /deep/ #content.horrizontal paper-step .icon,
+      :host /deep/ #content.horrizontal paper-step .title {
+        display: none;
+      }
+
+    </style>
+
+    <iron-selector id="selector" class$="{{cssClass}}" selected="{{selected}}" hidden$="{{vertical}}">
+      <template is="dom-repeat" items="{{steps}}" as="s">
+        <paper-step title="[[s.title]]" step="[[s.step]]"></paper-step>
+      </template>
+    </iron-selector>
+
+    <iron-selector id="content" class$="{{cssClass}}" selected="{{selected}}" items="{{steps}}" >
+      <content></content>
+    </iron-selector>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'paper-steps',
+
+      properties: {
+        cssClass: {
+          type: String,
+          computed: '_cssClass(vertical)'
+        },
+        horrizontal: {
+          type: Boolean,
+          computed: '_horrizontal(vertical)'
+        },
+        selected: {
+          type: Number,
+          notify: true,
+          value: 0
+        },
+        steps: {
+          type: Array
+        },
+        vertical: {
+          type: Boolean,
+          value: false
+        },
+      },
+
+      // Element Lifecycle
+
+      ready: function() {
+        // `ready` is called after all elements have been configured, but
+        // propagates bottom-up. This element's children are ready, but parents
+        // are not.
+        //
+        // This is the point where you should make modifications to the DOM (when
+        // necessary), or kick off any processes the element wants to perform.
+      },
+
+      attached: function() {
+        // `attached` fires once the element and its parents have been inserted
+        // into a document.
+        //
+        // This is a good place to perform any work related to your element's
+        // visual state or active behavior (measuring sizes, beginning animations,
+        // loading resources, etc).
+        console.log('paper-steps attached', this);
+      },
+
+      detached: function() {
+        // The analog to `attached`, `detached` fires when the element has been
+        // removed from a document.
+        //
+        // Use this to clean up anything you did in `attached`.
+      },
+
+      // Element Behavior
+      listeners: {
+        'iron-deselect': '_deselected',
+        'iron-select': '_selected'
+      },
+      _cssClass: function(vertical) {
+        return (vertical) ? 'vertical' : 'horrizontal';
+      },
+      _horrizontal: function(vertical) {
+        return !vertical;
+      },
+      _selected: function(e) {
+        console.log('paper-steps: _selected', e.detail, e);
+        e.detail.item.selected = true;
+      },
+      _deselected: function(e) {
+        console.log('paper-steps: _deselected', e.detail, e);
+        e.detail.item.selected = false;
+      }
+    });
+  </script>
+</dom-module>

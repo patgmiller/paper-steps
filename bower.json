@@ -1,0 +1,30 @@
+{
+  "name": "paper-steps",
+  "version": "0.0.1",
+  "authors": [
+    "Patrick Miller <patrick@millermoments.net>"
+  ],
+  "description": "TODO description here",
+  "keywords": [
+    "web-component",
+    "polymer",
+    "paper",
+    "steps",
+    "stepper"
+  ],
+  "main": "paper-steps.html",
+  "license": "http://polymer.github.io/LICENSE.txt",
+  "homepage": "https://github.com/patgmiller/paper-steps/",
+  "ignore": [
+    "/.*",
+    "/test/"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer^1.2.0",
+    "iron-selector": "1.3.0"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "web-component-tester": "^4.0.0"
+  }
+}
