@@ -10,6 +10,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../paper-styles/color.html">
+<link rel="import" href="../paper-styles/typography.html">
 <link rel="import" href="../iron-icon/iron-icon.html">
 <link rel="import" href="../iron-icons/iron-icons.html">
 <link rel="import" href="../iron-icons/image-icons.html">
@@ -34,6 +35,11 @@ Example:
     :root {
       --paper-step-primary-color: var(--google-blue-500);
       --paper-step-disabled-color: var(--google-grey-500);
+    }
+
+
+    :host {
+      var(--paper-font-common-base);
     }
 
     :host .icon {
@@ -75,6 +81,10 @@ Example:
       font-weight: bold;
     }
 
+    :host #content {
+      /*background: var(--google-grey-300);*/
+      margin-left: 20px;
+    }
   </style>
   <template>
     <span class$="step {{cssClass}}">
@@ -82,8 +92,10 @@ Example:
       <iron-icon icon="{{image}}" class="icon"></iron-icon>
     </span>
     <span hidden="[[!title]]" class="title">[[title]]</span>
-    <div id="content" class$="{{cssClass}}" hidden$="{{!selected}}">
-      <content></content>
+    <div id="content" class$="{{cssClass}}" >
+      <div hidden$="{{!selected}}">
+        <content></content>
+      </div>
     </div>
   </template>
   <script>
