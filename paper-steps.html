@@ -49,9 +49,18 @@ Example:
 
       }
 
+      :host #content.horrizontal {
+        display: block;
+      }
+
       :host /deep/ paper-step {
         display: inline-block;
         margin: auto;
+      }
+
+      :host /deep/ #content.horrizontal paper-step {
+        display: block;
+        width: inherit;
       }
 
       :host /deep/ #content.horrizontal paper-step .step,
@@ -65,7 +74,6 @@ Example:
       }
 
       :host /deep/ #content.vertical paper-step #content {
-        margin-left: 20px;
         border-left: 1px solid var(--google-grey-500);
         padding: 15px;
       }
