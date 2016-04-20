@@ -159,8 +159,29 @@ Example:
         // visual state or active behavior (measuring sizes, beginning animations,
         // loading resources, etc).
         var
-          parent = this.parentNode
+          parent = this.parentNode && this.parentNode.indexOf && this.parentNode || null;
         ;
+
+        // @TODO: finish adding fallback for shadowDom, not yet ready.
+        if (!Boolean(parent) && this.shadowRoot) {
+          try {
+            parent = this.parentNode.$.selector;
+          } catch (e) {
+            parent = null;
+          }
+        }
+
+        //
+        if (!parent || parent.hasOwnProperty('indexOf') || typeof parent.indexOf != 'function') {
+          this.step = 1;
+          this.steps = 1;
+          try {
+            console.log('Improperly declared paper-step element, ' +
+              'it is missing the parent iterator.');
+            // console.log(this, typeof parent.indexOf, typeof parent.items);
+          } catch (e) {}
+          return;
+        }
 
         if (!Boolean(this.step)) {
           this.step = parent.indexOf(this) + 1;
@@ -169,7 +190,6 @@ Example:
         if (!Boolean(this.steps)) {
           this.steps = parent.items.length;
         }
-        // console.log('attached', this.step, this.steps, this.title);
       },
 
       detached: function() {
