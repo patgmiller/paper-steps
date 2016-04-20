@@ -10,7 +10,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../iron-selector/iron-selector.html">
-<!-- <link rel="import" href="../iron-pages/iron-pages.html"> -->
+<link rel="import" href="../paper-styles/color.html">
 
 <!--
 An element attempting to provide a solution to material design steppers.
@@ -54,21 +54,30 @@ Example:
         margin: auto;
       }
 
-      :host /deep/ .vertical paper-step {
-        display: block;
-      }
-
       :host /deep/ #content.horrizontal paper-step .step,
       :host /deep/ #content.horrizontal paper-step .icon,
       :host /deep/ #content.horrizontal paper-step .title {
         display: none;
       }
 
+      :host /deep/ .vertical paper-step {
+        display: block;
+      }
+
+      :host /deep/ #content.vertical paper-step #content {
+        margin-left: 20px;
+        border-left: 1px solid var(--google-grey-500);
+        padding: 15px;
+      }
+
+      :host /deep/ #content.vertical paper-step #content.last {
+        border-left: none;
+      }
     </style>
 
     <iron-selector id="selector" class$="{{cssClass}}" selected="{{selected}}" hidden$="{{vertical}}">
       <template is="dom-repeat" items="{{steps}}" as="s">
-        <paper-step title="[[s.title]]" step="[[s.step]]"></paper-step>
+        <paper-step title="[[s.title]]" step="[[s.step]]" steps="[[steps.length]]"></paper-step>
       </template>
     </iron-selector>
 
@@ -122,7 +131,7 @@ Example:
         // This is a good place to perform any work related to your element's
         // visual state or active behavior (measuring sizes, beginning animations,
         // loading resources, etc).
-        console.log('paper-steps attached', this);
+        // console.log('paper-steps attached', this);
       },
 
       detached: function() {
@@ -144,11 +153,9 @@ Example:
         return !vertical;
       },
       _selected: function(e) {
-        console.log('paper-steps: _selected', e.detail, e);
         e.detail.item.selected = true;
       },
       _deselected: function(e) {
-        console.log('paper-steps: _deselected', e.detail, e);
         e.detail.item.selected = false;
       }
     });

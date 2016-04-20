@@ -55,14 +55,16 @@ Example:
 
     :host .step, :host .step span, :host .step .icon {
       display: inline-block;
+      font-size: 12px;
+      padding: 4px;
     }
 
     :host .step span {
-      position: absolute;
       color: white;
-      margin: 4px auto;
-      z-index: 1;
+      margin: 5px auto;
+      position: absolute;
       text-align: center;
+      z-index: 1;
     }
 
     :host .title {
@@ -75,12 +77,12 @@ Example:
 
   </style>
   <template>
-    <span class="step">
+    <span class$="step {{cssClass}}">
       <span>{{step}}</span>
       <iron-icon icon="{{image}}" class="icon"></iron-icon>
     </span>
     <span hidden="[[!title]]" class="title">[[title]]</span>
-    <div id="content" hidden$="{{!selected}}">
+    <div id="content" class$="{{cssClass}}" hidden$="{{!selected}}">
       <content></content>
     </div>
   </template>
@@ -93,7 +95,7 @@ Example:
          */
         cssClass: {
           type: String,
-          computed: '_cssClass(step)'
+          computed: '_cssClass(step, steps)'
         },
         image: {
           type: String,
@@ -116,6 +118,10 @@ Example:
         },
         step: {
           type: Number
+        },
+        steps: {
+          type: Number,
+          readonly: true
         }
       },
       behaviors: [],
@@ -140,9 +146,18 @@ Example:
         // This is a good place to perform any work related to your element's
         // visual state or active behavior (measuring sizes, beginning animations,
         // loading resources, etc).
+        var
+          parent = this.parentNode
+        ;
+
         if (!Boolean(this.step)) {
-          this.step = this.parentNode.indexOf(this) + 1;
+          this.step = parent.indexOf(this) + 1;
         }
+
+        if (!Boolean(this.steps)) {
+          this.steps = parent.items.length;
+        }
+        // console.log('attached', this.step, this.steps, this.title);
       },
 
       detached: function() {
@@ -153,8 +168,14 @@ Example:
       },
 
       // Element Behavior
-      _cssClass: function() {
-        return '';
+      _cssClass: function(step, steps) {
+        if (step === 1) {
+          return 'first ';
+        } else if (step === steps) {
+          return 'last';
+        } else {
+          return ''
+        }
       },
       _icon: function(icon, step) {
         // console.log('_icon', icon, step);
