@@ -20,8 +20,11 @@
     "/test/"
   ],
   "dependencies": {
-    "polymer": "Polymer/polymer^1.2.0",
-    "iron-selector": "1.3.0"
+    "polymer": "Polymer/polymer#^1.2.0",
+    "iron-selector": "1.3.0",
+    "iron-icon": "1.0.8",
+    "iron-icons": "1.1.3",
+    "paper-styles": "1.1.4"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
