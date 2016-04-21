@@ -37,9 +37,34 @@ Example:
       --paper-step-disabled-color: var(--google-grey-500);
     }
 
-
     :host {
       var(--paper-font-common-base);
+    }
+
+    :host div.line {
+      padding-left: 40px;
+    }
+
+    :host div.line span.h-title,
+    :host div.line span.line {
+      display: block;
+      position: absolute;
+      background-color: var(--paper-grey-50);
+    }
+
+    :host div.line span.h-title {
+      margin-top: 11px;
+      padding-right: 8px;
+      z-index: 2;
+    }
+
+    :host div.line span.line {
+      border-bottom: 1px solid var(--google-grey-500);
+      padding-bottom: 20px;
+    }
+
+    :host div.line span.line.last {
+      display: none;
     }
 
     :host .icon {
@@ -66,27 +91,38 @@ Example:
     }
 
     :host .step span {
-      color: white;
+      color: var(--paper-grey-50);
       margin: 5px auto;
       position: absolute;
       text-align: center;
-      z-index: 1;
+      z-index: 2;
     }
 
     :host .title {
 
     }
 
-    :host(.iron-selected) .title {
+    :host(.iron-selected) .title,
+    :host(.iron-selected) div.line span.h-title {
       font-weight: bold;
     }
 
+    :host .icon,
+    :host .step,
+    :host .title {
+      z-index: 1;
+      background-color: var(--paper-grey-50);
+    }
+
     :host #content {
-      /*background: var(--google-grey-300);*/
       margin-left: 20px;
     }
   </style>
   <template>
+    <div class="line" >
+      <span class$="h-title {{cssClass}}">[[title]]</span>
+      <span class$="line {{cssClass}}" style$="{{_lineWidth(steps)}}"></span>
+    </div>
     <span class$="step {{cssClass}}">
       <span>{{step}}</span>
       <iron-icon icon="{{image}}" class="icon"></iron-icon>
@@ -213,7 +249,16 @@ Example:
       },
       _icon: function(icon, step) {
         return 'image:brightness-1';
-      }
+      },
+      _lineWidth: function(steps) {
+        try {
+          return "width: " +
+            Math.floor(parseFloat(98 / (steps + .5))) + "%;"
+          ;
+        } catch (e) {
+          return 'display: none;';
+        }
+      },
     });
   </script>
 </dom-module>
