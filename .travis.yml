@@ -20,9 +20,6 @@ addons:
     packages:
       - google-chrome-stable
       - g++-4.8
-  # sauce_connect: true
 script:
-  # may need to adjust script to use travis-ci instead of saucelabs.
   # https://docs.travis-ci.com/user/gui-and-headless-browsers/
   - xvfb-run wct
-  - "if [ \"${TRAVIS_PULL_REQUEST}\" = \"false\" ]; then wct -s 'default'; fi"
