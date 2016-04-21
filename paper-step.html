@@ -201,16 +201,17 @@ Example:
 
       // Element Behavior
       _cssClass: function(step, steps) {
+        var cls = '';
+
         if (step === 1) {
-          return 'first ';
-        } else if (step === steps) {
-          return 'last';
-        } else {
-          return ''
+          cls += 'first ';
         }
+        if (step === steps) {
+          cls += 'last ';
+        }
+        return cls;
       },
       _icon: function(icon, step) {
-        // console.log('_icon', icon, step);
         return 'image:brightness-1';
       }
     });
