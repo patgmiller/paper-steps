@@ -86,7 +86,7 @@ Example:
 
     <iron-selector id="selector" class$="{{cssClass}}" selected="{{selected}}" hidden$="{{vertical}}">
       <template is="dom-repeat" items="{{steps}}" as="s">
-        <paper-step title="[[s.title]]" step="[[s.step]]" steps="[[steps.length]]"></paper-step>
+        <paper-step title="[[s.title]]" step="[[s.step]]" steps="[[steps.length]]" style$="{{_stepWidth()}}"></paper-step>
       </template>
     </iron-selector>
 
@@ -115,6 +115,10 @@ Example:
         },
         steps: {
           type: Array
+        },
+        total: {
+          type: Number,
+          computed: '_total(steps)'
         },
         vertical: {
           type: Boolean,
@@ -158,14 +162,26 @@ Example:
       _cssClass: function(vertical) {
         return (vertical) ? 'vertical' : 'horrizontal';
       },
+      _deselected: function(e) {
+        e.detail.item.selected = false;
+      },
       _horrizontal: function(vertical) {
         return !vertical;
       },
       _selected: function(e) {
         e.detail.item.selected = true;
       },
-      _deselected: function(e) {
-        e.detail.item.selected = false;
+      _stepWidth: function() {
+        try {
+          return "width: " +
+            Math.floor(parseFloat(98 / this.total)) + "%;"
+          ;
+        } catch (e) {
+          return '';
+        }
+      },
+      _total: function(steps) {
+        return steps && steps.length || 1;
       }
     });
   </script>
