@@ -120,16 +120,16 @@ Example:
   </style>
   <template>
     <div class="line" >
-      <span class$="h-title {{cssClass}}">[[title]]</span>
-      <span class$="line {{cssClass}}" style$="{{_lineWidth(steps)}}"></span>
+      <span class$="h-title {{_cssClass}}">[[title]]</span>
+      <span class$="line {{_cssClass}}" style$="{{_lineWidth(steps)}}"></span>
     </div>
-    <span class$="step {{cssClass}}">
+    <span class$="step {{_cssClass}}">
       <span>{{step}}</span>
-      <iron-icon icon="{{image}}" class="icon"></iron-icon>
+      <iron-icon icon="{{_image}}" class="icon"></iron-icon>
     </span>
     <span hidden$="[[!title]]" class="title">[[title]]</span>
-    <div id="content" class$="{{cssClass}}" >
-      <div hidden$="{{!selected}}">
+    <div id="content" class$="{{_cssClass}}" >
+      <div hidden$="{{!_selected}}">
         <content></content>
       </div>
     </div>
@@ -139,43 +139,68 @@ Example:
       is: "paper-step",
       properties: {
         /**
-         * `optional` indicates that the element is not a required step.
+         * Computed css classes based on the current `step` and the total
+         * number value of `steps`.
          */
-        cssClass: {
+        _cssClass: {
           type: String,
-          computed: '_cssClass(step, steps)'
+          computed: '__cssClass(step, steps)'
         },
-        image: {
+        /**
+         * Computed for the `paper-step` image icon based on the supplied `icon` attribute.
+         */
+        _image: {
           type: String,
           computed: '_icon(icon, step)'
         },
+        /**
+         *  Choose an alternate image icon to use for the current step.
+         */
         icon: {
           type: String,
-          value: ''
+          value: 'image:brightness-1'
         },
+        /**
+         * To indicate if the current step required or optional.
+         */
         optional: {
           type: Boolean,
           value: false
         },
+        /**
+         * The text to display in the steps area next to the image icon.
+         */
         title: {
           type: String
         },
-        selected: {
+        /**
+         * Indicates if the current `paper-step` is selected which toggles the
+         * actvie/inactive css style rules.
+         */
+        _selected: {
           type: Boolean,
           value: false
         },
+        /**
+         * The value for the current `paper-step` in `paper-steps`.
+         *
+         * `Automatically calculated`.
+         */
         step: {
           type: Number
         },
+        /**
+         * The value for the total number of `paper-step` elements (readonly).
+         *
+         * `Automatically calculated`.
+         */
         steps: {
           type: Number,
           readonly: true
         }
       },
       behaviors: [],
-      listeners: {
-        'iron-select': '_selected'
-      },
+      listeners: {},
 
       // Element Lifecycle
       ready: function() {
@@ -235,8 +260,11 @@ Example:
         // Use this to clean up anything you did in `attached`.
       },
 
-      // Element Behavior
-      _cssClass: function(step, steps) {
+      /**
+       * Computes `_cssClass` property.
+       * @return {string}.
+       */
+      __cssClass: function(step, steps) {
         var cls = '';
 
         if (step === 1) {
@@ -247,9 +275,18 @@ Example:
         }
         return cls;
       },
+      /**
+       * Computes `image` property based on step `icon` and current `step`.
+       * @return {string}.
+       */
       _icon: function(icon, step) {
         return 'image:brightness-1';
       },
+      /**
+       * Computes css % width of `paper-step` elements based on the total
+       * number value  of `steps`.
+       * @return {string}. Eg: "width: 24%;"
+       */
       _lineWidth: function(steps) {
         try {
           return "width: " +

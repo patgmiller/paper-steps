@@ -163,13 +163,13 @@ Example:
         return (vertical) ? 'vertical' : 'horrizontal';
       },
       _deselected: function(e) {
-        e.detail.item.selected = false;
+        e.detail.item._selected = false;
       },
       _horrizontal: function(vertical) {
         return !vertical;
       },
       _selected: function(e) {
-        e.detail.item.selected = true;
+        e.detail.item._selected = true;
       },
       _stepWidth: function() {
         try {
