@@ -62,17 +62,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       suite('<paper-steps>', function() {
 
-        var steps, items;
+        var el, i, item, items, len, steps;
 
         setup(function() {
+          el = item = null;
+          i = len = 0;
           steps = fixture('paper-steps-fixture');
           items = steps.$.content.items;
         });
 
         test('defaults to horrizontal display', function() {
           assert.equal(steps.vertical, false);
-          assert.equal(steps.horrizontal, true);
-          assert.equal(steps.cssClass, 'horrizontal');
+          assert.equal(steps._horrizontal, true);
+          assert.equal(steps._cssClass, 'horrizontal');
         });
 
         test('paper-step defines the "title" property', function() {
@@ -85,6 +87,39 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           assert.equal(items[0].step, 1);
           assert.equal(items[1].step, 2);
           assert.equal(items[2].step, 3);
+        });
+
+        test('paper-step adds "class="first last"', function() {
+          for (i=0, item, len=items.length; i<len; i++) {
+            item = items[i];
+            el = item.$.content
+
+            switch (i) {
+              case 0:
+                assert.equal(item._cssClass, 'first ');
+                assert.isTrue(el.classList.contains('first'));
+                break;
+              case 1:
+                assert.equal(item._cssClass, '');
+                assert.isFalse(el.classList.contains('first'));
+                assert.isFalse(el.classList.contains('last'));
+                break;
+              case 2:
+                assert.equal(item._cssClass, 'last ');
+                assert.isTrue(el.classList.contains('last'));
+                break;
+            }
+          }
+        });
+
+        test('paper-step adds "styles=width: dd%"', function() {
+          //Math.floor(parseFloat(98 /(steps + .5)))
+          // var el;
+          for (i=0, item, len=items.length; i<len; i++) {
+            item = items[0];
+            el = item.$$('div.line span.line');
+            assert.equal(el.style.width, "28%");
+          }
         });
 
         // test('', function() {
