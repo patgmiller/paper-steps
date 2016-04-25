@@ -2,19 +2,19 @@
   "name": "paper-steps",
   "version": "0.0.1",
   "authors": [
-    "Patrick Miller <patrick@millermoments.net>"
+    "patgmiller"
   ],
-  "description": "TODO description here",
+  "description": "An implementation of the Material Design paper steppers.",
   "keywords": [
-    "web-component",
+    "web-components",
+    "material-design",
     "polymer",
     "paper",
-    "steps",
-    "stepper"
+    "steps"
   ],
   "main": "paper-steps.html",
   "license": "http://polymer.github.io/LICENSE.txt",
-  "homepage": "https://github.com/patgmiller/paper-steps/",
+  "homepage": "https://github.com/patgmiller/paper-steps",
   "ignore": [
     "/.*",
     "/test/"
