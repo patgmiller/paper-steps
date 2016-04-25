@@ -84,13 +84,13 @@ Example:
       }
     </style>
 
-    <iron-selector id="selector" class$="{{cssClass}}" selected="{{selected}}" hidden$="{{vertical}}">
-      <template is="dom-repeat" items="{{steps}}" as="s">
-        <paper-step title="[[s.title]]" step="[[s.step]]" steps="[[steps.length]]" style$="{{_stepWidth()}}"></paper-step>
+    <iron-selector id="selector" class$="{{_cssClass}}" selected="{{_selected}}" hidden$="{{vertical}}">
+      <template is="dom-repeat" items="{{_steps}}" as="s">
+        <paper-step title="[[s.title]]" step="[[s.step]]" steps="[[_steps.length]]" style$="{{_stepWidth()}}"></paper-step>
       </template>
     </iron-selector>
 
-    <iron-selector id="content" class$="{{cssClass}}" selected="{{selected}}" items="{{steps}}" >
+    <iron-selector id="content" class$="{{_cssClass}}" selected="{{_selected}}" items="{{_steps}}" >
       <content></content>
     </iron-selector>
   </template>
@@ -100,26 +100,45 @@ Example:
       is: 'paper-steps',
 
       properties: {
-        cssClass: {
+        /**
+         * Computed css class based on `vertical` property.
+         */
+        _cssClass: {
           type: String,
-          computed: '_cssClass(vertical)'
+          computed: '__cssClass(vertical)'
         },
-        horrizontal: {
+        /**
+         * Computed boolean property based on `vertical`, used for convenience.
+         */
+        _horrizontal: {
           type: Boolean,
-          computed: '_horrizontal(vertical)'
+          computed: '__horrizontal(vertical)'
         },
-        selected: {
+        /**
+         * Index of the currently selected `paper-step` element.
+         */
+        _selected: {
           type: Number,
           notify: true,
           value: 0
         },
-        steps: {
+        /**
+         * Reference to the array of `paper-step` elements.
+         */
+        _steps: {
           type: Array
         },
-        total: {
+        /**
+         * Computed property with the total number of items in `_steps`.
+         */
+        _total: {
           type: Number,
-          computed: '_total(steps)'
+          computed: '__total(_steps)'
         },
+        /**
+         * Determines if the `paper-steps` element is displayed vertically or
+         * horrizontally.
+         */
         vertical: {
           type: Boolean,
           value: false
@@ -156,31 +175,31 @@ Example:
 
       // Element Behavior
       listeners: {
-        'iron-deselect': '_deselected',
-        'iron-select': '_selected'
+        'iron-deselect': '_onDeselect',
+        'iron-select': '_onSelect'
       },
-      _cssClass: function(vertical) {
+      __cssClass: function(vertical) {
         return (vertical) ? 'vertical' : 'horrizontal';
       },
-      _deselected: function(e) {
+      _onDeselect: function(e) {
         e.detail.item._selected = false;
       },
-      _horrizontal: function(vertical) {
+      __horrizontal: function(vertical) {
         return !vertical;
       },
-      _selected: function(e) {
+      _onSelect: function(e) {
         e.detail.item._selected = true;
       },
       _stepWidth: function() {
         try {
           return "width: " +
-            Math.floor(parseFloat(98 / this.total)) + "%;"
+            Math.floor(parseFloat(98 / this._total)) + "%;"
           ;
         } catch (e) {
           return '';
         }
       },
-      _total: function(steps) {
+      __total: function(steps) {
         return steps && steps.length || 1;
       }
     });
