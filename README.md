@@ -2,6 +2,10 @@
 
 An implementation of the Material Design [steppers](https://www.google.com/design/spec/components/steppers.html).
 
+To use this:
+
+    bower install paper-steps
+
 
 ## Dependencies
 

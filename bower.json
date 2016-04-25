@@ -1,6 +1,5 @@
 {
   "name": "paper-steps",
-  "version": "0.0.1",
   "authors": [
     "patgmiller"
   ],
@@ -13,7 +12,7 @@
     "steps"
   ],
   "main": "paper-steps.html",
-  "license": "http://polymer.github.io/LICENSE.txt",
+  "license": "https://github.com/patgmiller/paper-steps/LICENSE.txt",
   "homepage": "https://github.com/patgmiller/paper-steps",
   "ignore": [
     "/.*",
