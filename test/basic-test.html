@@ -32,7 +32,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <test-fixture id="paper-steps-fixture">
       <template>
         <paper-steps>
-          <paper-step label="step 1"></paper-step>
+          <paper-step label="step 1" optional></paper-step>
           <paper-step label="step 2"></paper-step>
           <paper-step label=""></paper-step>
         </paper-steps>
@@ -62,13 +62,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       suite('<paper-steps>', function() {
 
-        var el, i, item, items, len, steps;
+        var el, i, item, items, _items, len, steps;
 
         setup(function() {
           el = item = null;
           i = len = 0;
           steps = fixture('paper-steps-fixture');
           items = steps.$.content.items;
+          _items = steps.$.selector.$$('template').items; //horizontal
         });
 
         test('defaults to horrizontal display', function() {
@@ -115,9 +116,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         test('paper-step adds "styles=width: dd%"', function() {
           //Math.floor(parseFloat(98 /(steps + .5)))
           for (i=0, item, len=items.length; i<len; i++) {
-            item = items[0];
+            item = items[i];
             el = item.$$('div.line span.line');
             assert.equal(el.style.width, "28%");
+          }
+        });
+
+        test('paper-step can be optional', function() {
+          var optional = [true, false, false];
+          for (i=0, item, len=items.length; i<len; i++) {
+            item = optional[i];
+            assert.equal(items[i].optional, item);
+            assert.equal(_items[i].optional, item);
           }
         });
 
