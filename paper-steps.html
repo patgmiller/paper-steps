@@ -19,11 +19,11 @@ A element which provides a solution to material design steppers.
 Example:
 
     <paper-steps vertical>
-      <paper-step title="Getting started">
+      <paper-step label="Getting started">
         <h2>Welcome to paper-steps</h2>
       </paper-step>
-      <paper-step title="And then there were two"></paper-step>
-      <paper-step title="Not required" optional></paper-step>
+      <paper-step label="And then there were two"></paper-step>
+      <paper-step label="Not required" optional></paper-step>
     </paper-steps>
 
 @demo demo/index.html
@@ -65,8 +65,8 @@ Example:
       :host /deep/ #content.horrizontal paper-step .line,
       :host /deep/ #content.horrizontal paper-step .step,
       :host /deep/ #content.horrizontal paper-step .icon,
-      :host /deep/ #content.horrizontal paper-step .title,
-      :host /deep/ #selector.horrizontal paper-step .title {
+      :host /deep/ #content.horrizontal paper-step .label,
+      :host /deep/ #selector.horrizontal paper-step .label {
         display: none;
       }
 
@@ -86,7 +86,7 @@ Example:
 
     <iron-selector id="selector" class$="{{_cssClass}}" selected="{{_selected}}" hidden$="{{vertical}}">
       <template is="dom-repeat" items="{{_steps}}" as="s">
-        <paper-step title="[[s.title]]" optional$="[[s.optional]]" step="[[s.step]]" steps="[[_steps.length]]" style$="[[_stepWidth()]]"></paper-step>
+        <paper-step label="[[s.label]]" optional$="[[s.optional]]" step="[[s.step]]" steps="[[_steps.length]]" style$="{{_stepWidth()}}"></paper-step>
       </template>
     </iron-selector>
 

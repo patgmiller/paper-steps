@@ -20,7 +20,7 @@ An element which provides a solution to material design steppers.
 
 Example:
 
-    <paper-step title="Do something"></paper-step>
+    <paper-step label="Do something"></paper-step>
 
 Example:
 
@@ -45,14 +45,14 @@ Example:
       padding-left: 35px;
     }
 
-    :host div.line span.h-title,
+    :host div.line span.h-label,
     :host div.line span.line {
       display: block;
       position: absolute;
       background-color: var(--paper-grey-50);
     }
 
-    :host div.line span.h-title {
+    :host div.line span.h-label {
       margin-top: 11px;
       padding-right: 8px;
       z-index: 2;
@@ -98,12 +98,12 @@ Example:
       z-index: 2;
     }
 
-    :host .title {
+    :host .label {
 
     }
 
-    :host .title .optional,
-    :host .h-title .optional {
+    :host .label .optional,
+    :host .h-label .optional {
       color: var(--disabled-text-color, --paper-step-disabled-color);
       position: absolute;
       font-weight: normal;
@@ -111,18 +111,18 @@ Example:
       font-size: 12px;
     }
 
-    :host .h-title .optional {
+    :host .h-label .optional {
       margin-top: 17px;
     }
 
-    :host(.iron-selected) .title,
-    :host(.iron-selected) div.line span.h-title {
+    :host(.iron-selected) .label,
+    :host(.iron-selected) div.line span.h-label {
       font-weight: bold;
     }
 
     :host .icon,
     :host .step,
-    :host .title {
+    :host .label {
       z-index: 1;
       background-color: var(--paper-grey-50);
     }
@@ -133,9 +133,9 @@ Example:
   </style>
   <template>
     <div class="line" >
-      <span class$="h-title {{_cssClass}}">
+      <span class$="h-label {{_cssClass}}">
         <span class="optional" hidden$="[[!optional]]">Optional</span>
-        [[title]]
+        [[label]]
       </span>
       <span class$="line {{_cssClass}}" style$="{{_lineWidth(steps)}}"></span>
     </div>
@@ -145,9 +145,9 @@ Example:
       <iron-icon icon="{{_image}}" class="icon"></iron-icon>
     </span>
 
-    <span hidden$="[[!title]]" class="title">
+    <span hidden$="[[!label]]" class="label">
       <span class="optional" hidden$="[[!optional]]">Optional</span>
-      [[title]]
+      [[label]]
     </span>
 
     <div id="content" class$="{{_cssClass}}" >
@@ -184,17 +184,17 @@ Example:
           value: 'image:brightness-1'
         },
         /**
+         * The text to display in the steps area next to the image icon.
+         */
+        label: {
+          type: String
+        },
+        /**
          * To indicate if the current step required or optional.
          */
         optional: {
           type: Boolean,
           value: false
-        },
-        /**
-         * The text to display in the steps area next to the image icon.
-         */
-        title: {
-          type: String
         },
         /**
          * Indicates if the current `paper-step` is selected which toggles the
