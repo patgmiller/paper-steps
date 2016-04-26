@@ -25,16 +25,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <!-- You can use the document as a place to set up your fixtures. -->
     <test-fixture id="paper-step-fixture">
       <template>
-        <paper-step title="step 1"></paper-step>
+        <paper-step label="step 1"></paper-step>
       </template>
     </test-fixture>
 
     <test-fixture id="paper-steps-fixture">
       <template>
         <paper-steps>
-          <paper-step title="step 1"></paper-step>
-          <paper-step title="step 2"></paper-step>
-          <paper-step title=""></paper-step>
+          <paper-step label="step 1"></paper-step>
+          <paper-step label="step 2"></paper-step>
+          <paper-step label=""></paper-step>
         </paper-steps>
       </template>
     </test-fixture>
@@ -77,10 +77,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           assert.equal(steps._cssClass, 'horrizontal');
         });
 
-        test('paper-step defines the "title" property', function() {
-          assert.equal(items[0].title, 'step 1');
-          assert.equal(items[1].title, 'step 2');
-          assert.equal(items[2].title, '');
+        test('paper-step defines the "label" property', function() {
+          assert.equal(items[0].label, 'step 1');
+          assert.equal(items[1].label, 'step 2');
+          assert.equal(items[2].label, '');
         });
 
         test('default steps are: 1, 2, and 3', function() {
