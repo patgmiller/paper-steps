@@ -102,6 +102,18 @@ Example:
 
     }
 
+    :host .title .optional,
+    :host .h-title .optional {
+      color: var(--disabled-text-color, --paper-step-disabled-color);
+      position: absolute;
+      margin-top: 27px;
+      font-size: 12px;
+    }
+
+    :host .h-title .optional {
+      margin-top: 17px;
+    }
+
     :host(.iron-selected) .title,
     :host(.iron-selected) div.line span.h-title {
       font-weight: bold;
@@ -120,14 +132,23 @@ Example:
   </style>
   <template>
     <div class="line" >
-      <span class$="h-title {{_cssClass}}">[[title]]</span>
+      <span class$="h-title {{_cssClass}}">
+        <span class="optional" hidden$="[[!optional]]">Optional</span>
+        [[title]]
+      </span>
       <span class$="line {{_cssClass}}" style$="{{_lineWidth(steps)}}"></span>
     </div>
+
     <span class$="step {{_cssClass}}">
       <span>{{step}}</span>
       <iron-icon icon="{{_image}}" class="icon"></iron-icon>
     </span>
-    <span hidden$="[[!title]]" class="title">[[title]]</span>
+
+    <span hidden$="[[!title]]" class="title">
+      <span class="optional" hidden$="[[!optional]]">Optional</span>
+      [[title]]
+    </span>
+
     <div id="content" class$="{{_cssClass}}" >
       <div hidden$="{{!_selected}}">
         <content></content>
@@ -135,6 +156,7 @@ Example:
     </div>
   </template>
   <script>
+    'use strict';
     Polymer({
       is: "paper-step",
       properties: {
@@ -182,7 +204,7 @@ Example:
           value: false
         },
         /**
-         * The value for the current `paper-step` in `paper-steps`.
+         * The 1 based index value for the current `paper-step` in `paper-steps`.
          *
          * `Automatically calculated`.
          */
@@ -203,22 +225,10 @@ Example:
       listeners: {},
 
       // Element Lifecycle
-      ready: function() {
-        // `ready` is called after all elements have been configured, but
-        // propagates bottom-up. This element's children are ready, but parents
-        // are not.
-        //
-        // This is the point where you should make modifications to the DOM (when
-        // necessary), or kick off any processes the element wants to perform.
-      },
+      ready: function() {},
 
       attached: function() {
-        // `attached` fires once the element and its parents have been inserted
-        // into a document.
-        //
-        // This is a good place to perform any work related to your element's
-        // visual state or active behavior (measuring sizes, beginning animations,
-        // loading resources, etc).
+        // console.log(this, this.optional);
         var
           parent = this.parentNode && this.parentNode.indexOf && this.parentNode || null;
         ;
@@ -253,12 +263,7 @@ Example:
         }
       },
 
-      detached: function() {
-        // The analog to `attached`, `detached` fires when the element has been
-        // removed from a document.
-        //
-        // Use this to clean up anything you did in `attached`.
-      },
+      detached: function() {},
 
       /**
        * Computes `_cssClass` property.
