@@ -47,7 +47,7 @@ Example:
 
       }
 
-      :host #content.horrizontal {
+      :host #content.horizontal {
         display: block;
       }
 
@@ -56,17 +56,17 @@ Example:
         margin: auto;
       }
 
-      :host /deep/ #content.horrizontal paper-step {
+      :host /deep/ #content.horizontal paper-step {
         display: block;
         width: inherit;
       }
 
       :host /deep/ .vertical paper-step .line,
-      :host /deep/ #content.horrizontal paper-step .line,
-      :host /deep/ #content.horrizontal paper-step .step,
-      :host /deep/ #content.horrizontal paper-step .icon,
-      :host /deep/ #content.horrizontal paper-step .label,
-      :host /deep/ #selector.horrizontal paper-step .label {
+      :host /deep/ #content.horizontal paper-step .line,
+      :host /deep/ #content.horizontal paper-step .step,
+      :host /deep/ #content.horizontal paper-step .icon,
+      :host /deep/ #content.horizontal paper-step .label,
+      :host /deep/ #selector.horizontal paper-step .label {
         display: none;
       }
 
@@ -110,9 +110,9 @@ Example:
         /**
          * Computed boolean property based on `vertical`, used for convenience.
          */
-        _horrizontal: {
+        _horizontal: {
           type: Boolean,
-          computed: '__horrizontal(vertical)'
+          computed: '__horizontal(vertical)'
         },
         /**
          * Index of the currently selected `paper-step` element.
@@ -137,7 +137,7 @@ Example:
         },
         /**
          * Determines if the `paper-steps` element is displayed vertically or
-         * horrizontally.
+         * horizontally.
          */
         vertical: {
           type: Boolean,
@@ -158,12 +158,12 @@ Example:
         'iron-select': '_onSelect'
       },
       __cssClass: function(vertical) {
-        return (vertical) ? 'vertical' : 'horrizontal';
+        return (vertical) ? 'vertical' : 'horizontal';
       },
       _onDeselect: function(e) {
         e.detail.item._selected = false;
       },
-      __horrizontal: function(vertical) {
+      __horizontal: function(vertical) {
         return !vertical;
       },
       _onSelect: function(e) {

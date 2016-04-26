@@ -72,10 +72,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           _items = steps.$.selector.$$('template').items; //horizontal
         });
 
-        test('defaults to horrizontal display', function() {
+        test('defaults to horizontal display', function() {
           assert.equal(steps.vertical, false);
-          assert.equal(steps._horrizontal, true);
-          assert.equal(steps._cssClass, 'horrizontal');
+          assert.equal(steps._horizontal, true);
+          assert.equal(steps._cssClass, 'horizontal');
         });
 
         test('paper-step defines the "label" property', function() {
