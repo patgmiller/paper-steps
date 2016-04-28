@@ -201,6 +201,14 @@ Example:
           computed: '_icon(icon, step)'
         },
         /**
+         * If true, the current step has been validated and marked as done.
+         */
+        completed: {
+          type: Boolean,
+          value: false,
+          readonly: true
+        },
+        /**
          *  Specify an alternate label to use for the `continue` button.
          */
         continueLabel: {
