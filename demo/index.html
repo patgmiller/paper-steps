@@ -49,7 +49,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <a href="https://www.google.com/design/spec/components/steppers.html">steppers</a></code>.
         </p>
         <p>
-          <paper-toggle-button id="toggle" >Toggle vertical</paper-toggle-button>
+          <paper-toggle-button id="toggle" >Vertical</paper-toggle-button>
         </p>
 
         <paper-steps id="steps" >
@@ -65,8 +65,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <paper-step label="Add contact information" >
             <h2>Contact Details</h2>
             <form is="iron-form" action="." method="post">
-              <gold-email-input value="" label="Email" auto-validate></gold-email-input>
-              <gold-phone-input value="" label="Phone" auto-validate></gold-phone-input>
+              <gold-email-input label="Email" auto-validate required></gold-email-input>
+              <gold-phone-input label="Phone" auto-validate></gold-phone-input>
             </form>
           </paper-step>
           <paper-step label="Enter street address" optional>
@@ -75,16 +75,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               <paper-input label="Street"></paper-input>
               <paper-input label="City"></paper-input>
               <paper-input label="State" auto-validate></paper-input>
-              <gold-zip-input value="" label="Postal Code" auto-validate></gold-zip-input>
+              <gold-zip-input label="Postal Code" auto-validate></gold-zip-input>
               <paper-input label="Country" auto-validate></paper-input>
             </form>
           </paper-step>
-          <paper-step label="Add billing information" >
+          <paper-step label="Add billing information">
             <h2>Setup Monthly Subscription</h2>
             <form is="iron-form" action="." method="post">
-              <paper-input label="Name"></paper-input>
-              <gold-cc-input label="Card" auto-validate></gold-cc-input>
-              <gold-cc-expiration-input label="Expiration" ></gold-cc-expiration-input>
+              <paper-input label="Name" required></paper-input>
+              <gold-cc-input label="Card" auto-validate required></gold-cc-input>
+              <gold-cc-expiration-input label="Expiration" required></gold-cc-expiration-input>
             </form>
           </paper-step>
         </paper-steps>
