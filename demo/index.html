@@ -21,50 +21,85 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       // };
     </script>
 		<link rel="import" href="../../paper-styles/demo-pages.html">
+		<link rel="import" href="../../gold-email-input/gold-email-input.html">
+		<link rel="import" href="../../gold-cc-input/gold-cc-input.html">
+		<link rel="import" href="../../gold-cc-cvc-input/gold-cc-cvc-input.html">
+		<link rel="import" href="../../gold-cc-expiration-input/gold-cc-expiration-input.html">
+		<link rel="import" href="../../gold-phone-input/gold-phone-input.html">
+		<link rel="import" href="../../gold-zip-input/gold-zip-input.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+		<link rel="import" href="../../iron-form/iron-form.html">
+		<link rel="import" href="../../paper-button/paper-button.html">
+		<link rel="import" href="../../paper-toggle-button/paper-toggle-button.html">
+		<link rel="import" href="../../paper-input/paper-input.html">
     <link rel="import" href="../paper-steps.html">
     <link rel="import" href="../paper-step.html">
+    <style>
+      demo-snippet#paper-steps {
+        max-width: 1100px;
+        margin: auto;
+      }
+    </style>
   </head>
   <body unresolved>
-
-    <p>An example of <code>&lt;paper-steps&gt;</code>:</p>
-
-    <paper-steps>
-      <paper-step label="The first" >
-        <h2>My first step!</h2>
-      </paper-step>
-      <paper-step label="The second" optional>
-        <h2>This is the second step.</h2>
-      </paper-step>
-      <paper-step label="The third (longish label)" >
-        <h2>And here is a third step.</h2>
-      </paper-step>
-      <paper-step label="Last one" >
-        <h2>The last step .... the end.</h2>
-      </paper-step>
-    </paper-steps>
-
-    <p>An example of <code>&lt;paper-steps vertical&gt;</code>:</p>
-
-    <paper-steps vertical>
-      <paper-step label="Begin here" >
-        <h2>The Beginning</h2>
-        <p>
-          In the beginning there were many ...
+    <demo-snippet id="paper-steps">
+      <template>
+        <p><code>&lt;paper-steps&gt;</code> is an implementation of material design <code>
+            <a href="https://www.google.com/design/spec/components/steppers.html">steppers</a></code>.
         </p>
-      </paper-step>
-      <paper-step label="Middle goes here" optional>
-        <h2>The Middle</h2>
         <p>
-          And then there was much battle and war everywhere.
+          <paper-toggle-button id="toggle" >Toggle vertical</paper-toggle-button>
         </p>
-      </paper-step>
-      <paper-step label="End, finally" >
-        <h2>The End</h2>
-        <p>
-          There can be only one highlander!
-        </p>
-      </paper-step>
-    </paper-steps>
 
+        <paper-steps id="steps" >
+          <paper-step label="Create your store" >
+            <h2>Setup Your Domain</h2>
+            <form is="iron-form" action="." method="post">
+              <paper-input label="Domain" auto-validate required
+                pattern="^(([a-zA-Z]{1})|([a-zA-Z]{1}[a-zA-Z]{1})|([a-zA-Z]{1}[0-9]{1})|([0-9]{1}[a-zA-Z]{1})|([a-zA-Z0-9][a-zA-Z0-9-_]{1,61}[a-zA-Z0-9]))\.([a-zA-Z]{2,6}|[a-zA-Z0-9-]{2,30}\.[a-zA-Z]{2,3})$"
+              ></paper-input>
+              <paper-input label="Store Name" auto-validate required></paper-input>
+            </form>
+          </paper-step>
+          <paper-step label="Add contact information" >
+            <h2>Contact Details</h2>
+            <form is="iron-form" action="." method="post">
+              <gold-email-input value="" label="Email" auto-validate></gold-email-input>
+              <gold-phone-input value="" label="Phone" auto-validate></gold-phone-input>
+            </form>
+          </paper-step>
+          <paper-step label="Enter street address" optional>
+            <h2>Store Location</h2>
+            <form is="iron-form" action="." method="post">
+              <paper-input label="Street"></paper-input>
+              <paper-input label="City"></paper-input>
+              <paper-input label="State" auto-validate></paper-input>
+              <gold-zip-input value="" label="Postal Code" auto-validate></gold-zip-input>
+              <paper-input label="Country" auto-validate></paper-input>
+            </form>
+          </paper-step>
+          <paper-step label="Add billing information" >
+            <h2>Setup Monthly Subscription</h2>
+            <form is="iron-form" action="." method="post">
+              <paper-input label="Name"></paper-input>
+              <gold-cc-input label="Card" auto-validate></gold-cc-input>
+              <gold-cc-expiration-input label="Expiration" ></gold-cc-expiration-input>
+            </form>
+          </paper-step>
+        </paper-steps>
+        <script>
+          var
+            b = document.querySelector('#toggle'),
+            steps = document.querySelector('#steps')
+          ;
+          b.addEventListener('iron-change', function(e) {
+            if (steps.vertical != e.srcElement.active) {
+              steps.vertical = e.srcElement.active;
+            }
+          });
+        </script>
+      </template>
+    </demo-snippet>
   </body>
 </html>
