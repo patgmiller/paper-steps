@@ -196,8 +196,6 @@ Example:
         var
           i, items, steps = steps && steps.length || 1
         ;
-        console.log('paper-steps __total', steps, this.actionsDisabled);
-
         items = this.$.content.items
         if (steps && items.length === steps && this.actionsDisabled) {
           for (i=0; i < steps; i++) {
