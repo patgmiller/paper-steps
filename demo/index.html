@@ -93,8 +93,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             steps = document.querySelector('#steps')
           ;
           b.addEventListener('iron-change', function(e) {
-            if (steps.vertical != e.srcElement.active) {
-              steps.vertical = e.srcElement.active;
+            if (steps.vertical != this.active) {
+              steps.vertical = this.active;
             }
           });
         </script>
