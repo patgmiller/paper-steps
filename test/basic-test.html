@@ -51,10 +51,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           assert.equal(step.step, 1);
         });
 
-        test('defaults to "image:brightness-1"', function() {
-          assert.equal(step._image, 'image:brightness-1');
-        });
-
         // test('', function() {
         //
         // });
@@ -90,35 +86,34 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           assert.equal(items[2].step, 3);
         });
 
-        test('paper-step adds "class="first last"', function() {
+        test('paper-step adds first/last optional/required classes', function() {
           for (i=0, item, len=items.length; i<len; i++) {
             item = items[i];
             el = item.$.content
 
             switch (i) {
               case 0:
-                assert.equal(item._cssClass, 'first ');
+                assert.equal(item._cssClass, 'optional-step first ');
                 assert.isTrue(el.classList.contains('first'));
+                assert.isTrue(el.classList.contains('optional-step'));
+                assert.isFalse(el.classList.contains('last'));
+                assert.isFalse(el.classList.contains('required-step'));
                 break;
               case 1:
-                assert.equal(item._cssClass, '');
+                assert.equal(item._cssClass, 'required-step ');
+                assert.isTrue(el.classList.contains('required-step'));
                 assert.isFalse(el.classList.contains('first'));
                 assert.isFalse(el.classList.contains('last'));
+                assert.isFalse(el.classList.contains('optional-step'));
                 break;
               case 2:
-                assert.equal(item._cssClass, 'last ');
+                assert.equal(item._cssClass, 'required-step last ');
                 assert.isTrue(el.classList.contains('last'));
+                assert.isTrue(el.classList.contains('required-step'));
+                assert.isFalse(el.classList.contains('first'));
+                assert.isFalse(el.classList.contains('optional-step'));
                 break;
             }
-          }
-        });
-
-        test('paper-step adds "styles=width: dd%"', function() {
-          //Math.floor(parseFloat(98 /(steps + .5)))
-          for (i=0, item, len=items.length; i<len; i++) {
-            item = items[i];
-            el = item.$$('div.line span.line');
-            assert.equal(el.style.width, "28%");
           }
         });
 

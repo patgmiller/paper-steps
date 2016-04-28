@@ -33,51 +33,66 @@ Example:
 <dom-module id="paper-steps">
   <template>
     <style>
-      :host {
-        display: block;
-        box-sizing: border-box;
-      }
-
       :host #selector {
-        display: block;
-        width: 100%;
+        display: -webkit-flex;
+        display: flex;
       }
 
-      :host #selector.vertical {
-
+      :host #selector paper-step {
+        display: -webkit-flex;
+        display: flex;
+        -webkit-align-items: center;
+                align-items: center;
+        -webkit-flex: 1 1 auto;
+                flex: 1 1 auto;
       }
 
-      :host #content.horizontal {
-        display: block;
+      :host /deep/ #selector paper-step .stepper-circle {
+        -webkit-flex: 0 0 auto;
+                flex: 0 0 auto;
       }
 
-      :host /deep/ paper-step {
-        display: inline-block;
-        margin: auto;
+      :host /deep/ .label.optional-step,
+      :host /deep/ .h-label.optional-step {
+        -webkit-align-self: flex-start;
+                align-self: flex-start;
+        margin-top: -4px;
       }
 
-      :host /deep/ #content.horizontal paper-step {
-        display: block;
-        width: inherit;
-      }
-
+      :host /deep/ .vertical paper-step .h-label,
       :host /deep/ .vertical paper-step .line,
+      :host /deep/ #content.horizontal paper-step .h-label,
       :host /deep/ #content.horizontal paper-step .line,
-      :host /deep/ #content.horizontal paper-step .step,
-      :host /deep/ #content.horizontal paper-step .icon,
+      :host /deep/ #content.horizontal paper-step .stepper-circle,
       :host /deep/ #content.horizontal paper-step .label,
+      :host /deep/ #selector paper-step:last-of-type .line,
       :host /deep/ #selector.horizontal paper-step .label,
       :host /deep/ #selector paper-step #actions {
         display: none;
       }
 
       :host /deep/ .vertical paper-step {
-        display: block;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-align-items: center;
+                align-items: center;
+        -webkit-flex-wrap: wrap;
+                flex-wrap: wrap;
+      }
+
+      :host /deep/ .vertical .label {
+        -webkit-flex: 1 1 auto;
+                flex: 1 1 auto;
+      }
+
+      :host /deep/ .vertical #content {
+        width: 100%;
+        padding: 15px 0 15px 23px;
       }
 
       :host /deep/ #content.vertical paper-step #content {
-        border-left: 1px solid var(--google-grey-500);
-        padding: 15px;
+        margin: 8px 0 8px 12px;
+        border-left: 1px solid var(--paper-grey-300);
       }
 
       :host /deep/ #content.vertical paper-step #content.last {
@@ -87,12 +102,7 @@ Example:
 
     <iron-selector id="selector" class$="{{_cssClass}}" selected="{{_selected}}" hidden$="{{vertical}}">
       <template is="dom-repeat" items="{{_steps}}" as="s">
-        <paper-step l
-          label="[[s.label]]"
-          optional$="[[s.optional]]"
-          step="[[s.step]]"
-          steps="[[_steps.length]]"
-          style$="{{_stepWidth()}}"></paper-step>
+        <paper-step label="[[s.label]]" optional$="[[s.optional]]" step="[[s.step]]" steps="[[_steps.length]]"></paper-step>
       </template>
     </iron-selector>
 
@@ -182,15 +192,6 @@ Example:
       },
       _onSelect: function(e) {
         e.detail.item._selected = true;
-      },
-      _stepWidth: function() {
-        try {
-          return "width: " +
-            Math.floor(parseFloat(98 / this._total)) + "%;"
-          ;
-        } catch (e) {
-          return '';
-        }
       },
       __total: function(steps) {
         var

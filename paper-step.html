@@ -41,94 +41,56 @@ Example:
       var(--paper-font-common-base);
     }
 
-    :host div.line {
-      padding-left: 35px;
-    }
-
-    :host div.line span.h-label,
-    :host div.line span.line {
-      display: block;
-      position: absolute;
-      background-color: var(--paper-grey-50);
-    }
-
-    :host div.line span.h-label {
-      margin-top: 11px;
-      padding-right: 8px;
-      z-index: 2;
-    }
-
-    :host div.line span.line {
-      border-bottom: 1px solid var(--google-grey-500);
-      padding-bottom: 20px;
-    }
-
-    :host div.line span.line.last {
-      display: none;
-    }
-
-    :host .icon {
-      width: 24px;
-      height: 24px;
-    }
-
-    :host .step span {
-      width: 24px;
-    }
-
-    :host(.iron-selected) .icon {
-      color: var(--primary-color, --paper-step-primary-color);
-    }
-
-    :host(:not(.iron-selected)) .icon {
-      color: var(--disabled-text-color, --paper-step-disabled-color);
-    }
-
-    :host .step, :host .step span, :host .step .icon {
-      display: inline-block;
-      font-size: 12px;
-      padding: 4px;
-    }
-
-    :host .step span {
-      color: var(--paper-grey-50);
-      margin: 5px auto;
-      position: absolute;
-      text-align: center;
-      z-index: 2;
+    :host .h-label {
+      margin: 0 8px;
+      white-space: nowrap;
     }
 
     :host .label {
-
+      margin-left: 12px;
     }
 
-    :host .label .optional,
-    :host .h-label .optional {
+    :host .line {
+      margin-right: 8px;
+      width: 100%;
+      height: 1px;
+      background-color: var(--paper-grey-300);
+    }
+
+    :host .stepper-circle {
+      width: 24px;
+      height: 24px;
+      line-height: 24px;
+      border-radius: 50%;
+      color: #fff;
+      font-size: 12px;
+      text-align: center;
+    }
+
+    :host(.iron-selected) .stepper-circle {
+      background-color: var(--primary-color, --paper-step-primary-color);
+    }
+
+    :host(:not(.iron-selected)) .stepper-circle {
+      background-color: var(--disabled-text-color, --paper-step-disabled-color);
+    }
+
+    :host .label .optional-text,
+    :host .h-label .optional-text {
       color: var(--disabled-text-color, --paper-step-disabled-color);
       position: absolute;
       font-weight: normal;
-      margin-top: 27px;
+      margin-top: 17px;
       font-size: 12px;
     }
 
-    :host .h-label .optional {
+    :host .h-label .optional-text {
       margin-top: 17px;
     }
 
     :host(.iron-selected) .label,
-    :host(.iron-selected) div.line span.h-label {
-      font-weight: bold;
-    }
-
-    :host .icon,
-    :host .step,
-    :host .label {
-      z-index: 1;
-      background-color: var(--paper-grey-50);
-    }
-
-    :host #content {
-      margin-left: 20px;
+    :host(.iron-selected) .h-label {
+      font-weight: 500;
     }
 
     :host #actions {
@@ -144,7 +106,7 @@ Example:
     :host #actions #continue,
     :host #actions #skip {
       background-color: var(--paper-step-primary-color);
-      color: white;
+      color: #fff;
     }
 
     button {
@@ -161,21 +123,19 @@ Example:
 
   </style>
   <template>
-    <div class="line" >
-      <span class$="h-label {{_cssClass}}">
-        <span class="optional" hidden$="[[!optional]]">Optional</span>
-        [[label]]
-      </span>
-      <span class$="line {{_cssClass}}" style$="{{_lineWidth(steps)}}"></span>
+    <div class$="stepper-circle {{_cssClass}}">
+      <span>{{step}}</span>
     </div>
 
-    <span class$="step {{_cssClass}}">
-      <span>{{step}}</span>
-      <iron-icon icon="{{_image}}" class="icon"></iron-icon>
+    <span class$="h-label {{_cssClass}}">
+      <span class="optional-text" hidden$="[[!optional]]">Optional</span>
+      [[label]]
     </span>
 
-    <span hidden$="[[!label]]" class="label">
-      <span class="optional" hidden$="[[!optional]]">Optional</span>
+    <div class="line"></div>
+
+    <span hidden$="[[!label]]" class$="label {{_cssClass}}">
+      <span class="optional-text" hidden$="[[!optional]]">Optional</span>
       [[label]]
     </span>
 
@@ -248,13 +208,6 @@ Example:
         cancelLabel: {
           type: String,
           value: 'Cancel'
-        },
-        /**
-         *  Choose an alternate image icon to use for the current step.
-         */
-        icon: {
-          type: String,
-          value: 'image:brightness-1'
         },
         /**
          * The text to display in the steps area next to the image icon.
@@ -347,7 +300,7 @@ Example:
        * @return {string}.
        */
       __cssClass: function(step, steps) {
-        var cls = '';
+        var cls = (this.optional ? 'optional' : 'required') + '-step ';
 
         if (step === 1) {
           cls += 'first ';
@@ -371,20 +324,6 @@ Example:
        */
       _icon: function(icon, step) {
         return 'image:brightness-1';
-      },
-      /**
-       * Computes css % width of `paper-step` elements based on the total
-       * number value  of `steps`.
-       * @return {string}. Eg: "width: 24%;"
-       */
-      _lineWidth: function(steps) {
-        try {
-          return "width: " +
-            Math.floor(parseFloat(98 / (steps + .5))) + "%;"
-          ;
-        } catch (e) {
-          return 'display: none;';
-        }
       },
       /**
        * Clear the state form elements.
