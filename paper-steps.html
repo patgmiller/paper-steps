@@ -87,7 +87,12 @@ Example:
 
     <iron-selector id="selector" class$="{{_cssClass}}" selected="{{_selected}}" hidden$="{{vertical}}">
       <template is="dom-repeat" items="{{_steps}}" as="s">
-        <paper-step label="[[s.label]]" optional$="[[s.optional]]" step="[[s.step]]" steps="[[_steps.length]]" style$="{{_stepWidth()}}"></paper-step>
+        <paper-step l
+          label="[[s.label]]"
+          optional$="[[s.optional]]"
+          step="[[s.step]]"
+          steps="[[_steps.length]]"
+          style$="{{_stepWidth()}}"></paper-step>
       </template>
     </iron-selector>
 
@@ -137,13 +142,21 @@ Example:
           computed: '__total(_steps)'
         },
         /**
+         * If true, all of the submit buttons which are automatically
+         * added for each `paper-step` element will be hidden.
+         */
+        actionsDisabled: {
+          type: Boolean,
+          value: false
+        },
+        /**
          * Determines if the `paper-steps` element is displayed vertically or
          * horizontally.
          */
         vertical: {
           type: Boolean,
           value: false
-        },
+        }
       },
 
       // Element Lifecycle
@@ -180,7 +193,18 @@ Example:
         }
       },
       __total: function(steps) {
-        return steps && steps.length || 1;
+        var
+          i, items, steps = steps && steps.length || 1
+        ;
+        console.log('paper-steps __total', steps, this.actionsDisabled);
+
+        items = this.$.content.items
+        if (steps && items.length === steps && this.actionsDisabled) {
+          for (i=0; i < steps; i++) {
+            items[i].actionsDisabled = true;
+          }
+        }
+        return steps;
       }
     });
   </script>

@@ -147,6 +147,18 @@ Example:
       color: white;
     }
 
+    button {
+      -webkit-appearance: none;
+      border: 0;
+      padding: 0;
+      background: transparent;
+    }
+
+    button paper-button {
+      @apply(--paper-font-common-base);
+      font-size: 14px;
+    }
+
   </style>
   <template>
     <div class="line" >
@@ -171,10 +183,11 @@ Example:
       <div hidden$="{{!_selected}}">
         <content></content>
 
-        <div id="actions">
-          <paper-button id="continue" class="actions" raised>{{continueLabel}}</paper-button>
-          <paper-button id="cancel" class="actions" raised>{{cancelLabel}}</paper-button>
-          <paper-button id="skip" class="actions" raised hidden$="{{!optional}}">Skip</paper-button>
+        <div id="actions" hidden$={{actionsDisabled}}>
+          <paper-button id="continue" class="actions" on-click="_submit" raised>{{continueLabel}}</paper-button>
+          <paper-button id="cancel" class="actions" on-click="_reset" raised>{{cancelLabel}}</paper-button>
+          <paper-button id="skip" class="actions" on-click="_skip"
+          raised hidden$="{{!optional}}">Skip</paper-button>
         </div>
       </div>
     </div>
@@ -198,6 +211,21 @@ Example:
         _image: {
           type: String,
           computed: '_icon(icon, step)'
+        },
+        /**
+         * Indicates if the current `paper-step` is selected and toggles the
+         * active/inactive css style rules.
+         */
+        _selected: {
+          type: Boolean,
+          value: false
+        },
+        /**
+         * If true, the submit buttons which are automatically
+         * added will be hidden for this `paper-step` element.
+         */
+        actionsDisabled: {
+          type: Boolean
         },
         /**
          * If true, the current step has been validated and marked as done.
@@ -242,14 +270,6 @@ Example:
           value: false
         },
         /**
-         * Indicates if the current `paper-step` is selected which toggles the
-         * actvie/inactive css style rules.
-         */
-        _selected: {
-          type: Boolean,
-          value: false
-        },
-        /**
          * The 1 based index value for the current `paper-step` in `paper-steps`.
          *
          * `Automatically calculated`.
@@ -268,7 +288,18 @@ Example:
         }
       },
       behaviors: [],
-      listeners: {},
+      listeners: {
+        // //error after submit, IronRequestElement in event.detail object
+        // 'iron-form-error': '',
+        // //cannot submit, form is invalid
+        // 'iron-form-invalid': '',
+        // 'iron-form-presubmit': '',
+        // //after form is reset
+        // 'iron-form-reset': '_reset',
+        // //after form submitted, IronRequestElement inevent.detail object
+        // 'iron-form-response': '',
+        // 'iron-form-submit': '_submit' //after submitted
+      },
 
       // Element Lifecycle
       ready: function() {},
@@ -276,7 +307,7 @@ Example:
       attached: function() {
         // console.log(this, this.optional);
         var
-          parent = this.parentNode && this.parentNode.indexOf && this.parentNode || null;
+          parent = this.parentNode && this.parentNode.indexOf && this.parentNode || null
         ;
 
         // @TODO: finish adding fallback for shadowDom, not yet ready.
@@ -307,6 +338,7 @@ Example:
         if (!Boolean(this.steps)) {
           this.steps = parent.items.length;
         }
+
       },
 
       detached: function() {},
@@ -325,6 +357,14 @@ Example:
           cls += 'last ';
         }
         return cls;
+      },
+      _getForm: function() {
+        var
+          el = Polymer.dom(this.$.content),
+          form = el && el.node &&
+            el.node.querySelector('div form[is="iron-form"]')
+        ;
+        return form || false;
       },
       /**
        * Computes `image` property based on step `icon` and current `step`.
@@ -345,6 +385,32 @@ Example:
           ;
         } catch (e) {
           return 'display: none;';
+        }
+      },
+      /**
+       * Clear the state form elements.
+       */
+      _reset: function(e) {
+        var
+          form = this._getForm()
+        ;
+
+        // reset form if it exists.
+        if (form) {
+          form.reset();
+        }
+      },
+      /**
+       * Check if form is valid and then trigger the form `submit` event.
+       */
+      _submit: function(e) {
+        var
+          form = this._getForm()
+        ;
+
+        // submit form if it exists.
+        if (form && form.validate()) {
+          form.submit();
         }
       }
     });

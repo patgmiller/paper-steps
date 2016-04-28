@@ -45,7 +45,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <body unresolved>
     <demo-snippet id="paper-steps">
       <p><code>&lt;paper-steps&gt;</code> is an implementation of material design <code>
-          <a href="https://www.google.com/design/spec/components/steppers.html">steppers</a></code>.
+          <a target="_blank" href="https://www.google.com/design/spec/components/steppers.html">steppers</a></code>.
       </p>
       <template>
         <p>
@@ -54,7 +54,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <paper-steps id="steps" >
           <paper-step label="Create your store" >
             <h2>Setup Your Store</h2>
-            <form is="iron-form" action="." method="post">
+            <form is="iron-form" method="post">
               <paper-input label="Domain" auto-validate required
                 pattern="^(([a-zA-Z]{1})|([a-zA-Z]{1}[a-zA-Z]{1})|([a-zA-Z]{1}[0-9]{1})|([0-9]{1}[a-zA-Z]{1})|([a-zA-Z0-9][a-zA-Z0-9-_]{1,61}[a-zA-Z0-9]))\.([a-zA-Z]{2,6}|[a-zA-Z0-9-]{2,30}\.[a-zA-Z]{2,3})$"
               ></paper-input>
@@ -63,14 +63,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           </paper-step>
           <paper-step label="Add contact information" >
             <h2>Contact Details</h2>
-            <form is="iron-form" action="." method="post">
+            <form is="iron-form" method="post">
               <gold-email-input label="Email" auto-validate required></gold-email-input>
               <gold-phone-input label="Phone" auto-validate></gold-phone-input>
             </form>
           </paper-step>
           <paper-step label="Enter street address" optional>
             <h2>Store Location</h2>
-            <form is="iron-form" action="." method="post">
+            <form is="iron-form" method="post">
               <paper-input label="Street"></paper-input>
               <paper-input label="City"></paper-input>
               <paper-input label="State" auto-validate></paper-input>
@@ -80,7 +80,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           </paper-step>
           <paper-step label="Add billing information">
             <h2>Setup Monthly Subscription</h2>
-            <form is="iron-form" action="." method="post">
+            <form is="iron-form" method="post">
               <paper-input label="Name" required></paper-input>
               <gold-cc-input label="Card" auto-validate required></gold-cc-input>
               <gold-cc-expiration-input label="Expiration" required></gold-cc-expiration-input>
