@@ -43,15 +43,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </style>
   </head>
   <body unresolved>
+    <template is="dom-bind">
+      <p><code>&lt;paper-steps&gt;</code> is an implementation of material design <code>
+          <a href="https://www.google.com/design/spec/components/steppers.html">steppers</a></code>.
+      </p>
+      <p>
+        <paper-toggle-button id="toggle" >Vertical</paper-toggle-button>
+      </p>
+    </template>
     <demo-snippet id="paper-steps">
       <template>
-        <p><code>&lt;paper-steps&gt;</code> is an implementation of material design <code>
-            <a href="https://www.google.com/design/spec/components/steppers.html">steppers</a></code>.
-        </p>
-        <p>
-          <paper-toggle-button id="toggle" >Vertical</paper-toggle-button>
-        </p>
-
         <paper-steps id="steps" >
           <paper-step label="Create your store" >
             <h2>Setup Your Domain</h2>

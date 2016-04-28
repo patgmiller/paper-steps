@@ -14,6 +14,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../iron-icon/iron-icon.html">
 <link rel="import" href="../iron-icons/iron-icons.html">
 <link rel="import" href="../iron-icons/image-icons.html">
+<link rel="import" href="../paper-button/paper-button.html">
 
 <!--
 An element which provides a solution to material design steppers.
@@ -33,8 +34,8 @@ Example:
 <dom-module id="paper-step">
   <style>
     :root {
-      --paper-step-primary-color: var(--google-blue-500);
-      --paper-step-disabled-color: var(--google-grey-500);
+      --paper-step-primary-color: var(--primary-backround-color, --paper-indigo-500);
+      --paper-step-disabled-color: var(--disabled-text-color, --google-grey-500);
     }
 
     :host {
@@ -130,6 +131,23 @@ Example:
     :host #content {
       margin-left: 20px;
     }
+
+    :host #actions {
+      margin-top: 15px;
+      position: relative;
+      left: -5px;
+    }
+
+    :host #actions paper-button {
+      margin-right: 10px;
+    }
+
+    :host #actions #continue,
+    :host #actions #skip {
+      background-color: var(--paper-step-primary-color);
+      color: white;
+    }
+
   </style>
   <template>
     <div class="line" >
@@ -153,6 +171,12 @@ Example:
     <div id="content" class$="{{_cssClass}}" >
       <div hidden$="{{!_selected}}">
         <content></content>
+
+        <div id="actions">
+          <paper-button id="continue" class="actions" raised>{{continueLabel}}</paper-button>
+          <paper-button id="cancel" class="actions" raised>{{cancelLabel}}</paper-button>
+          <paper-button id="skip" class="actions" raised hidden$="{{!optional}}">Skip</paper-button>
+        </div>
       </div>
     </div>
   </template>
@@ -175,6 +199,20 @@ Example:
         _image: {
           type: String,
           computed: '_icon(icon, step)'
+        },
+        /**
+         *  Specify an alternate label to use for the `continue` button.
+         */
+        continueLabel: {
+          type: String,
+          value: 'Continue'
+        },
+        /**
+         *  Specify an alternate label to use for the `cancel` button.
+         */
+        cancelLabel: {
+          type: String,
+          value: 'Cancel'
         },
         /**
          *  Choose an alternate image icon to use for the current step.
@@ -301,7 +339,7 @@ Example:
         } catch (e) {
           return 'display: none;';
         }
-      },
+      }
     });
   </script>
 </dom-module>
