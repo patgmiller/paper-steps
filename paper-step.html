@@ -356,6 +356,10 @@ Example:
           form.reset();
         }
       },
+      _skip: function(e) {
+        this._reset(e);
+        this.fire('select-next');
+      },
       /**
        * Check if form is valid and then trigger the form `submit` event.
        */

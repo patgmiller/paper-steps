@@ -168,6 +168,12 @@ Example:
           value: false
         }
       },
+      listeners: {
+        'iron-deselect': '_onDeselect',
+        'iron-select': '_onSelect',
+        'select-next': '_onNext'
+      },
+      behaviors: [],
 
       // Element Lifecycle
       ready: function() {},
@@ -177,21 +183,11 @@ Example:
       detached: function() {},
 
       // Element Behavior
-      listeners: {
-        'iron-deselect': '_onDeselect',
-        'iron-select': '_onSelect'
-      },
       __cssClass: function(vertical) {
         return (vertical) ? 'vertical' : 'horizontal';
       },
-      _onDeselect: function(e) {
-        e.detail.item._selected = false;
-      },
       __horizontal: function(vertical) {
         return !vertical;
-      },
-      _onSelect: function(e) {
-        e.detail.item._selected = true;
       },
       __total: function(steps) {
         var
@@ -204,6 +200,15 @@ Example:
           }
         }
         return steps;
+      },
+      _onDeselect: function(e) {
+        e.detail.item._selected = false;
+      },
+      _onNext: function(e) {
+        this.$.content.selectNext();
+      },
+      _onSelect: function(e) {
+        e.detail.item._selected = true;
       }
     });
   </script>
