@@ -75,6 +75,14 @@ Example:
       background-color: var(--disabled-text-color, --paper-step-disabled-color);
     }
 
+    :host([completed]) .stepper-circle {
+      background-color: var(--primary-color, --paper-step-primary-color);
+    }
+
+    :host([completed]) .stepper-circle iron-icon {
+      width: 16px;
+    }
+
     :host .label .optional-text,
     :host .h-label .optional-text {
       color: var(--disabled-text-color, --paper-step-disabled-color);
