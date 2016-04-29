@@ -64,7 +64,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           el = item = null;
           i = len = 0;
           steps = fixture('paper-steps-fixture');
-          items = steps.$.content.items;
+          items = steps.$.steps_content.items;
           _items = steps.$.selector.$$('template').items; //horizontal
         });
 
@@ -89,7 +89,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         test('paper-step adds first/last optional/required classes', function() {
           for (i=0, item, len=items.length; i<len; i++) {
             item = items[i];
-            el = item.$.content
+            el = item.$.step_content
 
             switch (i) {
               case 0:
