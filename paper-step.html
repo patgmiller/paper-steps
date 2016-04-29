@@ -246,12 +246,12 @@ Example:
         // 'iron-form-error': '',
         // //cannot submit, form is invalid
         // 'iron-form-invalid': '',
-        // 'iron-form-presubmit': '',
+        'iron-form-presubmit': '_onPreSubmit',
         // //after form is reset
         // 'iron-form-reset': '_reset',
         // //after form submitted, IronRequestElement inevent.detail object
-        // 'iron-form-response': '',
-        // 'iron-form-submit': '_submit' //after submitted
+        'iron-form-response': '_onResponse',
+        'iron-form-submit': '_onSubmit' //after submitted
       },
 
       // Element Lifecycle
@@ -324,6 +324,15 @@ Example:
        */
       _icon: function(icon, step) {
         return 'image:brightness-1';
+      },
+      _onPreSubmit: function(e) {
+        console.log('_onPreSubmit', e);
+      },
+      _onResponse: function(e) {
+        console.log('_onResponse', e);
+      },
+      _onSubmit: function(e) {
+        console.log('_onSubmit', e);
       },
       /**
        * Clear the state form elements.
