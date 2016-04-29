@@ -391,18 +391,26 @@ Example:
         }
       },
       /**
-       * When the `reset` button is pressed, this restores the form elements
+       * When the `Reset` button is pressed, this restores the form elements
        * to their initial state by calling `form.reset()`.
        */
       _reset: function(e) {
         var
-          form = this._getForm()
+          event = e,
+          that = this,
+          form
         ;
 
-        // reset form if it exists.
-        if (form) {
-          form.reset();
-        }
+        this.debounce('paper-step-reset', function() {
+          form = that._getForm();
+          // reset form if it exists.
+          if (form) {
+            //TODO: confirm?
+
+            //then reset
+            form.reset();
+          }
+        }, 300);
       },
       /**
        * When the `Skip` button is pressed, this will the `_reset()` method,
@@ -410,12 +418,25 @@ Example:
        * advance to the next `paper-step` element.
        */
       _skip: function(e) {
-        this._reset(e);
-        this.completed = true;
-        this.fire('select-next');
+        var
+          event = e,
+          that = this,
+          form
+        ;
+
+        this.debounce('paper-step-skip', function() {
+          form = that._getForm();
+          if (form) {
+            form.reset();
+          }
+
+          this.completed = true;
+          this.fire('select-next');
+        }, 300);
       },
       /**
-       * Check if form is valid and then trigger the form `submit` event.
+       * When the `Continue` button is pressed, check if form is valid
+       * and then trigger the form `submit` event.
        */
       _submit: function(e) {
         var
