@@ -344,7 +344,8 @@ Example:
         console.log('_onSubmit', e);
       },
       /**
-       * Clear the state form elements.
+       * When the `Cancel` button is pressed, this restores the form elements
+       * to their initial state by calling `form.reset()`.
        */
       _reset: function(e) {
         var
@@ -356,8 +357,14 @@ Example:
           form.reset();
         }
       },
+      /**
+       * When the `Skip` button is pressed, this will the `_reset()` method,
+       * and set the current `paper-step.completed` property to `true`, and then
+       * advance to the next `paper-step` element.
+       */
       _skip: function(e) {
         this._reset(e);
+        this.completed = true;
         this.fire('select-next');
       },
       /**
