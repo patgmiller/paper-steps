@@ -133,7 +133,8 @@ Example:
   </style>
   <template>
     <div class$="stepper-circle {{_cssClass}}">
-      <span>{{step}}</span>
+      <span hidden$="{{!completed}}"><iron-icon icon="icons:check"></iron-icon></span>
+      <span hidden$="{{completed}}">{{step}}</span>
     </div>
 
     <span class$="h-label {{_cssClass}}">
@@ -175,12 +176,13 @@ Example:
           computed: '__cssClass(step, steps)'
         },
         /**
-         * Computed for the `paper-step` image icon based on the supplied `icon` attribute.
+         * Computed for the `paper-step` image icon based on the supplied `icon`
+         * attribute and the `completed` property.
          */
-        _image: {
-          type: String,
-          computed: '_icon(icon, step)'
-        },
+        // _image: {
+        //   type: String,
+        //   computed: '_icon(step, completed)'
+        // },
         /**
          * Indicates if the current `paper-step` is selected and toggles the
          * active/inactive css style rules.
@@ -202,7 +204,8 @@ Example:
         completed: {
           type: Boolean,
           value: false,
-          readonly: true
+          reflectToAttribute: true,
+          observer: '_onComplete'
         },
         /**
          *  Specify an alternate label to use for the `continue` button.
@@ -210,6 +213,10 @@ Example:
         continueLabel: {
           type: String,
           value: 'Continue'
+        },
+        duplicate: {
+          type: Boolean,
+          value: false
         },
         /**
          *  Specify an alternate label to use for the `reset` button.
@@ -324,6 +331,7 @@ Example:
         if (step === steps) {
           cls += 'last ';
         }
+
         return cls;
       },
       /**
@@ -361,8 +369,17 @@ Example:
        * Computes `image` property based on step `icon` and current `step`.
        * @return {string}.
        */
-      _icon: function(icon, step) {
+      _icon: function(step, completed) {
+        if (completed) {
+          return 'icons:check';
+        }
         return 'image:brightness-1';
+      },
+      _onComplete: function(_new, _old) {
+        if (this.duplicate === false && _new === true) {
+          this.fire('paper-step-complete', this.step);
+          this.fire('paper-step-next', this.step);
+        }
       },
       _onError: function(e) {
         console.log('_onError', e);
@@ -377,9 +394,8 @@ Example:
         if (Polymer.isInstance(el) && el.disabled != undefined) {
           el.disabled = false;
         }
-
         if (request && request.status === 200) {
-          this.fire('select-next');
+          this.completed = true;
         }
       },
       _onSubmit: function(e) {
@@ -429,9 +445,7 @@ Example:
           if (form) {
             form.reset();
           }
-
           this.completed = true;
-          this.fire('select-next');
         }, 300);
       },
       /**

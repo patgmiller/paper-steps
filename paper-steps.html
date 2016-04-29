@@ -102,7 +102,7 @@ Example:
 
     <iron-selector id="selector" class$="{{_cssClass}}" selected="{{_selected}}" hidden$="{{vertical}}">
       <template is="dom-repeat" items="{{_steps}}" as="s">
-        <paper-step label="[[s.label]]" optional$="[[s.optional]]" step="[[s.step]]" steps="[[_steps.length]]"></paper-step>
+        <paper-step label="[[s.label]]" optional$="[[s.optional]]" step="[[s.step]]" steps="[[_steps.length]]" completed="{{s.completed}}" duplicate></paper-step>
       </template>
     </iron-selector>
 
@@ -171,7 +171,8 @@ Example:
       listeners: {
         'iron-deselect': '_onDeselect',
         'iron-select': '_onSelect',
-        'select-next': '_onNext'
+        'paper-step-next': '_onNext',
+        'paper-step-complete': '_onComplete'
       },
       behaviors: [],
 
@@ -200,6 +201,9 @@ Example:
           }
         }
         return steps;
+      },
+      _onComplete: function(e) {
+        this.$.selector.items[parseInt(e.detail) - 1].completed = true;
       },
       _onDeselect: function(e) {
         e.detail.item._selected = false;
