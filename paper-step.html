@@ -255,14 +255,18 @@ Example:
       },
       behaviors: [],
       listeners: {
-        // //error after submit, IronRequestElement in event.detail object
-        // 'iron-form-error': '',
-        // //cannot submit, form is invalid
+        //error after submit, IronRequestElement in event.detail object
+        'iron-form-error': '_onResponse', //'_onError',
+
+        //cannot submit, form is invalid
+
         // 'iron-form-invalid': '',
         'iron-form-presubmit': '_onPreSubmit',
+
         // //after form is reset
         // 'iron-form-reset': '_reset',
-        // //after form submitted, IronRequestElement inevent.detail object
+
+        //after form submitted, IronRequestElement inevent.detail object
         'iron-form-response': '_onResponse',
         'iron-form-submit': '_onSubmit' //after submitted
       },
@@ -322,6 +326,9 @@ Example:
         }
         return cls;
       },
+      /**
+       * Attempts to retrieve the `iron-form` element for the current `paper-step`.
+       */
       _getForm: function() {
         var
           el = Polymer.dom(this.$.content),
@@ -330,6 +337,9 @@ Example:
         ;
         return form || false;
       },
+      /**
+       * Attempts to retrieve the `submit` button for the current `paper-step`.
+       */
       _getPrimaryButton() {
         var el, button;
         if (this.actionsDisabled) {
@@ -353,6 +363,9 @@ Example:
        */
       _icon: function(icon, step) {
         return 'image:brightness-1';
+      },
+      _onError: function(e) {
+        console.log('_onError', e);
       },
       _onPreSubmit: function(e) {
       },
