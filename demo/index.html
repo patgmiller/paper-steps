@@ -62,14 +62,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               <paper-input name="store-name" label="Store Name" auto-validate required></paper-input>
             </form>
           </paper-step>
-          <paper-step label="Add contact information" >
+          <paper-step label="Add contact information" optional>
             <h2>Contact Details</h2>
             <form is="iron-form" method="post" action="http://posttestserver.com/post.php?dir=paper-steps&dump">
               <gold-email-input name="email" label="Email" auto-validate required></gold-email-input>
               <gold-phone-input name="phone" label="Phone" auto-validate></gold-phone-input>
             </form>
           </paper-step>
-          <paper-step label="Enter street address" optional>
+          <paper-step label="Enter street address" skip-label="Not Interested" optional>
             <h2>Store Location</h2>
             <form is="iron-form" method="post" action="http://posttestserver.com/post.php?dir=paper-steps&dump">
               <paper-input name="street" label="Street"></paper-input>

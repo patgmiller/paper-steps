@@ -96,6 +96,7 @@ Example:
     :host #actions {
       margin-top: 15px;
       position: relative;
+      display: flex;
       left: -5px;
     }
 
@@ -103,10 +104,14 @@ Example:
       margin-right: 10px;
     }
 
-    :host #actions #continue,
-    :host #actions #skip {
+    /*:host #actions #skip, */
+    :host #actions #continue {
       background-color: var(--paper-step-primary-color);
       color: #fff;
+    }
+
+    :host #actions #skip {
+      margin-left: auto;
     }
 
     button {
@@ -147,7 +152,7 @@ Example:
           <paper-button id="continue" class="actions" on-click="_submit" raised>{{continueLabel}}</paper-button>
           <paper-button id="cancel" class="actions" on-click="_reset" raised>{{cancelLabel}}</paper-button>
           <paper-button id="skip" class="actions" on-click="_skip"
-          raised hidden$="{{!optional}}">Skip</paper-button>
+          raised hidden$="{{!optional}}">{{skipLabel}}</paper-button>
         </div>
       </div>
     </div>
@@ -221,6 +226,10 @@ Example:
         optional: {
           type: Boolean,
           value: false
+        },
+        skipLabel: {
+          type: String,
+          value: 'Skip'
         },
         /**
          * The 1 based index value for the current `paper-step` in `paper-steps`.
