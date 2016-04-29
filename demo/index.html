@@ -52,7 +52,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <paper-toggle-button id="toggle" >Vertical</paper-toggle-button>
         </p>
         <paper-steps id="steps" >
-          <paper-step label="Create your store" >
+          <paper-step label="Create your store" continue-label="Create" >
             <h2>Setup Your Store</h2>
             <form is="iron-form" method="post" content-type="application/json"
               action="http://posttestserver.com/post.php?dir=paper-steps&dump">
@@ -62,7 +62,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               <paper-input name="store-name" label="Store Name" auto-validate required></paper-input>
             </form>
           </paper-step>
-          <paper-step label="Add contact information" optional>
+          <paper-step label="Add contact information" continue-label="Add Info" optional>
             <h2>Contact Details</h2>
             <form is="iron-form" method="post" action="http://posttestserver.com/post.php?dir=paper-steps&dump">
               <gold-email-input name="email" label="Email" auto-validate required></gold-email-input>
