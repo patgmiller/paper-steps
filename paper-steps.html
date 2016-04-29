@@ -61,10 +61,10 @@ Example:
 
       :host /deep/ .vertical paper-step .h-label,
       :host /deep/ .vertical paper-step .line,
-      :host /deep/ #content.horizontal paper-step .h-label,
-      :host /deep/ #content.horizontal paper-step .line,
-      :host /deep/ #content.horizontal paper-step .stepper-circle,
-      :host /deep/ #content.horizontal paper-step .label,
+      :host /deep/ #steps_content.horizontal paper-step .h-label,
+      :host /deep/ #steps_content.horizontal paper-step .line,
+      :host /deep/ #steps_content.horizontal paper-step .stepper-circle,
+      :host /deep/ #steps_content.horizontal paper-step .label,
       :host /deep/ #selector paper-step:last-of-type .line,
       :host /deep/ #selector.horizontal paper-step .label,
       :host /deep/ #selector paper-step #actions {
@@ -85,17 +85,17 @@ Example:
                 flex: 1 1 auto;
       }
 
-      :host /deep/ .vertical #content {
+      :host /deep/ .vertical #step_content {
         width: 100%;
         padding: 15px 0 15px 23px;
       }
 
-      :host /deep/ #content.vertical paper-step #content {
+      :host /deep/ #steps_content.vertical paper-step #step_content {
         margin: 8px 0 8px 12px;
         border-left: 1px solid var(--paper-grey-300);
       }
 
-      :host /deep/ #content.vertical paper-step #content.last {
+      :host /deep/ #steps_content.vertical paper-step #step_content.last {
         border-left: none;
       }
     </style>
@@ -106,7 +106,7 @@ Example:
       </template>
     </iron-selector>
 
-    <iron-selector id="content" class$="{{_cssClass}}" selected="{{_selected}}" items="{{_steps}}" >
+    <iron-selector id="steps_content" class$="{{_cssClass}}" selected="{{_selected}}" items="{{_steps}}" >
       <content></content>
     </iron-selector>
   </template>
