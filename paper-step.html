@@ -106,8 +106,12 @@ Example:
 
     /*:host #actions #skip, */
     :host #actions #continue {
-      background-color: var(--paper-step-primary-color);
+      background: var(--paper-step-primary-color);
       color: #fff;
+    }
+
+    :host #actions #continue[disabled] {
+      background: var(--paper-indigo-200);
     }
 
     :host #actions #skip {
@@ -150,7 +154,7 @@ Example:
 
         <div id="actions" hidden$={{actionsDisabled}}>
           <paper-button id="continue" class="actions" on-click="_submit" raised>{{continueLabel}}</paper-button>
-          <paper-button id="cancel" class="actions" on-click="_reset" raised>{{cancelLabel}}</paper-button>
+          <paper-button id="reset" class="actions" on-click="_reset" raised>{{resetLabel}}</paper-button>
           <paper-button id="skip" class="actions" on-click="_skip"
           raised hidden$="{{!optional}}">{{skipLabel}}</paper-button>
         </div>
@@ -208,11 +212,11 @@ Example:
           value: 'Continue'
         },
         /**
-         *  Specify an alternate label to use for the `cancel` button.
+         *  Specify an alternate label to use for the `reset` button.
          */
-        cancelLabel: {
+        resetLabel: {
           type: String,
-          value: 'Cancel'
+          value: 'Reset'
         },
         /**
          * The text to display in the steps area next to the image icon.
@@ -287,7 +291,6 @@ Example:
           try {
             console.log('Improperly declared paper-step element, ' +
               'it is missing the parent iterator.');
-            // console.log(this, typeof parent.indexOf, typeof parent.items);
           } catch (e) {}
           return;
         }
@@ -327,6 +330,23 @@ Example:
         ;
         return form || false;
       },
+      _getPrimaryButton() {
+        var el, button;
+        if (this.actionsDisabled) {
+          el = this._getForm();
+          if (el) {
+            el = Polymer.dom(el).node.querySelectorAll(
+              'button,paper-button,input[type="submit"]');
+            button = el && el.length && el[0];
+            if (button) {
+              return button;
+            }
+          }
+        } else {
+          return this.$.continue;
+        }
+        return undefined
+      },
       /**
        * Computes `image` property based on step `icon` and current `step`.
        * @return {string}.
@@ -335,16 +355,30 @@ Example:
         return 'image:brightness-1';
       },
       _onPreSubmit: function(e) {
-        console.log('_onPreSubmit', e);
       },
       _onResponse: function(e) {
-        console.log('_onResponse', e);
+        var
+          el = this._getPrimaryButton(),
+          request = e && e.detail || false
+        ;
+        if (Polymer.isInstance(el) && el.disabled != undefined) {
+          el.disabled = false;
+        }
+
+        if (request && request.status === 200) {
+          this.fire('select-next');
+        }
       },
       _onSubmit: function(e) {
-        console.log('_onSubmit', e);
+        var
+          el = this._getPrimaryButton()
+        ;
+        if (Polymer.isInstance(el) && el.disabled != undefined) {
+          el.disabled = true;
+        }
       },
       /**
-       * When the `Cancel` button is pressed, this restores the form elements
+       * When the `reset` button is pressed, this restores the form elements
        * to their initial state by calling `form.reset()`.
        */
       _reset: function(e) {
@@ -372,13 +406,18 @@ Example:
        */
       _submit: function(e) {
         var
-          form = this._getForm()
+          event = e,
+          that = this,
+          form
         ;
-
-        // submit form if it exists.
-        if (form && form.validate()) {
-          form.submit();
-        }
+        // collapse multiple submissions and only trigger once.
+        this.debounce('paper-steps-submit', function() {
+          form = that._getForm();
+          // submit form if it exists.
+          if (form && form.validate()) {
+            form.submit();
+          }
+        }, 300);
       }
     });
   </script>
