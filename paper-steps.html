@@ -194,7 +194,7 @@ Example:
         var
           i, items, steps = steps && steps.length || 1
         ;
-        items = this.$.content.items
+        items = this.$.steps_content.items
         if (steps && items.length === steps && this.actionsDisabled) {
           for (i=0; i < steps; i++) {
             items[i].actionsDisabled = true;
@@ -209,7 +209,7 @@ Example:
         e.detail.item._selected = false;
       },
       _onNext: function(e) {
-        this.$.content.selectNext();
+        this.$.steps_content.selectNext();
       },
       _onSelect: function(e) {
         e.detail.item._selected = true;
