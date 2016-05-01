@@ -15,10 +15,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
     <script src="../../web-component-tester/browser.js"></script>
+    <link rel="import" href="../../iron-form/iron-form.html">
 
     <!-- Step 1: import the element to test -->
     <link rel="import" href="../paper-steps.html">
     <link rel="import" href="../paper-step.html">
+
   </head>
   <body>
 
@@ -32,7 +34,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <test-fixture id="paper-steps-fixture">
       <template>
         <paper-steps>
-          <paper-step label="step 1" optional></paper-step>
+          <paper-step label="step 1" optional>
+            <form is="iron-form" id="test_form" method="post"
+              action="http://posttestserver.com/post.php?dir=paper-steps">
+              <paper-input name="test" label="Test"></paper-input>
+            </form>
+          </paper-step>
           <paper-step label="step 2"></paper-step>
           <paper-step label=""></paper-step>
         </paper-steps>
@@ -56,37 +63,37 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         // });
       });
 
-      suite('<paper-steps>', function() {
+      suite('<paper-steps> properties and defaults', function() {
 
-        var el, i, item, items, _items, len, steps;
+        var el, form, i, item, items, _items, len, steps;
 
         setup(function() {
           el = item = null;
           i = len = 0;
-          steps = fixture('paper-steps-fixture');
+          steps = fixture('paper-steps-fixture.');
           items = steps.$.steps_content.items;
           _items = steps.$.selector.$$('template').items; //horizontal
         });
 
-        test('defaults to horizontal display', function() {
+        test('defaults to horizontal display.', function() {
           assert.equal(steps.vertical, false);
           assert.equal(steps._horizontal, true);
           assert.equal(steps._cssClass, 'horizontal');
         });
 
-        test('paper-step defines the "label" property', function() {
+        test('paper-step defines the "label" property.', function() {
           assert.equal(items[0].label, 'step 1');
           assert.equal(items[1].label, 'step 2');
           assert.equal(items[2].label, '');
         });
 
-        test('default steps are: 1, 2, and 3', function() {
+        test('default steps are: 1, 2, and 3.', function() {
           assert.equal(items[0].step, 1);
           assert.equal(items[1].step, 2);
           assert.equal(items[2].step, 3);
         });
 
-        test('paper-step adds first/last optional/required classes', function() {
+        test('paper-step adds first/last optional/required classes.', function() {
           for (i=0, item, len=items.length; i<len; i++) {
             item = items[i];
             el = item.$.step_content
@@ -117,7 +124,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           }
         });
 
-        test('paper-step can be optional', function() {
+        test('paper-step can be optional.', function() {
           var optional = [true, false, false];
           for (i=0, item, len=items.length; i<len; i++) {
             item = optional[i];
@@ -126,12 +133,90 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           }
         });
 
-        test('paper-step is complete', function() {
+        // test('', function() {
+        //
+        // });
+      });
+
+      suite('<paper-steps> events', function() {
+
+        setup(function() {
+          el = item = form = null;
+          i = len = 0;
+          steps = fixture('paper-steps-fixture');
+          items = steps.$.steps_content.items;
+          _items = steps.$.selector.$$('template').items; //horizontal
+          form = items[0].$.step_content.querySelector('form[is="iron-form"]');
+        });
+
+        teardown(function() {
 
         });
 
-        test('paper-step only triggers one event: submit, reset, skip', function() {
-          
+        test('paper-step is complete after skip pressed.', function() {
+          item = items[0];
+          item.$.skip.click();
+          //event is debounced, so wait 300ms.
+          item.async(function() {
+            assert.equal(item.completed, true);
+          }, 300);
+        });
+
+        test('paper-step is complete after continue pressed.', function() {
+          item = items[0];
+          item.$.continue.click();
+          //event is debounced, so wait 300ms.
+          item.async(function() {
+            assert.equal(item.completed, true);
+          }, 300);
+        });
+
+        test('paper-button continue is disabled / re-enabled on submit.', function() {
+          item = items[0];
+          item.$.continue.click();
+
+          item.async(function() {
+            assert.equal(item.$.continue.disabled, true);
+          }, 20);
+
+          //event is debounced, so wait 300ms.
+          item.async(function() {
+            assert.equal(item.$.continue.disabled, false);
+          }, 300);
+        });
+
+        test('paper-button only triggers one event: submit, reset, skip.', function() {
+          item = items[0];
+
+          //trigger reset click event 100's
+          sinon.spy(form, "reset")
+          for (i=0, len=100; i<len; i++) {
+            item.$.reset.click();
+          }
+          item.async(function() {
+            assert(form.reset.calledOnce);
+          }, 400);
+          form.reset.restore(); //unwrap
+
+          //trigger submit click event 100's
+          sinon.spy(form, "submit")
+          for (i=0, len=100; i<len; i++) {
+            item.$.continue.click();
+          }
+          item.async(function() {
+            assert(form.submit.calledOnce);
+          }, 400);
+          form.submit.restore(); //unwrap
+
+          //trigger skip click event 100's
+          sinon.spy(form, "reset")
+          for (i=0, len=100; i<len; i++) {
+            item.$.skip.click();
+          }
+          item.async(function() {
+            assert(form.reset.calledOnce);
+          }, 400);
+          form.reset.restore(); //unwrap
         });
 
         // test('', function() {
