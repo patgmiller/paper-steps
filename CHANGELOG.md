@@ -21,6 +21,6 @@
  - Setup tests to run on travis-ci.org.
 
 
-[unreleased]: compare/0.0.2...master
-[0.0.2]: compare/0.0.1...0.0.2
-[0.0.1]: compare/fb1b126...0.0.1
+[unreleased]: https://github.com/patgmiller/paper-steps/compare/0.0.2...master
+[0.0.2]: https://github.com/patgmiller/paper-steps/compare/0.0.1...0.0.2
+[0.0.1]: https://github.com/patgmiller/paper-steps/compare/fb1b126...0.0.1
