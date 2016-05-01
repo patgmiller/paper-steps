@@ -70,7 +70,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         setup(function() {
           el = item = null;
           i = len = 0;
-          steps = fixture('paper-steps-fixture.');
+          steps = fixture('paper-steps-fixture');
           items = steps.$.steps_content.items;
           _items = steps.$.selector.$$('template').items; //horizontal
         });
@@ -177,7 +177,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
           item.async(function() {
             assert.equal(item.$.continue.disabled, true);
-          }, 20);
+          }, 50);
 
           //event is debounced, so wait 300ms.
           item.async(function() {
