@@ -216,18 +216,22 @@ Example:
           observer: '_onComplete'
         },
         /**
-         *  Specify an alternate label to use for the `continue` button.
+         * Specify an alternate label to use for the `continue` button.
          */
         continueLabel: {
           type: String,
           value: 'Continue'
         },
+        /**
+         * Used internally to debouce custom events:
+         * `paper-step-complete`, and `paper-step-next`.
+         */
         duplicate: {
           type: Boolean,
           value: false
         },
         /**
-         *  Specify an alternate label to use for the `reset` button.
+         * Specify an alternate label to use for the `reset` button.
          */
         resetLabel: {
           type: String,
