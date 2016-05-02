@@ -105,7 +105,11 @@ Example:
       selectable="paper-step[selectable]"
       hidden$="{{vertical}}">
       <template is="dom-repeat" items="{{_steps}}" as="s">
-        <paper-step label="[[s.label]]" optional$="[[s.optional]]" step="[[s.step]]" steps="[[_steps.length]]" completed="{{s.completed}}" duplicate></paper-step>
+        <paper-step label="[[s.label]]" optional$="[[s.optional]]"
+          step="[[s.step]]" steps="[[_steps.length]]"
+          completed="{{s.completed}}"
+          editable="{{s.editable}}"
+          duplicate></paper-step>
       </template>
     </iron-selector>
 
@@ -214,7 +218,7 @@ Example:
           item = e.detail && e.detail.item
         ;
 
-        //if item is non-editable, Disable event.
+        //if item is selectable, disable click / touch event.
         if (item && item.selectable === false) {
           e.preventDefault();
           e.stopPropagation();
