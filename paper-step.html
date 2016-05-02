@@ -92,6 +92,11 @@ Example:
       font-size: 12px;
     }
 
+    :host(:not([selectable])) .label,
+    :host(:not([selectable])) .h-label {
+      color: var(--disabled-text-color, --paper-step-disabled-color);
+    }
+
     :host .h-label .optional-text {
       margin-top: 17px;
     }
@@ -249,6 +254,11 @@ Example:
         optional: {
           type: Boolean,
           value: false
+        },
+        selectable: {
+          type: Boolean,
+          computed: '_selectable(completed)',
+          reflectToAttribute: true
         },
         skipLabel: {
           type: String,
@@ -416,6 +426,9 @@ Example:
         if (Polymer.isInstance(el) && el.disabled != undefined) {
           el.disabled = true;
         }
+      },
+      _selectable: function(completed) {
+        return !completed;
       },
       /**
        * When the `Reset` button is pressed, this restores the form elements
