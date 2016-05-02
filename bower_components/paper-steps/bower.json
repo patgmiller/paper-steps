@@ -1,0 +1,43 @@
+{
+  "name": "paper-steps",
+  "authors": [
+    "patgmiller"
+  ],
+  "description": "An implementation of the Material Design paper steppers.",
+  "keywords": [
+    "web-components",
+    "material-design",
+    "polymer",
+    "paper",
+    "steps"
+  ],
+  "main": "paper-steps.html",
+  "license": "https://github.com/patgmiller/paper-steps/LICENSE.txt",
+  "homepage": "https://github.com/patgmiller/paper-steps",
+  "ignore": [
+    "/.*",
+    "/test/"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.2.0",
+    "iron-selector": "1.3.0",
+    "iron-icon": "1.0.8",
+    "iron-icons": "1.1.3",
+    "paper-styles": "1.1.4",
+    "paper-button": "~1.0.11"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "web-component-tester": "^4.0.0",
+    "iron-form": "~1.0.16",
+    "paper-input": "~1.1.11",
+    "gold-phone-input": "~1.0.9",
+    "gold-email-input": "~1.0.7",
+    "gold-cc-cvc-input": "~1.0.8",
+    "gold-cc-expiration-input": "~1.1.2",
+    "gold-cc-input": "~1.0.7",
+    "gold-zip-input": "~1.0.5",
+    "iron-demo-helpers": "~1.2.3",
+    "paper-toggle-button": "~1.1.2"
+  }
+}
