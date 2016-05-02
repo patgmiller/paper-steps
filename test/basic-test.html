@@ -59,7 +59,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <test-fixture id="paper-steps-fixture-editable">
       <template>
         <paper-steps>
-          <paper-step label="step 1" optional editable>
+          <paper-step label="step 1" optional>
             <form is="iron-form" id="test_form" method="post"
               action="http://posttestserver.com/post.php?dir=paper-steps">
               <paper-input name="test-step-1" label="Test"></paper-input>
@@ -69,6 +69,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <form is="iron-form" id="test_form" method="post"
               action="http://posttestserver.com/post.php?dir=paper-steps">
               <paper-input name="test-step-2" label="Test"></paper-input>
+            </form>
+          </paper-step>
+          <paper-step label="step 3" >
+            <form is="iron-form" id="test_form" method="post"
+              action="http://posttestserver.com/post.php?dir=paper-steps">
+              <paper-input name="test-step-3" label="Test"></paper-input>
             </form>
           </paper-step>
         </paper-steps>
@@ -197,9 +203,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           form = items[0].$.step_content.querySelector('form[is="iron-form"]');
         });
 
-        teardown(function() {
-
-        });
+        // teardown(function() {
+        //
+        // });
 
         test('paper-step is complete after skip pressed.', function() {
           item = items[0];
@@ -223,9 +229,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           item = items[0];
           item.$.continue.click();
 
-          item.async(function() {
-            assert.equal(item.$.continue.disabled, true);
-          }, 50);
+          // item.async(function() {
+          //   assert.equal(item.$.continue.disabled, true);
+          // }, 10);
 
           //event is debounced, so wait 300ms.
           item.async(function() {
@@ -281,9 +287,31 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           form = items[0].$.step_content.querySelector('form[is="iron-form"]');
         });
 
-        // test('', function() {
-        //
-        // });
+        test('<paper-step> state can be editable, optional, and selectable', function() {
+          //steps: optional (1st) -> editable (2nd)-> [standard] (3rd)
+
+          // skip 1st step, non-editable (non-selectable)
+          item = items[0];
+          assert(item.selectable, true);
+          item.$.skip.click(); //skip this step
+          item.async(function() {
+            assert(this.selectable, false);
+            steps.$.steps_content.select(item);
+            assert(steps.$.steps_content.selected, 1);
+          });
+
+          // submit 2nd step, editable (selectable)
+          item = items[1];
+          assert(item.editable, true);
+          assert(item.selectable, true);
+          item.$.continue.click(); //submit this step
+          item.async(function() {
+            assert(this.selectable, true);
+            steps.$.steps_content.select(item);
+            assert(steps.$.steps_content.selected, 1);
+          });
+
+        });
       });
     </script>
 
