@@ -51,7 +51,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         var step;
 
         setup(function() {
-          step = fixture('paper-step-fixture')
+          step = fixture('paper-step-fixture');
         });
 
         test('default step is 1', function() {
@@ -96,7 +96,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         test('paper-step adds first/last optional/required classes.', function() {
           for (i=0, item, len=items.length; i<len; i++) {
             item = items[i];
-            el = item.$.step_content
+            el = item.$.step_content;
 
             switch (i) {
               case 0:
@@ -189,7 +189,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           item = items[0];
 
           //trigger reset click event 100's
-          sinon.spy(form, "reset")
+          sinon.spy(form, "reset");
           for (i=0, len=100; i<len; i++) {
             item.$.reset.click();
           }
@@ -199,7 +199,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           form.reset.restore(); //unwrap
 
           //trigger submit click event 100's
-          sinon.spy(form, "submit")
+          sinon.spy(form, "submit");
           for (i=0, len=100; i<len; i++) {
             item.$.continue.click();
           }
@@ -209,7 +209,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           form.submit.restore(); //unwrap
 
           //trigger skip click event 100's
-          sinon.spy(form, "reset")
+          sinon.spy(form, "reset");
           for (i=0, len=100; i<len; i++) {
             item.$.skip.click();
           }
