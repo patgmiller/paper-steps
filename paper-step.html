@@ -1,0 +1,480 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-styles/color.html">
+<link rel="import" href="../paper-styles/typography.html">
+<link rel="import" href="../iron-icon/iron-icon.html">
+<link rel="import" href="../iron-icons/iron-icons.html">
+<link rel="import" href="../iron-icons/image-icons.html">
+<link rel="import" href="../paper-button/paper-button.html">
+
+<!--
+An element which provides a solution to material design steppers.
+
+Example:
+
+    <paper-step label="Do something"></paper-step>
+
+Example:
+
+    <paper-step optional></paper-step>
+
+@demo demo/index.html
+-->
+
+<dom-module id="paper-step">
+  <style>
+    :root {
+      --paper-step-primary-color: var(--primary-backround-color, --paper-indigo-500);
+      --paper-step-disabled-color: var(--disabled-text-color, --google-grey-500);
+    }
+
+    :host {
+      var(--paper-font-common-base);
+    }
+
+    :host .h-label {
+      margin: 0 8px;
+      white-space: nowrap;
+    }
+
+    :host .label {
+      margin-left: 12px;
+    }
+
+    :host .line {
+      margin-right: 8px;
+      width: 100%;
+      height: 1px;
+      background-color: var(--paper-grey-300);
+    }
+
+    :host .stepper-circle {
+      width: 24px;
+      height: 24px;
+      line-height: 24px;
+      border-radius: 50%;
+      color: #fff;
+      font-size: 12px;
+      text-align: center;
+    }
+
+    :host(.iron-selected) .stepper-circle {
+      background-color: var(--primary-color, --paper-step-primary-color);
+    }
+
+    :host(:not(.iron-selected)) .stepper-circle {
+      background-color: var(--disabled-text-color, --paper-step-disabled-color);
+    }
+
+    :host([completed]) .stepper-circle {
+      background-color: var(--primary-color, --paper-step-primary-color);
+    }
+
+    :host([completed]) .stepper-circle iron-icon {
+      width: 16px;
+    }
+
+    :host .label .optional-text,
+    :host .h-label .optional-text {
+      color: var(--disabled-text-color, --paper-step-disabled-color);
+      position: absolute;
+      font-weight: normal;
+      margin-top: 17px;
+      font-size: 12px;
+    }
+
+    :host .h-label .optional-text {
+      margin-top: 17px;
+    }
+
+    :host(.iron-selected) .label,
+    :host(.iron-selected) .h-label {
+      font-weight: 500;
+    }
+
+    :host #actions {
+      margin-top: 15px;
+      position: relative;
+      display: flex;
+      left: -5px;
+    }
+
+    :host #actions paper-button {
+      margin-right: 10px;
+    }
+
+    /*:host #actions #skip, */
+    :host #actions #continue {
+      background: var(--paper-step-primary-color);
+      color: #fff;
+    }
+
+    :host #actions #continue[disabled] {
+      background: var(--paper-indigo-200);
+    }
+
+    :host #actions #skip {
+      margin-left: auto;
+    }
+
+    button {
+      -webkit-appearance: none;
+      border: 0;
+      padding: 0;
+      background: transparent;
+    }
+
+    button paper-button {
+      @apply(--paper-font-common-base);
+      font-size: 14px;
+    }
+
+  </style>
+  <template>
+    <div class$="stepper-circle {{_cssClass}}">
+      <span hidden$="{{!completed}}"><iron-icon icon="icons:check"></iron-icon></span>
+      <span hidden$="{{completed}}">{{step}}</span>
+    </div>
+
+    <span class$="h-label {{_cssClass}}">
+      <span class="optional-text" hidden$="[[!optional]]">Optional</span>
+      [[label]]
+    </span>
+
+    <div class="line"></div>
+
+    <span hidden$="[[!label]]" class$="label {{_cssClass}}">
+      <span class="optional-text" hidden$="[[!optional]]">Optional</span>
+      [[label]]
+    </span>
+
+    <div id="step_content" class$="{{_cssClass}}" >
+      <div hidden$="{{!_selected}}">
+        <content></content>
+
+        <div id="actions" hidden$={{actionsDisabled}}>
+          <paper-button id="continue" class="actions" on-click="_submit" raised>{{continueLabel}}</paper-button>
+          <paper-button id="reset" class="actions" on-click="_reset" raised>{{resetLabel}}</paper-button>
+          <paper-button id="skip" class="actions" on-click="_skip"
+          raised hidden$="{{!optional}}">{{skipLabel}}</paper-button>
+        </div>
+      </div>
+    </div>
+  </template>
+  <script>
+    'use strict';
+    Polymer({
+      is: "paper-step",
+      properties: {
+        /**
+         * Computed css classes based on the current `step` and the total
+         * number value of `steps`.
+         */
+        _cssClass: {
+          type: String,
+          computed: '__cssClass(step, steps)'
+        },
+        /**
+         * Computed for the `paper-step` image icon based on the supplied `icon`
+         * attribute and the `completed` property.
+         */
+        // _image: {
+        //   type: String,
+        //   computed: '_icon(step, completed)'
+        // },
+        /**
+         * Indicates if the current `paper-step` is selected and toggles the
+         * active/inactive css style rules.
+         */
+        _selected: {
+          type: Boolean,
+          value: false
+        },
+        /**
+         * If true, the submit buttons which are automatically
+         * added will be hidden for this `paper-step` element.
+         */
+        actionsDisabled: {
+          type: Boolean
+        },
+        /**
+         * If true, the current step has been validated and marked as done.
+         */
+        completed: {
+          type: Boolean,
+          value: false,
+          reflectToAttribute: true,
+          observer: '_onComplete'
+        },
+        /**
+         *  Specify an alternate label to use for the `continue` button.
+         */
+        continueLabel: {
+          type: String,
+          value: 'Continue'
+        },
+        duplicate: {
+          type: Boolean,
+          value: false
+        },
+        /**
+         *  Specify an alternate label to use for the `reset` button.
+         */
+        resetLabel: {
+          type: String,
+          value: 'Reset'
+        },
+        /**
+         * The text to display in the steps area next to the image icon.
+         */
+        label: {
+          type: String
+        },
+        /**
+         * To indicate if the current step required or optional.
+         */
+        optional: {
+          type: Boolean,
+          value: false
+        },
+        skipLabel: {
+          type: String,
+          value: 'Skip'
+        },
+        /**
+         * The 1 based index value for the current `paper-step` in `paper-steps`.
+         *
+         * `Automatically calculated`.
+         */
+        step: {
+          type: Number
+        },
+        /**
+         * The value for the total number of `paper-step` elements (readonly).
+         *
+         * `Automatically calculated`.
+         */
+        steps: {
+          type: Number,
+          readonly: true
+        }
+      },
+      behaviors: [],
+      listeners: {
+        //error after submit, IronRequestElement in event.detail object
+        'iron-form-error': '_onResponse', //'_onError',
+
+        //cannot submit, form is invalid
+
+        // 'iron-form-invalid': '',
+        'iron-form-presubmit': '_onPreSubmit',
+
+        // //after form is reset
+        // 'iron-form-reset': '_reset',
+
+        //after form submitted, IronRequestElement inevent.detail object
+        'iron-form-response': '_onResponse',
+        'iron-form-submit': '_onSubmit' //after submitted
+      },
+
+      // Element Lifecycle
+      ready: function() {},
+
+      attached: function() {
+        var
+          parent = this.parentNode && this.parentNode.indexOf && this.parentNode || null
+        ;
+
+        // @TODO: finish adding fallback for shadowDom, not yet ready.
+        if (!Boolean(parent) && this.shadowRoot) {
+          try {
+            parent = this.parentNode.$.selector;
+          } catch (e) {
+            parent = null;
+          }
+        }
+
+        //
+        if (!parent || parent.hasOwnProperty('indexOf') || typeof parent.indexOf != 'function') {
+          this.step = 1;
+          this.steps = 1;
+          try {
+            console.log('Improperly declared paper-step element, ' +
+              'it is missing the parent iterator.');
+          } catch (e) {}
+          return;
+        }
+
+        if (!Boolean(this.step)) {
+          this.step = parent.indexOf(this) + 1;
+        }
+
+        if (!Boolean(this.steps)) {
+          this.steps = parent.items.length;
+        }
+
+      },
+
+      detached: function() {},
+
+      /**
+       * Computes `_cssClass` property.
+       * @return {string}.
+       */
+      __cssClass: function(step, steps) {
+        var cls = (this.optional ? 'optional' : 'required') + '-step ';
+
+        if (step === 1) {
+          cls += 'first ';
+        }
+        if (step === steps) {
+          cls += 'last ';
+        }
+
+        return cls;
+      },
+      /**
+       * Attempts to retrieve the `iron-form` element for the current `paper-step`.
+       */
+      _getForm: function() {
+        var
+          el = Polymer.dom(this.$.step_content),
+          form = el && el.node &&
+            el.node.querySelector('div form[is="iron-form"]')
+        ;
+        return form || false;
+      },
+      /**
+       * Attempts to retrieve the `submit` button for the current `paper-step`.
+       */
+      _getPrimaryButton() {
+        var el, button;
+        if (this.actionsDisabled) {
+          el = this._getForm();
+          if (el) {
+            el = Polymer.dom(el).node.querySelectorAll(
+              'button,paper-button,input[type="submit"]');
+            button = el && el.length && el[0];
+            if (button) {
+              return button;
+            }
+          }
+        } else {
+          return this.$.continue;
+        }
+        return undefined
+      },
+      /**
+       * Computes `image` property based on step `icon` and current `step`.
+       * @return {string}.
+       */
+      _icon: function(step, completed) {
+        if (completed) {
+          return 'icons:check';
+        }
+        return 'image:brightness-1';
+      },
+      _onComplete: function(_new, _old) {
+        if (this.duplicate === false && _new === true) {
+          this.fire('paper-step-complete', this.step);
+          this.fire('paper-step-next', this.step);
+        }
+      },
+      _onError: function(e) {
+        // console.log('_onError', e);
+      },
+      _onPreSubmit: function(e) {
+      },
+      _onResponse: function(e) {
+        var
+          el = this._getPrimaryButton(),
+          request = e && e.detail || false
+        ;
+        if (Polymer.isInstance(el) && el.disabled != undefined) {
+          el.disabled = false;
+        }
+        if (request && request.status === 200) {
+          this.completed = true;
+        }
+      },
+      _onSubmit: function(e) {
+        var
+          el = this._getPrimaryButton()
+        ;
+        if (Polymer.isInstance(el) && el.disabled != undefined) {
+          el.disabled = true;
+        }
+      },
+      /**
+       * When the `Reset` button is pressed, this restores the form elements
+       * to their initial state by calling `form.reset()`.
+       */
+      _reset: function(e) {
+        var
+          event = e,
+          that = this,
+          form
+        ;
+
+        this.debounce('paper-step-reset', function() {
+          form = that._getForm();
+          // reset form if it exists.
+          if (form) {
+            //TODO: confirm?
+
+            //then reset
+            form.reset();
+          }
+        }, 300);
+      },
+      /**
+       * When the `Skip` button is pressed, this will the `_reset()` method,
+       * and set the current `paper-step.completed` property to `true`, and then
+       * advance to the next `paper-step` element.
+       */
+      _skip: function(e) {
+        var
+          event = e,
+          that = this,
+          form
+        ;
+
+        this.debounce('paper-step-skip', function() {
+          form = that._getForm();
+          if (form) {
+            form.reset();
+          }
+          this.completed = true;
+        }, 300);
+      },
+      /**
+       * When the `Continue` button is pressed, check if form is valid
+       * and then trigger the form `submit` event.
+       */
+      _submit: function(e) {
+        var
+          event = e,
+          that = this,
+          form
+        ;
+        // collapse multiple submissions and only trigger once.
+        this.debounce('paper-steps-submit', function() {
+          form = that._getForm();
+          // submit form if it exists.
+          if (form && form.validate()) {
+            form.submit();
+          }
+        }, 300);
+      }
+    });
+  </script>
+</dom-module>

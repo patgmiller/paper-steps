@@ -1,0 +1,219 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-selector/iron-selector.html">
+<link rel="import" href="../paper-styles/color.html">
+<link rel="import" href="paper-step.html">
+
+<!--
+A element which provides a solution to material design steppers.
+
+Example:
+
+    <paper-steps vertical>
+      <paper-step label="Getting started">
+        <h2>Welcome to paper-steps</h2>
+      </paper-step>
+      <paper-step label="And then there were two"></paper-step>
+      <paper-step label="Not required" optional></paper-step>
+    </paper-steps>
+
+@demo demo/index.html
+@hero hero.svg
+-->
+
+<dom-module id="paper-steps">
+  <template>
+    <style>
+      :host #selector {
+        display: -webkit-flex;
+        display: flex;
+      }
+
+      :host #selector paper-step {
+        display: -webkit-flex;
+        display: flex;
+        -webkit-align-items: center;
+                align-items: center;
+        -webkit-flex: 1 1 auto;
+                flex: 1 1 auto;
+      }
+
+      :host /deep/ #selector paper-step .stepper-circle {
+        -webkit-flex: 0 0 auto;
+                flex: 0 0 auto;
+      }
+
+      :host /deep/ .label.optional-step,
+      :host /deep/ .h-label.optional-step {
+        -webkit-align-self: flex-start;
+                align-self: flex-start;
+        margin-top: -4px;
+      }
+
+      :host /deep/ .vertical paper-step .h-label,
+      :host /deep/ .vertical paper-step .line,
+      :host /deep/ #steps_content.horizontal paper-step .h-label,
+      :host /deep/ #steps_content.horizontal paper-step .line,
+      :host /deep/ #steps_content.horizontal paper-step .stepper-circle,
+      :host /deep/ #steps_content.horizontal paper-step .label,
+      :host /deep/ #selector paper-step:last-of-type .line,
+      :host /deep/ #selector.horizontal paper-step .label,
+      :host /deep/ #selector paper-step #actions {
+        display: none;
+      }
+
+      :host /deep/ .vertical paper-step {
+        display: -webkit-flex;
+        display: flex;
+        -webkit-align-items: center;
+                align-items: center;
+        -webkit-flex-wrap: wrap;
+                flex-wrap: wrap;
+      }
+
+      :host /deep/ .vertical .label {
+        -webkit-flex: 1 1 auto;
+                flex: 1 1 auto;
+      }
+
+      :host /deep/ .vertical #step_content {
+        width: 100%;
+        padding: 15px 0 15px 23px;
+      }
+
+      :host /deep/ #steps_content.vertical paper-step #step_content {
+        margin: 8px 0 8px 12px;
+        border-left: 1px solid var(--paper-grey-300);
+      }
+
+      :host /deep/ #steps_content.vertical paper-step #step_content.last {
+        border-left: none;
+      }
+    </style>
+
+    <iron-selector id="selector" class$="{{_cssClass}}" selected="{{_selected}}" hidden$="{{vertical}}">
+      <template is="dom-repeat" items="{{_steps}}" as="s">
+        <paper-step label="[[s.label]]" optional$="[[s.optional]]" step="[[s.step]]" steps="[[_steps.length]]" completed="{{s.completed}}" duplicate></paper-step>
+      </template>
+    </iron-selector>
+
+    <iron-selector id="steps_content" class$="{{_cssClass}}" selected="{{_selected}}" items="{{_steps}}" >
+      <content></content>
+    </iron-selector>
+  </template>
+
+  <script>
+    'use strict';
+    Polymer({
+      is: 'paper-steps',
+      properties: {
+        /**
+         * Computed css class based on `vertical` property.
+         */
+        _cssClass: {
+          type: String,
+          computed: '__cssClass(vertical)'
+        },
+        /**
+         * Computed boolean property based on `vertical`, used for convenience.
+         */
+        _horizontal: {
+          type: Boolean,
+          computed: '__horizontal(vertical)'
+        },
+        /**
+         * Index of the currently selected `paper-step` element.
+         */
+        _selected: {
+          type: Number,
+          notify: true,
+          value: 0
+        },
+        /**
+         * Reference to the array of `paper-step` elements.
+         */
+        _steps: {
+          type: Array
+        },
+        /**
+         * Computed property with the total number of items in `_steps`.
+         */
+        _total: {
+          type: Number,
+          computed: '__total(_steps)'
+        },
+        /**
+         * If true, all of the submit buttons which are automatically
+         * added for each `paper-step` element will be hidden.
+         */
+        actionsDisabled: {
+          type: Boolean,
+          value: false
+        },
+        /**
+         * Determines if the `paper-steps` element is displayed vertically or
+         * horizontally.
+         */
+        vertical: {
+          type: Boolean,
+          value: false
+        }
+      },
+      listeners: {
+        'iron-deselect': '_onDeselect',
+        'iron-select': '_onSelect',
+        'paper-step-next': '_onNext',
+        'paper-step-complete': '_onComplete'
+      },
+      behaviors: [],
+
+      // Element Lifecycle
+      ready: function() {},
+
+      attached: function() {},
+
+      detached: function() {},
+
+      // Element Behavior
+      __cssClass: function(vertical) {
+        return (vertical) ? 'vertical' : 'horizontal';
+      },
+      __horizontal: function(vertical) {
+        return !vertical;
+      },
+      __total: function(steps) {
+        var
+          i, items, steps = steps && steps.length || 1
+        ;
+        items = this.$.steps_content.items
+        if (steps && items.length === steps && this.actionsDisabled) {
+          for (i=0; i < steps; i++) {
+            items[i].actionsDisabled = true;
+          }
+        }
+        return steps;
+      },
+      _onComplete: function(e) {
+        this.$.selector.items[parseInt(e.detail) - 1].completed = true;
+      },
+      _onDeselect: function(e) {
+        e.detail.item._selected = false;
+      },
+      _onNext: function(e) {
+        this.$.steps_content.selectNext();
+      },
+      _onSelect: function(e) {
+        e.detail.item._selected = true;
+      }
+    });
+  </script>
+</dom-module>

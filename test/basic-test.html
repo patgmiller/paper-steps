@@ -1,0 +1,136 @@
+<!doctype html>
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../web-component-tester/browser.js"></script>
+
+    <!-- Step 1: import the element to test -->
+    <link rel="import" href="../paper-steps.html">
+    <link rel="import" href="../paper-step.html">
+  </head>
+  <body>
+
+    <!-- You can use the document as a place to set up your fixtures. -->
+    <test-fixture id="paper-step-fixture">
+      <template>
+        <paper-step label="step 1"></paper-step>
+      </template>
+    </test-fixture>
+
+    <test-fixture id="paper-steps-fixture">
+      <template>
+        <paper-steps>
+          <paper-step label="step 1" optional></paper-step>
+          <paper-step label="step 2"></paper-step>
+          <paper-step label=""></paper-step>
+        </paper-steps>
+      </template>
+    </test-fixture>
+
+    <script>
+      suite('<paper-step>', function() {
+        var step;
+
+        setup(function() {
+          step = fixture('paper-step-fixture')
+        });
+
+        test('default step is 1', function() {
+          assert.equal(step.step, 1);
+        });
+
+        // test('', function() {
+        //
+        // });
+      });
+
+      suite('<paper-steps>', function() {
+
+        var el, i, item, items, _items, len, steps;
+
+        setup(function() {
+          el = item = null;
+          i = len = 0;
+          steps = fixture('paper-steps-fixture');
+          items = steps.$.steps_content.items;
+          _items = steps.$.selector.$$('template').items; //horizontal
+        });
+
+        test('defaults to horizontal display', function() {
+          assert.equal(steps.vertical, false);
+          assert.equal(steps._horizontal, true);
+          assert.equal(steps._cssClass, 'horizontal');
+        });
+
+        test('paper-step defines the "label" property', function() {
+          assert.equal(items[0].label, 'step 1');
+          assert.equal(items[1].label, 'step 2');
+          assert.equal(items[2].label, '');
+        });
+
+        test('default steps are: 1, 2, and 3', function() {
+          assert.equal(items[0].step, 1);
+          assert.equal(items[1].step, 2);
+          assert.equal(items[2].step, 3);
+        });
+
+        test('paper-step adds first/last optional/required classes', function() {
+          for (i=0, item, len=items.length; i<len; i++) {
+            item = items[i];
+            el = item.$.step_content
+
+            switch (i) {
+              case 0:
+                assert.equal(item._cssClass, 'optional-step first ');
+                assert.isTrue(el.classList.contains('first'));
+                assert.isTrue(el.classList.contains('optional-step'));
+                assert.isFalse(el.classList.contains('last'));
+                assert.isFalse(el.classList.contains('required-step'));
+                break;
+              case 1:
+                assert.equal(item._cssClass, 'required-step ');
+                assert.isTrue(el.classList.contains('required-step'));
+                assert.isFalse(el.classList.contains('first'));
+                assert.isFalse(el.classList.contains('last'));
+                assert.isFalse(el.classList.contains('optional-step'));
+                break;
+              case 2:
+                assert.equal(item._cssClass, 'required-step last ');
+                assert.isTrue(el.classList.contains('last'));
+                assert.isTrue(el.classList.contains('required-step'));
+                assert.isFalse(el.classList.contains('first'));
+                assert.isFalse(el.classList.contains('optional-step'));
+                break;
+            }
+          }
+        });
+
+        test('paper-step can be optional', function() {
+          var optional = [true, false, false];
+          for (i=0, item, len=items.length; i<len; i++) {
+            item = optional[i];
+            assert.equal(items[i].optional, item);
+            assert.equal(_items[i].optional, item);
+          }
+        });
+
+        // test('', function() {
+        //
+        // });
+      });
+    </script>
+
+  </body>
+</html>
