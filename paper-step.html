@@ -360,7 +360,7 @@ Example:
       /**
        * Attempts to retrieve the `submit` button for the current `paper-step`.
        */
-      _getPrimaryButton() {
+      _getPrimaryButton: function() {
         var el, button;
         if (this.actionsDisabled) {
           el = this._getForm();
@@ -375,7 +375,7 @@ Example:
         } else {
           return this.$.continue;
         }
-        return undefined
+        return undefined;
       },
       /**
        * Computes `image` property based on step `icon` and current `step`.
@@ -402,7 +402,7 @@ Example:
           el = this._getPrimaryButton(),
           request = e && e.detail || false
         ;
-        if (Polymer.isInstance(el) && el.disabled != undefined) {
+        if (Polymer.isInstance(el) && el.disabled !== undefined) {
           el.disabled = false;
         }
         if (request && request.status === 200) {
@@ -413,7 +413,7 @@ Example:
         var
           el = this._getPrimaryButton()
         ;
-        if (Polymer.isInstance(el) && el.disabled != undefined) {
+        if (Polymer.isInstance(el) && el.disabled !== undefined) {
           el.disabled = true;
         }
       },
