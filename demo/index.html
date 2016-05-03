@@ -49,7 +49,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </p>
       <template>
         <p>
-          <paper-toggle-button id="toggle" >Vertical</paper-toggle-button>
+          <paper-toggle-button id="toggle" checked >Use horizontal layout if the screen is wide enough</paper-toggle-button>
         </p>
         <paper-steps id="steps" >
           <paper-step label="Create your store" continue-label="Create" >
@@ -103,8 +103,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             steps = document.querySelector('#steps')
           ;
           b.addEventListener('iron-change', function(e) {
-            if (steps.vertical != this.active) {
-              steps.vertical = this.active;
+            if (steps.vertical == this.active) {
+              steps.vertical = !this.active;
+              steps._updateVertical();
             }
           });
         </script>

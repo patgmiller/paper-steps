@@ -9,6 +9,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-resizable-behavior/iron-resizable-behavior.html">
 <link rel="import" href="../iron-selector/iron-selector.html">
 <link rel="import" href="../paper-styles/color.html">
 <link rel="import" href="paper-step.html">
@@ -33,12 +34,25 @@ Example:
 <dom-module id="paper-steps">
   <template>
     <style>
-      :host #selector {
+      :host {
+        display: block;
+        overflow: hidden;
+        padding-top: 4px;
+      }
+
+      :host #selector_horizontal_guide {
+        height: 0;
+        opacity: 0;
+      }
+
+      :host #selector,
+      :host #selector_horizontal_guide {
         display: -webkit-flex;
         display: flex;
       }
 
-      :host #selector paper-step {
+      :host #selector paper-step,
+      :host #selector_horizontal_guide paper-step {
         display: -webkit-flex;
         display: flex;
         -webkit-align-items: center;
@@ -47,7 +61,8 @@ Example:
                 flex: 1 1 auto;
       }
 
-      :host /deep/ #selector paper-step .stepper-circle {
+      :host /deep/ #selector paper-step .stepper-circle,
+      :host /deep/ #selector_horizontal_guide paper-step .stepper-circle {
         -webkit-flex: 0 0 auto;
                 flex: 0 0 auto;
       }
@@ -66,8 +81,11 @@ Example:
       :host /deep/ #steps_content.horizontal paper-step .stepper-circle,
       :host /deep/ #steps_content.horizontal paper-step .label,
       :host /deep/ #selector paper-step:last-of-type .line,
+      :host /deep/ #selector_horizontal_guide paper-step:last-of-type .line,
       :host /deep/ #selector.horizontal paper-step .label,
-      :host /deep/ #selector paper-step #actions {
+      :host /deep/ #selector_horizontal_guide paper-step .label,
+      :host /deep/ #selector paper-step #actions,
+      :host /deep/ #selector_horizontal_guide paper-step #actions {
         display: none;
       }
 
@@ -100,10 +118,22 @@ Example:
       }
     </style>
 
+    <iron-selector id="selector_horizontal_guide"
+      class="horizontal" selected="{{_selected}}"
+      selectable="paper-step[selectable]">
+      <template is="dom-repeat" items="{{_steps}}" as="s">
+        <paper-step label="[[s.label]]" optional$="[[s.optional]]"
+          step="[[s.step]]" steps="[[_steps.length]]"
+          completed="{{s.completed}}"
+          editable="{{s.editable}}"
+          duplicate></paper-step>
+      </template>
+    </iron-selector>
+
     <iron-selector id="selector"
       class$="{{_cssClass}}" selected="{{_selected}}"
       selectable="paper-step[selectable]"
-      hidden$="{{vertical}}">
+      hidden$="{{_vertical}}">
       <template is="dom-repeat" items="{{_steps}}" as="s">
         <paper-step label="[[s.label]]" optional$="[[s.optional]]"
           step="[[s.step]]" steps="[[_steps.length]]"
@@ -127,18 +157,18 @@ Example:
       is: 'paper-steps',
       properties: {
         /**
-         * Computed css class based on `vertical` property.
+         * Computed css class based on `_vertical` property.
          */
         _cssClass: {
           type: String,
-          computed: '__cssClass(vertical)'
+          computed: '__cssClass(_vertical)'
         },
         /**
-         * Computed boolean property based on `vertical`, used for convenience.
+         * Computed boolean property based on `_vertical`, used for convenience.
          */
         _horizontal: {
           type: Boolean,
-          computed: '__horizontal(vertical)'
+          computed: '__horizontal(_vertical)'
         },
         /**
          * If true, the `paper-steps` element is doing a little setup , please
@@ -170,6 +200,14 @@ Example:
           computed: '__total(_steps)'
         },
         /**
+         * Determines if the `paper-steps` element is displayed vertically or
+         * horizontally.
+         */
+        _vertical: {
+          type: Boolean,
+          value: false,
+        },
+        /**
          * If true, all of the submit buttons which are automatically
          * added for each `paper-step` element will be hidden.
          */
@@ -191,8 +229,10 @@ Example:
           type: Number
         },
         /**
-         * Determines if the `paper-steps` element is displayed vertically or
-         * horizontally.
+         * Determines how the `paper-steps` element is displayed.
+         * true: always display in vertical mode
+         * false: display in horizontal mode if the screen is wide enough,
+         *        otherwise display in vertical mode
          */
         vertical: {
           type: Boolean,
@@ -203,15 +243,20 @@ Example:
         'iron-activate': '_onActivate',
         'iron-deselect': '_onDeselect',
         'iron-select': '_onSelect',
+        'iron-resize': '_onIronResize',
         'paper-step-next': '_onNext',
         'paper-step-complete': '_onComplete'
       },
-      behaviors: [],
+      behaviors: [
+        Polymer.IronResizableBehavior,
+      ],
 
       // Element Lifecycle
       ready: function() {},
 
-      attached: function() {},
+      attached: function() {
+        this.async(this.notifyResize, 1);
+      },
 
       detached: function() {},
 
@@ -219,14 +264,14 @@ Example:
       /**
        *
        */
-      __cssClass: function(vertical) {
-        return (vertical) ? 'vertical' : 'horizontal';
+      __cssClass: function(_vertical) {
+        return (_vertical) ? 'vertical' : 'horizontal';
       },
       /**
        *
        */
-      __horizontal: function(vertical) {
-        return !vertical;
+      __horizontal: function(_vertical) {
+        return !_vertical;
       },
       /**
        *
@@ -313,7 +358,24 @@ Example:
        */
       _onSelect: function(e) {
         e.detail.item._selected = true;
-      }
+      },
+      /**
+       *
+       */
+      _onIronResize: function() {
+        this._updateVertical();
+      },
+      /**
+       *
+       */
+      _updateVertical: function() {
+        if (this.vertical) {
+          this._vertical = true;
+        }
+        else {
+          this._vertical = this.$.selector_horizontal_guide.scrollWidth > this.$.selector_horizontal_guide.offsetWidth;
+        }
+      },
     });
   </script>
 </dom-module>
