@@ -269,6 +269,7 @@ Example:
             that.$.steps_content.selected = initial;
           }
           that.initializing = false;
+          that.fire('paper-steps-ready', that);
         }, 250);
 
         return steps;
