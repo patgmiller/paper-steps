@@ -170,6 +170,17 @@ Example:
           value: false
         },
         /**
+         * If set, and is within the valid range of selectable `paper-step`
+         * elements, `paper-steps` will use this value for the beginning step.
+         *
+         * Useful for saving progress and returning to it later, then jumping
+         * immediately to this initial step value (Note: Zero based index of
+         * step).
+         */
+        initialStep: {
+          type: Number
+        },
+        /**
          * Determines if the `paper-steps` element is displayed vertically or
          * horizontally.
          */
@@ -195,15 +206,25 @@ Example:
       detached: function() {},
 
       // Element Behavior
+      /**
+       *
+       */
       __cssClass: function(vertical) {
         return (vertical) ? 'vertical' : 'horizontal';
       },
+      /**
+       *
+       */
       __horizontal: function(vertical) {
         return !vertical;
       },
+      /**
+       *
+       */
       __total: function(steps) {
         var
-          i, items, steps = steps && steps.length || 1
+          i, items, steps = steps && steps.length || 1,
+          that = this
         ;
         items = this.$.steps_content.items;
         if (steps && items.length === steps && this.actionsDisabled) {
@@ -211,8 +232,38 @@ Example:
             items[i].actionsDisabled = true;
           }
         }
+
+        // Set initial step if assigned and value < total
+        // Set any previous valid steps as completed.
+        this.debounce('paper-steps-initialize', function() {
+          var
+            item, form,
+            initial = parseInt(that.initialStep)
+          ;
+
+          if (initial !== NaN && initial < that._total) {
+            initial = Math.max(initial, 0);
+
+            for (i=0; i<initial; i++) {
+              item = items[i];
+              try {
+                form = item._getForm();
+                if (form && form.validate()) {
+                  item.completed = true;
+                }
+              } catch (e) {
+                console.log('paper-steps-initialize error', e, typeof(form));
+              }
+            }
+            that.$.steps_content.selected = initial;
+          }
+        }, 250);
+
         return steps;
       },
+      /**
+       *
+       */
       _onActivate: function(e) {
         var
           item = e.detail && e.detail.item
@@ -225,15 +276,27 @@ Example:
           return false;
         }
       },
+      /**
+       *
+       */
       _onComplete: function(e) {
         this.$.selector.items[parseInt(e.detail) - 1].completed = true;
       },
+      /**
+       *
+       */
       _onDeselect: function(e) {
         e.detail.item._selected = false;
       },
+      /**
+       *
+       */
       _onNext: function(e) {
         this.$.steps_content.selectNext();
       },
+      /**
+       *
+       */
       _onSelect: function(e) {
         e.detail.item._selected = true;
       }
