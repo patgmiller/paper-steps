@@ -170,8 +170,19 @@ Example:
           value: false
         },
         /**
+         * If true, the `paper-steps` element is doing a little setup , please
+         * wait until done.
+         */
+        initializing: {
+          type: Boolean,
+          value: true,
+          readonly: true
+        },
+        /**
          * If set, and is within the valid range of selectable `paper-step`
-         * elements, `paper-steps` will use this value for the beginning step.
+         * elements, `paper-steps` will use this value as the beginning step.
+         * `paper-steps` will also setp all previous steps to `complete` if
+         * the form inputs are valid.
          *
          * Useful for saving progress and returning to it later, then jumping
          * immediately to this initial step value (Note: Zero based index of
@@ -257,6 +268,7 @@ Example:
             }
             that.$.steps_content.selected = initial;
           }
+          that.initializing = false;
         }, 250);
 
         return steps;
@@ -292,7 +304,9 @@ Example:
        *
        */
       _onNext: function(e) {
-        this.$.steps_content.selectNext();
+        if (this.initializing != true) {
+          this.$.steps_content.selectNext();
+        }
       },
       /**
        *
