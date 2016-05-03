@@ -2,7 +2,7 @@
     "private": true,
     "name": "paper-steps",
     "dependencies": {
-        "paper-steps": "patgmiller/paper-steps#master"
+        "paper-steps": "patgmiller/paper-steps#0.0.3"
     },
     "devDependencies": {
       "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
