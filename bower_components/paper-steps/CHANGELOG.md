@@ -1,5 +1,8 @@
 ## [Unreleased][unreleased]
- - Work in progress.
+ <!-- - Work in progress. -->
+ - Added `editable` to `paper-step`; by default `paper-step` is not editable once it has been submitted.
+ - Added tests for `paper-button` click to ensure only one event is triggered.
+ - Added `gh-pages` project page patgmiller.github.io/paper-steps
 
 ## [0.0.2] - 2016-04-30
  - Added `continue`, `reset`, and `skip` buttons for `paper-step` with default and custom text labels.

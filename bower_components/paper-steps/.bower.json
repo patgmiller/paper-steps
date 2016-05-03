@@ -40,13 +40,14 @@
     "iron-demo-helpers": "~1.2.3",
     "paper-toggle-button": "~1.1.2"
   },
-  "_release": "4ef438c1ac",
+  "version": "0.0.3",
+  "_release": "0.0.3",
   "_resolution": {
-    "type": "branch",
-    "branch": "master",
-    "commit": "4ef438c1ac89326b02ce3d43b8c8896b4e019254"
+    "type": "version",
+    "tag": "0.0.3",
+    "commit": "d43f32809aad31bde493391efdf1d1edb1f2c50c"
   },
   "_source": "git://github.com/patgmiller/paper-steps.git",
-  "_target": "master",
+  "_target": "0.0.3",
   "_originalSource": "patgmiller/paper-steps"
 }

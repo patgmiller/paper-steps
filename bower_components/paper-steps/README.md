@@ -2,6 +2,13 @@
 
 An implementation of the Material Design [steppers](https://www.google.com/design/spec/components/steppers.html).
 
+## Demo
+
+Check it out live! [patgmiller.github.io/paper-steps/](https://patgmiller.github.io/paper-steps/)
+
+
+## Installation
+
 To use this:
 
     bower install paper-steps
