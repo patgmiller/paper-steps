@@ -81,6 +81,32 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </template>
     </test-fixture>
 
+    <test-fixture id="paper-steps-fixture-initial-step">
+      <template>
+        <!-- 0 based index for initial step -->
+        <paper-steps id="steps" initial-step="2">
+          <paper-step label="step 1" optional>
+            <form is="iron-form" id="test_form" method="post"
+              action="http://posttestserver.com/post.php?dir=paper-steps">
+              <paper-input name="test-step-1" label="Test"></paper-input>
+            </form>
+          </paper-step>
+          <paper-step label="step 2" editable>
+            <form is="iron-form" id="test_form" method="post"
+              action="http://posttestserver.com/post.php?dir=paper-steps">
+              <paper-input name="test-step-2" label="Test"></paper-input>
+            </form>
+          </paper-step>
+          <paper-step label="step 3" >
+            <form is="iron-form" id="test_form" method="post"
+              action="http://posttestserver.com/post.php?dir=paper-steps">
+              <paper-input name="test-step-3" label="Test"></paper-input>
+            </form>
+          </paper-step>
+        </paper-steps>
+      </template>
+    </test-fixture>
+
     <script>
       var el, form, i, item, items, _items, len, steps, step;
 
@@ -94,9 +120,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           assert.equal(step.step, 1);
         });
 
-        // test('', function() {
-        //
-        // });
       });
 
       suite('<paper-steps> properties and defaults', function() {
@@ -187,9 +210,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           }
         });
 
-        // test('', function() {
-        //
-        // });
       });
 
       suite('<paper-steps> events', function() {
@@ -202,10 +222,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           _items = steps.$.selector.$$('template').items; //horizontal
           form = items[0].$.step_content.querySelector('form[is="iron-form"]');
         });
-
-        // teardown(function() {
-        //
-        // });
 
         test('paper-step is complete after skip pressed.', function() {
           item = items[0];
@@ -229,9 +245,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           item = items[0];
           item.$.continue.click();
 
-          // item.async(function() {
-          //   assert.equal(item.$.continue.disabled, true);
-          // }, 10);
+          item.async(function() {
+            assert.equal(item.$.continue.disabled, true);
+          }, 50);
 
           //event is debounced, so wait 300ms.
           item.async(function() {
@@ -273,9 +289,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           form.reset.restore(); //unwrap
         });
 
-        // test('', function() {
-        //
-        // });
       });
 
       suite('<paper-steps> editable', function() {
@@ -292,28 +305,61 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
           // skip 1st step, non-editable (non-selectable)
           item = items[0];
-          assert(item.selectable, true);
+          assert.equal(item.selectable, true);
           item.$.skip.click(); //skip this step
           item.async(function() {
-            assert(this.selectable, false);
+            assert.equal(this.selectable, false);
             steps.$.steps_content.select(item);
-            assert(steps.$.steps_content.selected, 1);
+            assert.equal(steps.$.steps_content.selected, 1);
           });
 
           // submit 2nd step, editable (selectable)
           item = items[1];
-          assert(item.editable, true);
-          assert(item.selectable, true);
+          assert.equal(item.editable, true);
+          assert.equal(item.selectable, true);
           item.$.continue.click(); //submit this step
           item.async(function() {
-            assert(this.selectable, true);
+            assert.equal(this.selectable, true);
             steps.$.steps_content.select(item);
-            assert(steps.$.steps_content.selected, 1);
+            assert.equal(steps.$.steps_content.selected, 1);
+          });
+        });
+
+      });
+
+      suite('<paper-steps> initial-steps', function() {
+
+        setup(function() {
+          el = item = form = null;
+          i = len = 0;
+          steps = fixture('paper-steps-fixture-initial-step');
+          items = steps.$.steps_content.items;
+        });
+
+        test('<paper-steps> begins on step #3', function() {
+          var
+            _steps = steps
+          ;
+
+          // listen for ready event
+          steps.listen(_steps, 'paper-steps-ready', function(e) {
+            assert.equal(this.initializing, false);
+            assert.equal(this.$.steps_content.selected, 2);
+            assert.equal(this, e.detail);
+
+            for (i=0, len=2; i<len; i++) {
+              assert.equal(items[i].completed, true);
+            }
           });
 
+          // wait delay for initialization to finish
+          steps.async(function() {
+            assert.equal(_steps.initializing, false);
+            assert.equal(_steps.steps.$.steps_content.selected, 2);
+          }, 300);
         });
+
       });
     </script>
-
   </body>
 </html>
