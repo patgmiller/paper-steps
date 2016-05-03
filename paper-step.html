@@ -13,7 +13,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../paper-styles/typography.html">
 <link rel="import" href="../iron-icon/iron-icon.html">
 <link rel="import" href="../iron-icons/iron-icons.html">
-<link rel="import" href="../iron-icons/image-icons.html">
+<!-- <link rel="import" href="../iron-icons/image-icons.html"> -->
 <link rel="import" href="../paper-button/paper-button.html">
 
 <!--
@@ -92,6 +92,11 @@ Example:
       font-size: 12px;
     }
 
+    :host(:not([selectable])) .label,
+    :host(:not([selectable])) .h-label {
+      color: var(--disabled-text-color, --paper-step-disabled-color);
+    }
+
     :host .h-label .optional-text {
       margin-top: 17px;
     }
@@ -141,7 +146,7 @@ Example:
   </style>
   <template>
     <div class$="stepper-circle {{_cssClass}}">
-      <span hidden$="{{!completed}}"><iron-icon icon="icons:check"></iron-icon></span>
+      <span hidden$="{{!completed}}"><iron-icon icon="{{_image}}"></iron-icon></span>
       <span hidden$="{{completed}}">{{step}}</span>
     </div>
 
@@ -187,10 +192,10 @@ Example:
          * Computed for the `paper-step` image icon based on the supplied `icon`
          * attribute and the `completed` property.
          */
-        // _image: {
-        //   type: String,
-        //   computed: '_icon(step, completed)'
-        // },
+        _image: {
+          type: String,
+          computed: '_icon(editable)'
+        },
         /**
          * Indicates if the current `paper-step` is selected and toggles the
          * active/inactive css style rules.
@@ -231,6 +236,14 @@ Example:
           value: false
         },
         /**
+         *
+         */
+        editable: {
+          type: Boolean,
+          value: false,
+          reflectToAttribute: true
+        },
+        /**
          * Specify an alternate label to use for the `reset` button.
          */
         resetLabel: {
@@ -249,6 +262,11 @@ Example:
         optional: {
           type: Boolean,
           value: false
+        },
+        selectable: {
+          type: Boolean,
+          computed: '_selectable(completed, editable)',
+          reflectToAttribute: true
         },
         skipLabel: {
           type: String,
@@ -380,23 +398,35 @@ Example:
       /**
        * Computes `image` property based on step `icon` and current `step`.
        */
-      _icon: function(step, completed) {
-        if (completed) {
-          return 'icons:check';
+      _icon: function(editable) {
+        if (editable) {
+          return 'icons:create';
         }
-        return 'image:brightness-1';
+        return 'icons:check';
+        // return 'image:brightness-1';
       },
+      /**
+       *
+       */
       _onComplete: function(_new, _old) {
         if (this.duplicate === false && _new === true) {
           this.fire('paper-step-complete', this.step);
           this.fire('paper-step-next', this.step);
         }
       },
+      /**
+       *
+       */
       _onError: function(e) {
-        // console.log('_onError', e);
       },
+      /**
+       *
+       */
       _onPreSubmit: function(e) {
       },
+      /**
+       *
+       */
       _onResponse: function(e) {
         var
           el = this._getPrimaryButton(),
@@ -409,6 +439,9 @@ Example:
           this.completed = true;
         }
       },
+      /**
+       *
+       */
       _onSubmit: function(e) {
         var
           el = this._getPrimaryButton()
@@ -416,6 +449,12 @@ Example:
         if (Polymer.isInstance(el) && el.disabled !== undefined) {
           el.disabled = true;
         }
+      },
+      /**
+       *
+       */
+      _selectable: function(completed, editable) {
+        return editable || !completed;
       },
       /**
        * When the `Reset` button is pressed, this restores the form elements
@@ -436,6 +475,7 @@ Example:
 
             //then reset
             form.reset();
+            that.completed = false;
           }
         }, 300);
       },
@@ -450,12 +490,10 @@ Example:
           that = this,
           form
         ;
+        //reset form
+        this._reset(e);
 
         this.debounce('paper-step-skip', function() {
-          form = that._getForm();
-          if (form) {
-            form.reset();
-          }
           this.completed = true;
         }, 300);
       },

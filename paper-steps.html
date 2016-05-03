@@ -100,13 +100,23 @@ Example:
       }
     </style>
 
-    <iron-selector id="selector" class$="{{_cssClass}}" selected="{{_selected}}" hidden$="{{vertical}}">
+    <iron-selector id="selector"
+      class$="{{_cssClass}}" selected="{{_selected}}"
+      selectable="paper-step[selectable]"
+      hidden$="{{vertical}}">
       <template is="dom-repeat" items="{{_steps}}" as="s">
-        <paper-step label="[[s.label]]" optional$="[[s.optional]]" step="[[s.step]]" steps="[[_steps.length]]" completed="{{s.completed}}" duplicate></paper-step>
+        <paper-step label="[[s.label]]" optional$="[[s.optional]]"
+          step="[[s.step]]" steps="[[_steps.length]]"
+          completed="{{s.completed}}"
+          editable="{{s.editable}}"
+          duplicate></paper-step>
       </template>
     </iron-selector>
 
-    <iron-selector id="steps_content" class$="{{_cssClass}}" selected="{{_selected}}" items="{{_steps}}" >
+    <iron-selector id="steps_content"
+      class$="{{_cssClass}}" selected="{{_selected}}"
+      selectable="paper-step[selectable]"
+      items="{{_steps}}" >
       <content></content>
     </iron-selector>
   </template>
@@ -169,6 +179,7 @@ Example:
         }
       },
       listeners: {
+        'iron-activate': '_onActivate',
         'iron-deselect': '_onDeselect',
         'iron-select': '_onSelect',
         'paper-step-next': '_onNext',
@@ -201,6 +212,18 @@ Example:
           }
         }
         return steps;
+      },
+      _onActivate: function(e) {
+        var
+          item = e.detail && e.detail.item
+        ;
+
+        //if item is selectable, disable click / touch event.
+        if (item && item.selectable === false) {
+          e.preventDefault();
+          e.stopPropagation();
+          return false;
+        }
       },
       _onComplete: function(e) {
         this.$.selector.items[parseInt(e.detail) - 1].completed = true;
