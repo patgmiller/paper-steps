@@ -141,6 +141,14 @@ Example:
           computed: '__horizontal(vertical)'
         },
         /**
+         * If true, the `paper-steps` element is doing a little setup , please
+         * wait until done.
+         */
+        _initializing: {
+          type: Boolean,
+          value: true
+        },
+        /**
          * Index of the currently selected `paper-step` element.
          */
         _selected: {
@@ -168,15 +176,6 @@ Example:
         actionsDisabled: {
           type: Boolean,
           value: false
-        },
-        /**
-         * If true, the `paper-steps` element is doing a little setup , please
-         * wait until done.
-         */
-        initializing: {
-          type: Boolean,
-          value: true,
-          readonly: true
         },
         /**
          * If set, and is within the valid range of selectable `paper-step`
@@ -268,7 +267,7 @@ Example:
             }
             that.$.steps_content.selected = initial;
           }
-          that.initializing = false;
+          that._initializing = false;
           that.fire('paper-steps-ready', that);
         }, 250);
 
@@ -305,7 +304,7 @@ Example:
        *
        */
       _onNext: function(e) {
-        if (this.initializing != true) {
+        if (this._initializing != true) {
           this.$.steps_content.selectNext();
         }
       },
