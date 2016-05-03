@@ -1,6 +1,7 @@
 language: node_js
 sudo: required
 dist: trusty
+# Adding OSX - See https://docs.travis-ci.com/user/multi-os/
 before_script:
   - npm install -g bower polylint web-component-tester
   - bower install
