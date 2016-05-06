@@ -41,19 +41,19 @@ Example:
         padding: 16px;
       }
 
-      :host #selector_horizontal_guide {
+      :host #ruler {
         height: 0;
         opacity: 0;
       }
 
       :host #selector,
-      :host #selector_horizontal_guide {
+      :host #ruler {
         display: -webkit-flex;
         display: flex;
       }
 
       :host #selector paper-step,
-      :host #selector_horizontal_guide paper-step {
+      :host #ruler paper-step {
         display: -webkit-flex;
         display: flex;
         -webkit-align-items: center;
@@ -63,7 +63,7 @@ Example:
       }
 
       :host /deep/ #selector paper-step .stepper-circle,
-      :host /deep/ #selector_horizontal_guide paper-step .stepper-circle {
+      :host /deep/ #ruler paper-step .stepper-circle {
         -webkit-flex: 0 0 auto;
                 flex: 0 0 auto;
       }
@@ -82,11 +82,11 @@ Example:
       :host /deep/ #steps_content.horizontal paper-step .stepper-circle,
       :host /deep/ #steps_content.horizontal paper-step .label,
       :host /deep/ #selector paper-step:last-of-type .line,
-      :host /deep/ #selector_horizontal_guide paper-step:last-of-type .line,
+      :host /deep/ #ruler paper-step:last-of-type .line,
       :host /deep/ #selector.horizontal paper-step .label,
-      :host /deep/ #selector_horizontal_guide paper-step .label,
+      :host /deep/ #ruler paper-step .label,
       :host /deep/ #selector paper-step #actions,
-      :host /deep/ #selector_horizontal_guide paper-step #actions {
+      :host /deep/ #ruler paper-step #actions {
         display: none;
       }
 
@@ -118,18 +118,6 @@ Example:
         border-left: none;
       }
     </style>
-
-    <iron-selector id="selector_horizontal_guide"
-      class="horizontal" selected="{{_selected}}"
-      selectable="paper-step[selectable]">
-      <template is="dom-repeat" items="{{_steps}}" as="s">
-        <paper-step label="[[s.label]]" optional$="[[s.optional]]"
-          step="[[s.step]]" steps="[[_steps.length]]"
-          completed="{{s.completed}}"
-          editable="{{s.editable}}"
-          duplicate></paper-step>
-      </template>
-    </iron-selector>
 
     <iron-selector id="selector"
       class$="{{_cssClass}}" selected="{{_selected}}"
@@ -256,7 +244,32 @@ Example:
       ready: function() {},
 
       attached: function() {
-        this.async(this.notifyResize, 1);
+        var
+          el, ruler,
+          that = this
+        ;
+
+        this.async(function() {
+          ruler = that.create('iron-selector', {id: 'ruler'});
+          that.$.selector.getEffectiveChildren().forEach(
+            function(s, index) {
+              el = ruler.create('paper-step', {
+                label: s.label,
+                optional: s.optional,
+                step: s.step,
+                steps: s.steps,
+                completed: s.completed,
+                editable: s.editable,
+                duplicate: true
+              });
+              Polymer.dom(ruler).appendChild(el);
+            }, this
+          );
+
+          Polymer.dom(that.root).appendChild(ruler);
+          ruler.setAttribute('class', 'horizontal ' + ruler.getAttribute('class'));
+          that.notifyResize, 1
+        }, 250);
       },
 
       detached: function() {},
@@ -374,7 +387,12 @@ Example:
           this._vertical = true;
         }
         else {
-          this._vertical = this.$.selector_horizontal_guide.scrollWidth > this.$.selector_horizontal_guide.offsetWidth;
+          //catch first few calls, iron-resize gets called initially
+          //before ruler is ready.
+          var ruler = this.querySelector('#ruler');
+          if (ruler) {
+            this._vertical = ruler.scrollWidth > ruler.offsetWidth;
+          }
         }
       },
     });
