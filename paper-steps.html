@@ -269,6 +269,8 @@ Example:
           Polymer.dom(that.root).appendChild(ruler);
           ruler.setAttribute('class', 'horizontal ' + ruler.getAttribute('class'));
           that.notifyResize, 1
+          //trigger an initial update
+          that._updateVertical();
         }, 250);
       },
 
