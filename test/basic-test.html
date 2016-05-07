@@ -245,9 +245,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           item = items[0];
           item.$.continue.click();
 
-          item.async(function() {
-            assert.equal(item.$.continue.disabled, true);
-          }, 50);
+          //non-deterministic method of testing disabled state
+          // item.async(function() {
+          //   assert.equal(item.$.continue.disabled, true);
+          // }, 50);
 
           //event is debounced, so wait 300ms.
           item.async(function() {
