@@ -36,20 +36,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <link rel="import" href="../paper-steps.html">
     <link rel="import" href="../paper-step.html">
     <style>
-      demo-snippet#paper-steps {
+      demo-snippet.demo {
         max-width: 1100px;
         margin: auto;
       }
     </style>
   </head>
   <body unresolved>
-    <demo-snippet id="paper-steps">
+    <demo-snippet class="demo">
       <p><code>&lt;paper-steps&gt;</code> is an implementation of material design <code>
           <a target="_blank" href="https://www.google.com/design/spec/components/steppers.html">steppers</a></code>.
       </p>
       <template>
         <p>
-          <paper-toggle-button id="toggle" >Vertical</paper-toggle-button>
+          <paper-toggle-button id="toggle" checked >Use horizontal layout if the screen is wide enough</paper-toggle-button>
         </p>
         <paper-steps id="steps" >
           <paper-step label="Create your store" continue-label="Create" >
@@ -103,11 +103,37 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             steps = document.querySelector('#steps')
           ;
           b.addEventListener('iron-change', function(e) {
-            if (steps.vertical != this.active) {
-              steps.vertical = this.active;
+            if (steps.vertical == this.active) {
+              steps.vertical = !this.active;
+              steps._updateVertical();
             }
           });
         </script>
+      </template>
+    </demo-snippet>
+
+    <demo-snippet class="demo">
+      <p>Specify an initial step to begin on, for example to continue progress after a user leaves and then returns to the steps.</p>
+      <template>
+        <paper-steps initial-step="1">
+          <paper-step label="Profile" editable>
+            <h2>Already Completed</h2>
+            <p>
+              Previously entered or skipped content. Populating the details
+              is handled through your own application.
+            </p>
+            <form is="iron-form" action="http://posttestserver.com/post.php?dir=paper-steps&dump" method="post">
+              <paper-input name="name" label="Name" value="John Doe"></paper-input>
+              <paper-input name="interests" label="Interests" value="Hacking HTML Web Components, Polymer Implementations"></paper-input>
+            </form>
+          </paper-step>
+          <paper-step label="Second step">
+            <h2>Return &amp; Begin Here</h2>
+            <form is="iron-form" action="http://posttestserver.com/post.php?dir=paper-steps&dump" method="post">
+              <paper-input name="foo" label="Foo Bar" placeholder="Your previously un-anwswered form input."></paper-input>
+            </form>
+          </paper-step>
+        </paper-steps>
       </template>
     </demo-snippet>
   </body>

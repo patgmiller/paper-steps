@@ -9,6 +9,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-resizable-behavior/iron-resizable-behavior.html">
 <link rel="import" href="../iron-selector/iron-selector.html">
 <link rel="import" href="../paper-styles/color.html">
 <link rel="import" href="paper-step.html">
@@ -33,12 +34,26 @@ Example:
 <dom-module id="paper-steps">
   <template>
     <style>
-      :host #selector {
+      :host {
+        display: block;
+        overflow: hidden;
+        margin: -16px;
+        padding: 16px;
+      }
+
+      :host #ruler {
+        height: 0;
+        opacity: 0;
+      }
+
+      :host #selector,
+      :host #ruler {
         display: -webkit-flex;
         display: flex;
       }
 
-      :host #selector paper-step {
+      :host #selector paper-step,
+      :host #ruler paper-step {
         display: -webkit-flex;
         display: flex;
         -webkit-align-items: center;
@@ -47,7 +62,8 @@ Example:
                 flex: 1 1 auto;
       }
 
-      :host /deep/ #selector paper-step .stepper-circle {
+      :host /deep/ #selector paper-step .stepper-circle,
+      :host /deep/ #ruler paper-step .stepper-circle {
         -webkit-flex: 0 0 auto;
                 flex: 0 0 auto;
       }
@@ -66,8 +82,11 @@ Example:
       :host /deep/ #steps_content.horizontal paper-step .stepper-circle,
       :host /deep/ #steps_content.horizontal paper-step .label,
       :host /deep/ #selector paper-step:last-of-type .line,
+      :host /deep/ #ruler paper-step:last-of-type .line,
       :host /deep/ #selector.horizontal paper-step .label,
-      :host /deep/ #selector paper-step #actions {
+      :host /deep/ #ruler paper-step .label,
+      :host /deep/ #selector paper-step #actions,
+      :host /deep/ #ruler paper-step #actions {
         display: none;
       }
 
@@ -103,7 +122,7 @@ Example:
     <iron-selector id="selector"
       class$="{{_cssClass}}" selected="{{_selected}}"
       selectable="paper-step[selectable]"
-      hidden$="{{vertical}}">
+      hidden$="{{_vertical}}">
       <template is="dom-repeat" items="{{_steps}}" as="s">
         <paper-step label="[[s.label]]" optional$="[[s.optional]]"
           step="[[s.step]]" steps="[[_steps.length]]"
@@ -127,18 +146,26 @@ Example:
       is: 'paper-steps',
       properties: {
         /**
-         * Computed css class based on `vertical` property.
+         * Computed css class based on `_vertical` property.
          */
         _cssClass: {
           type: String,
-          computed: '__cssClass(vertical)'
+          computed: '__cssClass(_vertical)'
         },
         /**
-         * Computed boolean property based on `vertical`, used for convenience.
+         * Computed boolean property based on `_vertical`, used for convenience.
          */
         _horizontal: {
           type: Boolean,
-          computed: '__horizontal(vertical)'
+          computed: '__horizontal(_vertical)'
+        },
+        /**
+         * If true, the `paper-steps` element is doing a little setup , please
+         * wait until done.
+         */
+        _initializing: {
+          type: Boolean,
+          value: true
         },
         /**
          * Index of the currently selected `paper-step` element.
@@ -162,6 +189,14 @@ Example:
           computed: '__total(_steps)'
         },
         /**
+         * Determines if the `paper-steps` element is displayed vertically or
+         * horizontally.
+         */
+        _vertical: {
+          type: Boolean,
+          value: false,
+        },
+        /**
          * If true, all of the submit buttons which are automatically
          * added for each `paper-step` element will be hidden.
          */
@@ -170,8 +205,23 @@ Example:
           value: false
         },
         /**
-         * Determines if the `paper-steps` element is displayed vertically or
-         * horizontally.
+         * If set, and is within the valid range of selectable `paper-step`
+         * elements, `paper-steps` will use this value as the beginning step.
+         * `paper-steps` will also setp all previous steps to `complete` if
+         * the form inputs are valid.
+         *
+         * Useful for saving progress and returning to it later, then jumping
+         * immediately to this initial step value (Note: Zero based index of
+         * step).
+         */
+        initialStep: {
+          type: Number
+        },
+        /**
+         * Determines how the `paper-steps` element is displayed.
+         * true: always display in vertical mode
+         * false: display in horizontal mode if the screen is wide enough,
+         *        otherwise display in vertical mode
          */
         vertical: {
           type: Boolean,
@@ -182,28 +232,70 @@ Example:
         'iron-activate': '_onActivate',
         'iron-deselect': '_onDeselect',
         'iron-select': '_onSelect',
+        'iron-resize': '_onIronResize',
         'paper-step-next': '_onNext',
         'paper-step-complete': '_onComplete'
       },
-      behaviors: [],
+      behaviors: [
+        Polymer.IronResizableBehavior,
+      ],
 
       // Element Lifecycle
       ready: function() {},
 
-      attached: function() {},
+      attached: function() {
+        var
+          el, ruler,
+          that = this
+        ;
+
+        this.async(function() {
+          ruler = that.create('iron-selector', {id: 'ruler'});
+          that.$.selector.getEffectiveChildren().forEach(
+            function(s, index) {
+              el = ruler.create('paper-step', {
+                label: s.label,
+                optional: s.optional,
+                step: s.step,
+                steps: s.steps,
+                completed: s.completed,
+                editable: s.editable,
+                duplicate: true
+              });
+              Polymer.dom(ruler).appendChild(el);
+            }, this
+          );
+
+          Polymer.dom(that.root).appendChild(ruler);
+          ruler.setAttribute('class', 'horizontal ' + ruler.getAttribute('class'));
+          that.notifyResize, 1
+          //trigger an initial update
+          that._updateVertical();
+        }, 250);
+      },
 
       detached: function() {},
 
       // Element Behavior
-      __cssClass: function(vertical) {
-        return (vertical) ? 'vertical' : 'horizontal';
+      /**
+       *
+       */
+      __cssClass: function(_vertical) {
+        return (_vertical) ? 'vertical' : 'horizontal';
       },
-      __horizontal: function(vertical) {
-        return !vertical;
+      /**
+       *
+       */
+      __horizontal: function(_vertical) {
+        return !_vertical;
       },
+      /**
+       *
+       */
       __total: function(steps) {
         var
-          i, items, steps = steps && steps.length || 1
+          i, items, steps = steps && steps.length || 1,
+          that = this
         ;
         items = this.$.steps_content.items;
         if (steps && items.length === steps && this.actionsDisabled) {
@@ -211,8 +303,40 @@ Example:
             items[i].actionsDisabled = true;
           }
         }
+
+        // Set initial step if assigned and value < total
+        // Set any previous valid steps as completed.
+        this.debounce('paper-steps-initialize', function() {
+          var
+            item, form,
+            initial = parseInt(that.initialStep)
+          ;
+
+          if (initial !== NaN && initial < that._total) {
+            initial = Math.max(initial, 0);
+
+            for (i=0; i<initial; i++) {
+              item = items[i];
+              try {
+                form = item._getForm();
+                if (form && form.validate()) {
+                  item.completed = true;
+                }
+              } catch (e) {
+                console.log('paper-steps-initialize error', e, typeof(form));
+              }
+            }
+            that.$.steps_content.selected = initial;
+          }
+          that._initializing = false;
+          that.fire('paper-steps-ready', that);
+        }, 250);
+
         return steps;
       },
+      /**
+       *
+       */
       _onActivate: function(e) {
         var
           item = e.detail && e.detail.item
@@ -225,18 +349,54 @@ Example:
           return false;
         }
       },
+      /**
+       *
+       */
       _onComplete: function(e) {
         this.$.selector.items[parseInt(e.detail) - 1].completed = true;
       },
+      /**
+       *
+       */
       _onDeselect: function(e) {
         e.detail.item._selected = false;
       },
+      /**
+       *
+       */
       _onNext: function(e) {
-        this.$.steps_content.selectNext();
+        if (this._initializing != true) {
+          this.$.steps_content.selectNext();
+        }
       },
+      /**
+       *
+       */
       _onSelect: function(e) {
         e.detail.item._selected = true;
-      }
+      },
+      /**
+       *
+       */
+      _onIronResize: function() {
+        this._updateVertical();
+      },
+      /**
+       *
+       */
+      _updateVertical: function() {
+        if (this.vertical) {
+          this._vertical = true;
+        }
+        else {
+          //catch first few calls, iron-resize gets called initially
+          //before ruler is ready.
+          var ruler = this.querySelector('#ruler');
+          if (ruler) {
+            this._vertical = ruler.scrollWidth > ruler.offsetWidth;
+          }
+        }
+      },
     });
   </script>
 </dom-module>
