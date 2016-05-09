@@ -32,7 +32,7 @@ Example:
 <dom-module id="paper-step">
   <style>
     :root {
-      --paper-step-primary-color: var(--primary-backround-color, --paper-indigo-500);
+      --paper-step-primary-color: var(--primary-color, --paper-indigo-500);
       --paper-step-disabled-color: var(--disabled-text-color, --google-grey-500);
     }
 
@@ -67,15 +67,15 @@ Example:
     }
 
     :host(.iron-selected) .stepper-circle {
-      background-color: var(--primary-color, --paper-step-primary-color);
+      background-color: var(--paper-step-primary-color);
     }
 
     :host(:not(.iron-selected)) .stepper-circle {
-      background-color: var(--disabled-text-color, --paper-step-disabled-color);
+      background-color: var(--paper-grey-500);
     }
 
     :host([completed]) .stepper-circle {
-      background-color: var(--primary-color, --paper-step-primary-color);
+      background-color: var(--paper-step-primary-color);
     }
 
     :host([completed]) .stepper-circle iron-icon {
@@ -84,7 +84,7 @@ Example:
 
     :host .label .optional-text,
     :host .h-label .optional-text {
-      color: var(--disabled-text-color, --paper-step-disabled-color);
+      color: var(--paper-grey-600);
       position: absolute;
       font-weight: normal;
       margin-top: 17px;
@@ -93,7 +93,7 @@ Example:
 
     :host(:not([selectable])) .label,
     :host(:not([selectable])) .h-label {
-      color: var(--disabled-text-color, --paper-step-disabled-color);
+      color: var(--paper-step-disabled-color);
     }
 
     :host .h-label .optional-text {
