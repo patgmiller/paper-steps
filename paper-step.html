@@ -38,6 +38,7 @@ Example:
 
     :host {
       var(--paper-font-common-base);
+      position: relative;
     }
 
     :host .h-label {
@@ -142,6 +143,8 @@ Example:
 
   </style>
   <template>
+    <div class="hover-target"><paper-ripple></paper-ripple></div>
+
     <div class$="stepper-circle {{_cssClass}}">
       <span hidden$="{{!completed}}"><iron-icon icon="{{_image}}"></iron-icon></span>
       <span hidden$="{{completed}}">{{step}}</span>

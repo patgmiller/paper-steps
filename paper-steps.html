@@ -60,6 +60,54 @@ Example:
                 align-items: center;
         -webkit-flex: 1 1 auto;
                 flex: 1 1 auto;
+        padding: 24px 0;
+      }
+
+      :host /deep/ .hover-target {
+        position: absolute;
+        left: 0;
+        width: 100%;
+        z-index: 1;
+        cursor: pointer;
+      }
+
+      :host /deep/ .hover-target:hover {
+        background-color: rgba(0, 0, 0, 0.04);
+      }
+
+      :host /deep/ paper-step:not(.iron-selected) .hover-target:hover + .stepper-circle {
+        background-color: #767676;
+      }
+
+      :host /deep/ .horizontal .hover-target {
+        top: 0;
+        height: 100%;
+      }
+
+      :host /deep/ .horizontal paper-step + paper-step .hover-target {
+        left: -8px;
+      }
+
+      :host /deep/ .horizontal paper-step:first-child .hover-target {
+        width: calc(100% - 8px);
+      }
+
+      :host /deep/ .horizontal paper-step:last-of-type .hover-target {
+        width: calc(100% + 8px);
+      }
+
+      :host /deep/ .vertical .hover-target {
+        top: -23px;
+        height: 70px;
+      }
+
+      :host /deep/ .vertical paper-step:first-child .hover-target,
+      :host /deep/ .vertical paper-step:last-child .hover-target {
+        height: 55px;
+      }
+
+      :host /deep/ .vertical paper-step:first-child .hover-target {
+        top: -8px;
       }
 
       :host /deep/ #selector paper-step .stepper-circle,
@@ -77,6 +125,7 @@ Example:
 
       :host /deep/ .vertical paper-step .h-label,
       :host /deep/ .vertical paper-step .line,
+      :host /deep/ .vertical paper-step:last-child:not(.iron-selected) #step_content,
       :host /deep/ #steps_content.horizontal paper-step .h-label,
       :host /deep/ #steps_content.horizontal paper-step .line,
       :host /deep/ #steps_content.horizontal paper-step .stepper-circle,
@@ -107,6 +156,16 @@ Example:
       :host /deep/ .vertical #step_content {
         width: 100%;
         padding: 15px 0 15px 23px;
+      }
+
+      :host /deep/ #steps_content.horizontal:before {
+        display: block;
+        content: "";
+        width: 100%;
+        height: 1px;
+        background-color: var(--paper-grey-400);
+        border-top: 1px solid var(--paper-grey-50);
+        border-bottom: 1px solid var(--paper-grey-200);
       }
 
       :host /deep/ #steps_content.vertical paper-step #step_content {
