@@ -312,7 +312,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             assert.equal(this.selectable, false);
             steps.$.steps_content.select(item);
             assert.equal(steps.$.steps_content.selected, 1);
-          });
+          }, 100);
 
           // submit 2nd step, editable (selectable)
           item = items[1];
@@ -323,7 +323,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             assert.equal(this.selectable, true);
             steps.$.steps_content.select(item);
             assert.equal(steps.$.steps_content.selected, 1);
-          });
+          }, 100);
         });
 
       });
