@@ -136,5 +136,36 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         </paper-steps>
       </template>
     </demo-snippet>
+
+    <demo-snippet class="demo">
+      <p>Override the primary color style.</p>
+      <template>
+        <style>
+          paper-step.red {
+            background-color: #550000 !important;
+            /*--paper-step-disabled-color: var(--google-grey-500);*/
+          }
+
+          paper-step.green {
+            --paper-step-primary-color: #005500;
+            /*--paper-step-disabled-color: var(--google-grey-500);*/
+          }
+        </style>
+        <paper-steps>
+          <paper-step class="red" label="Styles" editable>
+            <h2>Override styles</h2>
+            <form is="iron-form" action="http://posttestserver.com/post.php?dir=paper-steps&dump" method="post">
+              <paper-input name="name" label="Name" placeholder="Enter your name here."></paper-input>
+            </form>
+          </paper-step class="green">
+          <paper-step label="Step #2" editable>
+            <h2>Another step</h2>
+            <form is="iron-form" action="http://posttestserver.com/post.php?dir=paper-steps&dump" method="post">
+              <paper-input name="profession" label="Profession" placeholder="What do you do for a living?"></paper-input>
+            </form>
+          </paper-step>
+        </paper-steps>
+      </template>
+    </demo-snippet>
   </body>
 </html>
