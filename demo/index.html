@@ -57,6 +57,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <form is="iron-form" method="post" content-type="application/json"
               action="http://posttestserver.com/post.php?dir=paper-steps&dump&sleep=1">
               <paper-input name="domain" label="Domain" auto-validate required
+
                 pattern="^(([a-zA-Z]{1})|([a-zA-Z]{1}[a-zA-Z]{1})|([a-zA-Z]{1}[0-9]{1})|([0-9]{1}[a-zA-Z]{1})|([a-zA-Z0-9][a-zA-Z0-9-_]{1,61}[a-zA-Z0-9]))\.([a-zA-Z]{2,6}|[a-zA-Z0-9-]{2,30}\.[a-zA-Z]{2,3})$"
               ></paper-input>
               <paper-input name="store-name" label="Store Name" auto-validate required></paper-input>
@@ -140,15 +141,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <demo-snippet class="demo">
       <p>Override the primary color style.</p>
       <template>
-        <style>
-          paper-step.red {
-            background-color: #550000 !important;
-            /*--paper-step-disabled-color: var(--google-grey-500);*/
+        <style is="custom-style">
+          paper-step.red,
+          paper-step.red.iron-selected .stepper-circle,
+          paper-step.red[completed] .stepper-circle {
+            --paper-step-primary-color: #550000;
           }
 
-          paper-step.green {
+          paper-step.green,
+          paper-step.green.iron-selected .stepper-circle,
+          paper-step.green[completed] .stepper-circle {
             --paper-step-primary-color: #005500;
-            /*--paper-step-disabled-color: var(--google-grey-500);*/
           }
         </style>
         <paper-steps>
@@ -157,8 +160,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <form is="iron-form" action="http://posttestserver.com/post.php?dir=paper-steps&dump" method="post">
               <paper-input name="name" label="Name" placeholder="Enter your name here."></paper-input>
             </form>
-          </paper-step class="green">
-          <paper-step label="Step #2" editable>
+          </paper-step >
+          <paper-step class="green"label="Step #2" editable>
             <h2>Another step</h2>
             <form is="iron-form" action="http://posttestserver.com/post.php?dir=paper-steps&dump" method="post">
               <paper-input name="profession" label="Profession" placeholder="What do you do for a living?"></paper-input>
