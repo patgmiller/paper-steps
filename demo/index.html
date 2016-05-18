@@ -57,6 +57,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <form is="iron-form" method="post" content-type="application/json"
               action="http://posttestserver.com/post.php?dir=paper-steps&dump&sleep=1">
               <paper-input name="domain" label="Domain" auto-validate required
+
                 pattern="^(([a-zA-Z]{1})|([a-zA-Z]{1}[a-zA-Z]{1})|([a-zA-Z]{1}[0-9]{1})|([0-9]{1}[a-zA-Z]{1})|([a-zA-Z0-9][a-zA-Z0-9-_]{1,61}[a-zA-Z0-9]))\.([a-zA-Z]{2,6}|[a-zA-Z0-9-]{2,30}\.[a-zA-Z]{2,3})$"
               ></paper-input>
               <paper-input name="store-name" label="Store Name" auto-validate required></paper-input>
@@ -131,6 +132,32 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <h2>Return &amp; Begin Here</h2>
             <form is="iron-form" action="http://posttestserver.com/post.php?dir=paper-steps&dump" method="post">
               <paper-input name="foo" label="Foo Bar" placeholder="Your previously un-anwswered form input."></paper-input>
+            </form>
+          </paper-step>
+        </paper-steps>
+      </template>
+    </demo-snippet>
+
+    <demo-snippet class="demo">
+      <p>Override the primary color style.</p>
+      <template>
+        <style is="custom-style">
+          paper-steps.red {
+            --paper-step-primary-color: var(--paper-red-900);
+            --paper-step-primary-disabled-color: var(--paper-red-200);
+          }
+        </style>
+        <paper-steps class="red">
+          <paper-step label="Styles" editable>
+            <h2>Override styles</h2>
+            <form is="iron-form" action="http://posttestserver.com/post.php?dir=paper-steps&dump" method="post">
+              <paper-input name="name" label="Name" placeholder="Enter your name here."></paper-input>
+            </form>
+          </paper-step >
+          <paper-step label="Step #2" editable>
+            <h2>Another step</h2>
+            <form is="iron-form" action="http://posttestserver.com/post.php?dir=paper-steps&dump" method="post">
+              <paper-input name="profession" label="Profession" placeholder="What do you do for a living?"></paper-input>
             </form>
           </paper-step>
         </paper-steps>

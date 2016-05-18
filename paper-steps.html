@@ -32,8 +32,14 @@ Example:
 -->
 
 <dom-module id="paper-steps">
-  <template>
+  <template strip-whitespace>
     <style>
+      :root {
+        --ps-primary-color: var(--paper-step-primary-color, --primary-color);
+        --ps-primary-disabled-color: var(--paper-step-primary-disabled-color);
+        --ps-primary-text-color: var(--paper-step-primary-text-color);
+      }
+
       :host {
         display: block;
         overflow: hidden;
@@ -75,8 +81,25 @@ Example:
         background-color: rgba(0, 0, 0, 0.04);
       }
 
+      :host /deep/ paper-step.iron-selected .stepper-circle {
+        background-color: var(--ps-primary-color);
+      }
+
       :host /deep/ paper-step:not(.iron-selected) .hover-target:hover + .stepper-circle {
         background-color: #767676;
+      }
+
+      :host /deep/ paper-step[completed] /deep/ .stepper-circle {
+        background: var(--ps-primary-color);
+      }
+
+      :host /deep/ paper-step #actions #continue {
+        background: var(--ps-primary-color);
+        color: var(--ps-primary-text-color, #fff);
+      }
+
+      :host /deep/ paper-step #actions #continue[disabled] {
+        background: var(--ps-primary-disabled-color, --paper-indigo-200);
       }
 
       :host /deep/ .horizontal .hover-target {
@@ -312,16 +335,19 @@ Example:
           ruler = that.create('iron-selector', {id: 'ruler'});
           that.$.selector.getEffectiveChildren().forEach(
             function(s, index) {
-              el = ruler.create('paper-step', {
-                label: s.label,
-                optional: s.optional,
-                step: s.step,
-                steps: s.steps,
-                completed: s.completed,
-                editable: s.editable,
-                duplicate: true
-              });
-              Polymer.dom(ruler).appendChild(el);
+              if (s.nodeName.toLowerCase() == 'paper-step') {
+                //exclude any template or other elements.
+                el = ruler.create('paper-step', {
+                  label: s.label,
+                  optional: s.optional,
+                  step: s.step,
+                  steps: s.steps,
+                  completed: s.completed,
+                  editable: s.editable,
+                  duplicate: true
+                });
+                Polymer.dom(ruler).appendChild(el);
+              }
             }, this
           );
 
