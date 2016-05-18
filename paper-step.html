@@ -63,16 +63,8 @@ Example:
         text-align: center;
       }
 
-      :host(.iron-selected) .stepper-circle {
-        background-color: var(--paper-step-primary-color, --primary-color);
-      }
-
       :host(:not(.iron-selected)) .stepper-circle {
         background-color: var(--paper-grey-500);
-      }
-
-      :host([completed]) .stepper-circle {
-        background-color: var(--paper-step-primary-color, --primary-color);
       }
 
       :host([completed]) .stepper-circle iron-icon {
@@ -109,16 +101,6 @@ Example:
 
       :host #actions paper-button {
         margin: 0 14px 0 0;
-      }
-
-      /*:host #actions #skip, */
-      :host #actions #continue {
-        background: var(--paper-step-primary-color, --primary-color);
-        color: #fff;
-      }
-
-      :host #actions #continue[disabled] {
-        background: var(--paper-indigo-200);
       }
 
       :host #actions #skip {

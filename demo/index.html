@@ -142,26 +142,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <p>Override the primary color style.</p>
       <template>
         <style is="custom-style">
-          paper-step.red,
-          paper-step.red.iron-selected .stepper-circle,
-          paper-step.red[completed] .stepper-circle {
-            --paper-step-primary-color: #550000;
-          }
-
-          paper-step.green,
-          paper-step.green.iron-selected .stepper-circle,
-          paper-step.green[completed] .stepper-circle {
-            --paper-step-primary-color: #005500;
+          paper-steps.red {
+            --paper-step-primary-color: var(--paper-red-900);
+            --paper-step-primary-disabled-color: var(--paper-red-200);
           }
         </style>
-        <paper-steps>
-          <paper-step class="red" label="Styles" editable>
+        <paper-steps class="red">
+          <paper-step label="Styles" editable>
             <h2>Override styles</h2>
             <form is="iron-form" action="http://posttestserver.com/post.php?dir=paper-steps&dump" method="post">
               <paper-input name="name" label="Name" placeholder="Enter your name here."></paper-input>
             </form>
           </paper-step >
-          <paper-step class="green"label="Step #2" editable>
+          <paper-step label="Step #2" editable>
             <h2>Another step</h2>
             <form is="iron-form" action="http://posttestserver.com/post.php?dir=paper-steps&dump" method="post">
               <paper-input name="profession" label="Profession" placeholder="What do you do for a living?"></paper-input>
