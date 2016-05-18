@@ -1,4 +1,4 @@
-# paper-steps [![Build Status](https://travis-ci.org/patgmiller/paper-steps.svg?branch=master)](https://travis-ci.org/patgmiller/paper-steps)
+# paper-steps [![GitHub version](https://badge.fury.io/gh/patgmiller%2Fpaper-steps.svg)](https://badge.fury.io/gh/patgmiller%2Fpaper-steps) [![Build Status](https://travis-ci.org/patgmiller/paper-steps.svg?branch=master)](https://travis-ci.org/patgmiller/paper-steps)
 
 An implementation of the Material Design [steppers](https://www.google.com/design/spec/components/steppers.html).
 

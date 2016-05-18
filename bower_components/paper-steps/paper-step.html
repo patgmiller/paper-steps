@@ -30,118 +30,98 @@ Example:
 -->
 
 <dom-module id="paper-step">
-  <style>
-    :root {
-      --paper-step-primary-color: var(--primary-backround-color, --paper-indigo-500);
-      --paper-step-disabled-color: var(--disabled-text-color, --google-grey-500);
-    }
-
-    :host {
-      var(--paper-font-common-base);
-    }
-
-    :host .h-label {
-      margin: 0 8px;
-      white-space: nowrap;
-    }
-
-    :host .label {
-      margin-left: 12px;
-    }
-
-    :host .line {
-      margin-right: 8px;
-      width: 100%;
-      height: 1px;
-      background-color: var(--paper-grey-300);
-    }
-
-    :host .stepper-circle {
-      width: 24px;
-      height: 24px;
-      line-height: 24px;
-      border-radius: 50%;
-      color: #fff;
-      font-size: 12px;
-      text-align: center;
-    }
-
-    :host(.iron-selected) .stepper-circle {
-      background-color: var(--primary-color, --paper-step-primary-color);
-    }
-
-    :host(:not(.iron-selected)) .stepper-circle {
-      background-color: var(--disabled-text-color, --paper-step-disabled-color);
-    }
-
-    :host([completed]) .stepper-circle {
-      background-color: var(--primary-color, --paper-step-primary-color);
-    }
-
-    :host([completed]) .stepper-circle iron-icon {
-      width: 16px;
-    }
-
-    :host .label .optional-text,
-    :host .h-label .optional-text {
-      color: var(--disabled-text-color, --paper-step-disabled-color);
-      position: absolute;
-      font-weight: normal;
-      margin-top: 17px;
-      font-size: 12px;
-    }
-
-    :host(:not([selectable])) .label,
-    :host(:not([selectable])) .h-label {
-      color: var(--disabled-text-color, --paper-step-disabled-color);
-    }
-
-    :host .h-label .optional-text {
-      margin-top: 17px;
-    }
-
-    :host(.iron-selected) .label,
-    :host(.iron-selected) .h-label {
-      font-weight: 500;
-    }
-
-    :host #actions {
-      margin-top: 15px;
-      display: flex;
-    }
-
-    :host #actions paper-button {
-      margin: 0 14px 0 0;
-    }
-
-    /*:host #actions #skip, */
-    :host #actions #continue {
-      background: var(--paper-step-primary-color);
-      color: #fff;
-    }
-
-    :host #actions #continue[disabled] {
-      background: var(--paper-indigo-200);
-    }
-
-    :host #actions #skip {
-      margin-left: auto;
-    }
-
-    button {
-      -webkit-appearance: none;
-      border: 0;
-      padding: 0;
-      background: transparent;
-    }
-
-    button paper-button {
-      @apply(--paper-font-common-base);
-      font-size: 14px;
-    }
-
-  </style>
   <template>
+    <style>
+      :host {
+        var(--paper-font-common-base);
+        position: relative;
+      }
+
+      :host .h-label {
+        margin: 0 8px;
+        white-space: nowrap;
+      }
+
+      :host .label {
+        margin-left: 12px;
+      }
+
+      :host .line {
+        margin-right: 8px;
+        width: 100%;
+        height: 1px;
+        background-color: var(--paper-grey-300);
+      }
+
+      :host .stepper-circle {
+        width: 24px;
+        height: 24px;
+        line-height: 24px;
+        border-radius: 50%;
+        color: #fff;
+        font-size: 12px;
+        text-align: center;
+      }
+
+      :host(:not(.iron-selected)) .stepper-circle {
+        background-color: var(--paper-grey-500);
+      }
+
+      :host([completed]) .stepper-circle iron-icon {
+        width: 16px;
+      }
+
+      :host .label .optional-text,
+      :host .h-label .optional-text {
+        color: var(--paper-grey-600);
+        position: absolute;
+        font-weight: normal;
+        margin-top: 17px;
+        font-size: 12px;
+      }
+
+      :host(:not([selectable])) .label,
+      :host(:not([selectable])) .h-label {
+        color: var(--paper-step-disabled-color, --disabled-text-color);
+      }
+
+      :host .h-label .optional-text {
+        margin-top: 17px;
+      }
+
+      :host(.iron-selected) .label,
+      :host(.iron-selected) .h-label {
+        font-weight: 500;
+      }
+
+      :host #actions {
+        margin-top: 15px;
+        display: flex;
+      }
+
+      :host #actions paper-button {
+        margin: 0 14px 0 0;
+      }
+
+      :host #actions #skip {
+        margin-left: auto;
+      }
+
+      button {
+        -webkit-appearance: none;
+        border: 0;
+        padding: 0;
+        background: transparent;
+      }
+
+      button paper-button {
+        @apply(--paper-font-common-base);
+        font-size: 14px;
+      }
+
+    </style>
+    <div class="hover-target"><paper-ripple></paper-ripple></div>
+
     <div class$="stepper-circle {{_cssClass}}">
       <span hidden$="{{!completed}}"><iron-icon icon="{{_image}}"></iron-icon></span>
       <span hidden$="{{completed}}">{{step}}</span>
