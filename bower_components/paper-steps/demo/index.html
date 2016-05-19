@@ -33,6 +33,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 		<link rel="import" href="../../paper-button/paper-button.html">
 		<link rel="import" href="../../paper-toggle-button/paper-toggle-button.html">
 		<link rel="import" href="../../paper-input/paper-input.html">
+		<link rel="import" href="../../paper-input/paper-textarea.html">
     <link rel="import" href="../paper-steps.html">
     <link rel="import" href="../paper-step.html">
     <style>
@@ -49,9 +50,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </p>
       <template>
         <p>
-          <paper-toggle-button id="toggle" checked >Use horizontal layout if the screen is wide enough</paper-toggle-button>
+          <paper-toggle-button class="first" checked >Use horizontal layout if the screen is wide enough</paper-toggle-button>
         </p>
-        <paper-steps id="steps" >
+        <paper-steps class="first">
           <paper-step label="Create your store" continue-label="Create" >
             <h2>Setup Your Store</h2>
             <form is="iron-form" method="post" content-type="application/json"
@@ -99,11 +100,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           </paper-step>
         </paper-steps>
         <script>
-          var
-            b = document.querySelector('#toggle'),
-            steps = document.querySelector('#steps')
-          ;
-          b.addEventListener('iron-change', function(e) {
+          document.querySelector('paper-toggle-button.first')
+            .addEventListener('iron-change', function(e) {
+            var steps = document.querySelector('paper-steps.first');
+
             if (steps.vertical == this.active) {
               steps.vertical = !this.active;
               steps._updateVertical();
@@ -116,7 +116,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <demo-snippet class="demo">
       <p>Specify an initial step to begin on, for example to continue progress after a user leaves and then returns to the steps.</p>
       <template>
-        <paper-steps initial-step="1">
+        <paper-steps class="second" initial-step="1">
           <paper-step label="Profile" editable>
             <h2>Already Completed</h2>
             <p>
@@ -139,28 +139,51 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </demo-snippet>
 
     <demo-snippet class="demo">
-      <p>Override the primary color style.</p>
+      <p>Override the primary color style and require the steps to be completed in order.</p>
       <template>
         <style is="custom-style">
-          paper-steps.red {
+          paper-steps.red,
+          paper-toggle-button.red {
+            --primary-color: var(--paper-red-900);
+            //can use --paper-step-primary-color or --primary-color
             --paper-step-primary-color: var(--paper-red-900);
             --paper-step-primary-disabled-color: var(--paper-red-200);
           }
         </style>
-        <paper-steps class="red">
+        <p>
+          <paper-toggle-button class="red third" checked >Horizontal</paper-toggle-button>
+        </p>
+        <paper-steps class="red third" linear>
           <paper-step label="Styles" editable>
             <h2>Override styles</h2>
             <form is="iron-form" action="http://posttestserver.com/post.php?dir=paper-steps&dump" method="post">
               <paper-input name="name" label="Name" placeholder="Enter your name here."></paper-input>
             </form>
           </paper-step >
-          <paper-step label="Step #2" editable>
+          <paper-step label="Step #2">
             <h2>Another step</h2>
             <form is="iron-form" action="http://posttestserver.com/post.php?dir=paper-steps&dump" method="post">
               <paper-input name="profession" label="Profession" placeholder="What do you do for a living?"></paper-input>
             </form>
           </paper-step>
+          <paper-step label="Step #3" editable>
+            <h2>Third step</h2>
+            <form is="iron-form" action="http://posttestserver.com/post.php?dir=paper-steps&dump" method="post">
+              <paper-textarea name="notes" label="Notes" placeholder="Provide additional details." maxlength="250"></paper-textarea>
+            </form>
+          </paper-step>
         </paper-steps>
+        <script>
+          document.querySelector('paper-toggle-button.third')
+            .addEventListener('iron-change', function(e) {
+            var steps = document.querySelector('paper-steps.third');
+
+            if (steps.vertical == this.active) {
+              steps.vertical = !this.active;
+              steps._updateVertical();
+            }
+          });
+        </script>
       </template>
     </demo-snippet>
   </body>
