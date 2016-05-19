@@ -75,6 +75,14 @@ Polymer({
       type: Number
     },
     /**
+     * If true, requires the steps to be completed in ascending numerical order.
+     * If false, the steps may be completed out of order.
+     */
+    linear: {
+      type: Boolean,
+      value: false
+    },
+    /**
      * Determines how the `paper-steps` element is displayed.
      * true: always display in vertical mode
      * false: display in horizontal mode if the screen is wide enough,
@@ -199,14 +207,27 @@ Polymer({
    */
   _onActivate: function(e) {
     var
-      item = e.detail && e.detail.item
+      item = e.detail && e.detail.item,
+      selectable = item && item.selectable,
+      selector = this.$.selector,
+      items = selector && selector.items,
+      previous = selector && item.step > 1 && items[selector.indexOf(item)-1],
+      stop = function(evt) {
+        evt.preventDefault();
+        evt.stopPropagation();
+        return false;
+      }
     ;
 
-    //if item is selectable, disable click / touch event.
-    if (item && item.selectable === false) {
-      e.preventDefault();
-      e.stopPropagation();
-      return false;
+    //if item is not selectable, disable click / touch event.
+    if (selectable !== true) {
+      return stop(e);
+
+    } else if (this.linear) {
+      //if linear, not first and previous item must be completed before advancing
+      if (previous && previous.completed !== true) {
+        return stop(e);
+      }
     }
   },
   /**
