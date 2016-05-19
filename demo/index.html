@@ -51,7 +51,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <p>
           <paper-toggle-button id="toggle" checked >Use horizontal layout if the screen is wide enough</paper-toggle-button>
         </p>
-        <paper-steps id="steps" >
+        <paper-steps id="steps" linear>
           <paper-step label="Create your store" continue-label="Create" >
             <h2>Setup Your Store</h2>
             <form is="iron-form" method="post" content-type="application/json"
@@ -139,7 +139,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </demo-snippet>
 
     <demo-snippet class="demo">
-      <p>Override the primary color style.</p>
+      <p>Override the primary color style and require the steps to be completed in order.</p>
       <template>
         <style is="custom-style">
           paper-steps.red {
@@ -147,17 +147,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             --paper-step-primary-disabled-color: var(--paper-red-200);
           }
         </style>
-        <paper-steps class="red">
+        <paper-steps class="red" linear>
           <paper-step label="Styles" editable>
             <h2>Override styles</h2>
             <form is="iron-form" action="http://posttestserver.com/post.php?dir=paper-steps&dump" method="post">
               <paper-input name="name" label="Name" placeholder="Enter your name here."></paper-input>
             </form>
           </paper-step >
-          <paper-step label="Step #2" editable>
+          <paper-step label="Step #2">
             <h2>Another step</h2>
             <form is="iron-form" action="http://posttestserver.com/post.php?dir=paper-steps&dump" method="post">
               <paper-input name="profession" label="Profession" placeholder="What do you do for a living?"></paper-input>
+            </form>
+          </paper-step>
+          <paper-step label="Step #3" editable>
+            <h2>Third step</h2>
+            <form is="iron-form" action="http://posttestserver.com/post.php?dir=paper-steps&dump" method="post">
+              <paper-textarea name="notes" label="Notes" placeholder="Provide additional details." maxlength="250"></paper-textarea>
             </form>
           </paper-step>
         </paper-steps>
