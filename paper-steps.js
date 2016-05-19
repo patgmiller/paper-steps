@@ -211,7 +211,7 @@ Polymer({
       selectable = item && item.selectable,
       selector = this.$.selector,
       items = selector && selector.items,
-      previous = selector && item.step > 1 && items[selector.indexOf(item)-1],
+      previous = selector && item.step > 1 && items[item.step-2],
       stop = function(evt) {
         evt.preventDefault();
         evt.stopPropagation();
