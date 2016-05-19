@@ -2,6 +2,14 @@
  - Work in progress.
 
 
+## [0.0.6] - 2016-05-19
+ - Added `linear` property to `paper-steps`. When `linear` is true, then advancement to another step will be blocked until the step prior to desired step selection has been completed.
+
+
+## [0.0.5] - 2016-05-18
+ - Bugfix / Improvement: Updated custom styling to fix and also simplify overriding them.
+
+
 ## [0.0.4] - 2016-05-06
  - Added property `initialStep`, ability to start on a step other than first one.
   - When set, `paper-steps` will also check if previous steps are complete and mark them as complete.
@@ -34,7 +42,9 @@
  - Setup tests to run on travis-ci.org.
 
 
-[unreleased]: https://github.com/patgmiller/paper-steps/compare/0.0.4...master
+[unreleased]: https://github.com/patgmiller/paper-steps/compare/0.0.6...master
+[0.0.6]: https://github.com/patgmiller/paper-steps/compare/0.0.5...0.0.6
+[0.0.5]: https://github.com/patgmiller/paper-steps/compare/0.0.4...0.0.5
 [0.0.4]: https://github.com/patgmiller/paper-steps/compare/0.0.3...0.0.4
 [0.0.3]: https://github.com/patgmiller/paper-steps/compare/0.0.2...0.0.3
 [0.0.2]: https://github.com/patgmiller/paper-steps/compare/0.0.1...0.0.2
