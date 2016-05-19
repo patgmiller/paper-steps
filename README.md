@@ -53,6 +53,6 @@ Install it via:
 
     npm install -g web-component-tester
 
-Then, you can run all tests on _all_ of your local browsers via:
+Then, you can run all tests on _all_ of your local browsers via: 
 
     wct
