@@ -100,11 +100,17 @@ suite('<paper-steps> properties and defaults', function() {
     }
   });
 
-  test('paper-steps[linear] progress in order.', function() {
+  test('paper-steps[linear] progression.', function() {
     var selector = steps.$.selector;
     for(i=1, len=items.length; i<len; i++) {
       selector.select(i);
       expect(selector.selected).to.not.equal(0);
+    }
+
+    steps.linear = false;
+    for(i=1, len=items.length; i<len; i++) {
+      selector.select(i);
+      expect(selector.selected).to.equal(i);
     }
   });
 });
