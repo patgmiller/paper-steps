@@ -200,6 +200,21 @@ Example:
       :host /deep/ #steps_content.vertical paper-step #step_content.last {
         border-left: none;
       }
+
+      :host #messages.error {
+        --paper-toast-background-color: var(--paper-steps-messages-error, --paper-red-900);
+        /*--paper-toast-color: */
+      }
+
+      :host #messages.success {
+        --paper-toast-background-color: var(--paper-steps-messages-success, --paper-green-900);
+        /*--paper-toast-color: */
+      }
+
+      :host #messages.warning {
+        --paper-toast-background-color: var(--paper-steps-messages-warning, --paper-yellow-700);
+        /*--paper-toast-color: */
+      }
     </style>
 
     <iron-selector id="selector"
