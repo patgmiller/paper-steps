@@ -25,6 +25,14 @@ Polymer({
       value: true
     },
     /**
+     *
+     */
+    _message: String,
+    /**
+     *
+     */
+    _messageClass: String,
+    /**
      * Index of the currently selected `paper-step` element.
      */
     _selected: {
