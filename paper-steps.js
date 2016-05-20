@@ -148,6 +148,8 @@ Polymer({
       //trigger an initial update
       that._updateVertical();
     }, 250);
+
+    this.$.messages.fitInto = this; 
   },
 
   detached: function() {},
@@ -285,5 +287,18 @@ Polymer({
         this._vertical = ruler.scrollWidth > ruler.offsetWidth;
       }
     }
+  },
+  /**
+   *
+   */
+  calloutMessage: function(msg, type) {
+    this._message = typeof msg == 'string' && msg || '';
+    this._messageClass type = (
+      typeof type == 'string'
+      && ['error', 'success', 'warning'].contains(type)
+      && type || 'error'
+    );
+
+    this.$.messages.open();
   },
 });
