@@ -259,7 +259,7 @@ Polymer({
   _onPreSubmit: function(e) {
   },
   /**
-   *
+   * Handles iron form events for `iron-form-error` and `iron-form-response`.
    */
   _onResponse: function(e) {
     var
@@ -272,18 +272,18 @@ Polymer({
     }
     if (request && request.status === 200) {
       this.completed = true;
-      this.lastSuccessResponse = e.detail;
+      this.lastSuccessResponse = request;
       try {
         this.data = this._getForm().serialize();
       } catch (ex) {
         this.data = {}
       }
     } else {
-      this.lastErrorResponse = e.detail;
+      this.lastErrorResponse = request;
     }
   },
   /**
-   *
+   * Hooks into the `iron-form-submit` event to disable the form submit button.
    */
   _onSubmit: function(e) {
     var
@@ -294,7 +294,6 @@ Polymer({
     }
   },
   /**
-   *
    */
   _selectable: function(completed, editable) {
     return editable || !completed;
