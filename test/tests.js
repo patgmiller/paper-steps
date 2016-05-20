@@ -128,19 +128,33 @@ suite('<paper-steps> events', function() {
 
   test('paper-step is complete after skip pressed.', function() {
     item = items[0];
+    //initially undefined
+    expect(item.lastErrorResponse).to.be.undefined;
+    expect(item.lastSuccessResponse).to.be.undefined;
+
     item.$.skip.click();
     //event is debounced, so wait 300ms.
     item.async(function() {
       assert.equal(item.completed, true);
+      expect(item.data).to.be.equal({});
+      expect(item.lastErrorResponse).to.be.undefined;
+      expect(item.lastSuccessResponse).to.be.undefined;
     }, 300);
   });
 
   test('paper-step is complete after continue pressed.', function() {
     item = items[0];
+    //initially undefined
+    expect(item.lastErrorResponse).to.be.undefined;
+    expect(item.lastSuccessResponse).to.be.undefined;
+
     item.$.continue.click();
     //event is debounced, so wait 300ms.
     item.async(function() {
       assert.equal(item.completed, true);
+      expect(item.data).to.be.equal(item._getForm().serialize());
+      expect(item.lastErrorResponse).to.be.undefined;
+      expect(item.lastSuccessResponse).to.be.not.ok;
     }, 300);
   });
 
