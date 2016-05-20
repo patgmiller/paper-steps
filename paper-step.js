@@ -52,11 +52,7 @@ Polymer({
     /**
      * A copy of the serialized form data for the last successful submit.
      */
-     data: {
-       type: Object,
-       notify: true,
-       value: {}
-     },
+     data: Object,
     /**
      * Used internally to debouce custom events:
      * `paper-step-complete`, and `paper-step-next`.
