@@ -25,11 +25,7 @@ Polymer({
       value: true
     },
     /**
-     *
-     */
-    _message: String,
-    /**
-     *
+     * Used by `paper-toast` #messages to override the `background-color`.
      */
     _messageClass: String,
     /**
@@ -149,7 +145,8 @@ Polymer({
       that._updateVertical();
     }, 250);
 
-    this.$.messages.fitInto = this; 
+    this.$.messages.fitInto = this;
+    this.listen(this.$.closeMessage, 'tap', '_closeMessage');
   },
 
   detached: function() {},
@@ -211,6 +208,9 @@ Polymer({
     }, 250);
 
     return steps;
+  },
+  _closeMessage: function(e) {
+    this.$.messages.hide();
   },
   /**
    *
@@ -289,16 +289,27 @@ Polymer({
     }
   },
   /**
+   * Display a message using `paper-toast`.
    *
+   * - `message` (String): The message you want to display to user.
+   * - `type` (String): Changes css class on `paper-toast` element. Accepted values: `error`, `success`, `warning`. Default: `error`.
+   * - `ms` (Number): Is passed as `duration` to `paper-toast`.
    */
-  calloutMessage: function(msg, type) {
-    this._message = typeof msg == 'string' && msg || '';
-    this._messageClass type = (
+  showMessage: function(message, type, ms) {
+    var
+      ms = typeof ms == 'number' && ms || 3000,
+      message = typeof message == 'string' && message || ''
+    ;
+
+    if (!Boolean(message)) {
+      return; //do nothing if message is blank
+    }
+    this._messageClass = (
       typeof type == 'string'
-      && ['error', 'success', 'warning'].contains(type)
+      && ['error', 'success', 'warning'].includes(type)
       && type || 'error'
     );
 
-    this.$.messages.open();
+    this.$.messages.show({text: message, duration: ms});
   },
 });
