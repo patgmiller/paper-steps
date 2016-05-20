@@ -61,7 +61,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
                 pattern="^(([a-zA-Z]{1})|([a-zA-Z]{1}[a-zA-Z]{1})|([a-zA-Z]{1}[0-9]{1})|([0-9]{1}[a-zA-Z]{1})|([a-zA-Z0-9][a-zA-Z0-9-_]{1,61}[a-zA-Z0-9]))\.([a-zA-Z]{2,6}|[a-zA-Z0-9-]{2,30}\.[a-zA-Z]{2,3})$"
               ></paper-input>
-              <paper-input name="store-name" label="Store Name" auto-validate required></paper-input>
+              <paper-input name="store_name" label="Store Name" auto-validate required></paper-input>
             </form>
           </paper-step>
           <paper-step label="Add contact information" continue-label="Add Info" optional editable>
@@ -149,6 +149,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             --paper-step-primary-color: var(--paper-red-900);
             --paper-step-primary-disabled-color: var(--paper-red-200);
           }
+
+          strong.red {
+            color: var(--paper-red-900);
+            font-style: italic;
+          }
+          strong.green {
+            color: var(--paper-green-900);
+            font-style: italic;
+          }
         </style>
         <p>
           <paper-toggle-button class="red third" checked >Horizontal</paper-toggle-button>
@@ -156,7 +165,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <paper-steps class="red third" linear>
           <paper-step label="Styles" editable>
             <h2>Override styles</h2>
-            <form is="iron-form" action="http://posttestserver.com/post.php?dir=paper-steps&dump" method="post">
+            <p>
+              A <strong class="red">500 Internal Error</strong> will be returned the first time this step's form is submitted with valid input.
+            </p>
+            <p>
+              A <strong class="green">200 OK</strong> status will return returned for the second and any subsequent attempts.
+            </p>
+            <form is="iron-form" action="http://posttestserver.com/post.php?dir=paper-steps&dump&status_code=500" method="post">
               <paper-input name="name" label="Name" placeholder="Enter your name here."></paper-input>
             </form>
           </paper-step >
@@ -183,6 +198,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               steps._updateVertical();
             }
           });
+
+          //Step #1 will return an HTTP error on the first submission attemp,
+          //but then the next submit will succeed.
+          document.querySelector('paper-steps.third form[is="iron-form"]')
+            .addEventListener('iron-form-error', function(e) {
+              this.action = this.action.replace(/status_code=\d+/i, '');
+            });
         </script>
       </template>
     </demo-snippet>

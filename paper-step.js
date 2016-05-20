@@ -50,6 +50,14 @@ Polymer({
       value: 'Continue'
     },
     /**
+     * A copy of the serialized form data for the last successful submit.
+     */
+     data: {
+       type: Object,
+       notify: true,
+       value: {}
+     },
+    /**
      * Used internally to debouce custom events:
      * `paper-step-complete`, and `paper-step-next`.
      */
@@ -66,24 +74,26 @@ Polymer({
       reflectToAttribute: true
     },
     /**
-     * Specify an alternate label to use for the `reset` button.
-     */
-    resetLabel: {
-      type: String,
-      value: 'Reset'
-    },
-    /**
      * The text to display in the steps area next to the image icon.
      */
     label: {
       type: String
     },
+    lastErrorResponse: Object,
+    lastSuccessResponse: Object,
     /**
      * To indicate if the current step required or optional.
      */
     optional: {
       type: Boolean,
       value: false
+    },
+    /**
+     * Specify an alternate label to use for the `reset` button.
+     */
+    resetLabel: {
+      type: String,
+      value: 'Reset'
     },
     selectable: {
       type: Boolean,
@@ -256,11 +266,20 @@ Polymer({
       el = this._getPrimaryButton(),
       request = e && e.detail || false
     ;
+
     if (Polymer.isInstance(el) && el.disabled !== undefined) {
       el.disabled = false;
     }
     if (request && request.status === 200) {
       this.completed = true;
+      this.lastSuccessResponse = e.detail;
+      try {
+        this.data = this._getForm().serialize();
+      } catch (ex) {
+        this.data = {}
+      }
+    } else {
+      this.lastErrorResponse = e.detail;
     }
   },
   /**
