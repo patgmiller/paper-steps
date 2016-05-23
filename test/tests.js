@@ -12,6 +12,32 @@ suite('<paper-step>', function() {
 
 });
 
+suite('<paper-steps> submit button', function() {
+
+  setup(function() {
+    el = item = null;
+    i = len = 0;
+    steps = fixture('paper-steps-fixture-disabled-submit');
+    items = steps.$.steps_content.items;
+  });
+
+  test('paper-button continue is disabled / re-enabled on submit.', function() {
+    item = items[0];
+    item.$.continue.click();
+
+    //non-deterministic method of testing disabled state
+    item.async(function() {
+      assert.equal(this.$.continue.disabled, true);
+    }, 50);
+
+    //event is debounced, so wait
+    item.async(function() {
+      assert.equal(this.$.continue.disabled, false);
+    }, 1200);
+  });
+
+});
+
 suite('<paper-steps> properties and defaults', function() {
 
   setup(function() {
@@ -135,11 +161,11 @@ suite('<paper-steps> events', function() {
     item.$.skip.click();
     //event is debounced, so wait 300ms.
     item.async(function() {
-      assert.equal(item.completed, true);
-      expect(item.data).to.be.equal({});
-      expect(item.lastErrorResponse).to.be.undefined;
-      expect(item.lastSuccessResponse).to.be.undefined;
-    }, 300);
+      assert.equal(this.completed, true);
+      expect(this.data).to.be.equal({});
+      expect(this.lastErrorResponse).to.be.undefined;
+      expect(this.lastSuccessResponse).to.be.undefined;
+    }, 500);
   });
 
   test('paper-step is complete after continue pressed.', function() {
@@ -151,26 +177,11 @@ suite('<paper-steps> events', function() {
     item.$.continue.click();
     //event is debounced, so wait 300ms.
     item.async(function() {
-      assert.equal(item.completed, true);
-      expect(item.data).to.be.equal(item._getForm().serialize());
-      expect(item.lastErrorResponse).to.be.undefined;
-      expect(item.lastSuccessResponse).to.be.not.ok;
-    }, 300);
-  });
-
-  test('paper-button continue is disabled / re-enabled on submit.', function() {
-    item = items[0];
-    item.$.continue.click();
-
-    //non-deterministic method of testing disabled state
-    // item.async(function() {
-    //   assert.equal(item.$.continue.disabled, true);
-    // }, 50);
-
-    //event is debounced, so wait 300ms.
-    item.async(function() {
-      assert.equal(item.$.continue.disabled, false);
-    }, 300);
+      assert.equal(this.completed, true);
+      expect(this.data).to.be.equal(this._getForm().serialize());
+      expect(this.lastErrorResponse).to.be.undefined;
+      expect(this.lastSuccessResponse).to.be.not.ok;
+    }, 500);
   });
 
   test('paper-button only triggers one event: submit, reset, skip.', function() {
