@@ -202,6 +202,10 @@ Example:
         border-left: none;
       }
 
+      :host paper-toast {
+        display: absolute;
+      }
+
       :host paper-toast#messages.error {
         background-color: var(--paper-steps-messages-error, --paper-red-900);
         /*color: */
@@ -243,7 +247,7 @@ Example:
       <content></content>
     </iron-selector>
 
-    <paper-toast id="messages" class$="{{_messageClass}}" >
+    <paper-toast id="messages" class$="{{_messageClass}}">
       <paper-button id="closeMessage" raised>Close</paper-button>
     </paper-toast>
   </template>
