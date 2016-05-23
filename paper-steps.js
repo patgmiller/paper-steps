@@ -298,7 +298,7 @@ Polymer({
   showMessage: function(message, type, ms) {
     var
       ms = typeof ms == 'number' && ms || 3000,
-      message = typeof message == 'string' && message || ''
+      message = message && String(message) || ''
     ;
 
     if (!Boolean(message)) {
