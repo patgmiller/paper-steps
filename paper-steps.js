@@ -244,7 +244,13 @@ Polymer({
    *
    */
   _onComplete: function(e) {
-    this.$.selector.items[parseInt(e.detail) - 1].completed = true;
+    try {
+      this.$.selector.items[parseInt(e.detail) - 1].completed = true;
+    } catch (e) {
+      if (e instanceof TypeError) {
+        console.log('TypeError on paper-step-completed', e);
+      }
+    }
   },
   /**
    *
