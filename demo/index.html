@@ -157,12 +157,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             --paper-step-primary-disabled-color: var(--paper-red-200);
           }
 
+          strong.green {
+            color: var(--paper-green-900);
+            font-style: italic;
+          }
           strong.red {
             color: var(--paper-red-900);
             font-style: italic;
           }
-          strong.green {
-            color: var(--paper-green-900);
+          strong.yellow {
+            color: var(--paper-yellow-800);
             font-style: italic;
           }
         </style>
@@ -174,6 +178,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <h2>Override styles</h2>
             <p>
               A <strong class="red">500 Internal Error</strong> will be returned the first time this step's form is submitted with valid input.
+            </p>
+            <p>
+              A <strong class="yellow">warning message</strong> will be displayed if the form is invalid.
             </p>
             <p>
               A <strong class="green">200 OK</strong> status will return returned for the second and any subsequent attempts.
