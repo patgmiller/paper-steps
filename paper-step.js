@@ -267,13 +267,13 @@ Polymer({
       el.disabled = false;
     }
     if (request && request.status === 200) {
-      this.completed = true;
       this.lastSuccessResponse = request;
       try {
         this.data = this._getForm().serialize();
       } catch (ex) {
         this.data = {}
       }
+      this.completed = true;
     } else {
       this.lastErrorResponse = request;
     }
