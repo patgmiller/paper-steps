@@ -310,7 +310,7 @@ Polymer({
     if (!Boolean(message)) {
       return; //do nothing if message is blank
     }
-    console.log(message, type, ms);
+    
     this._messageClass = (
       typeof type == 'string'
       && ['error', 'success', 'warning'].includes(type)
