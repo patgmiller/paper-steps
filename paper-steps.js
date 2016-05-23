@@ -10,6 +10,10 @@ Polymer({
       computed: '__cssClass(_vertical)'
     },
     /**
+     * Added property for `paper-toast` backwards compatibility.
+     */
+    _duration: Number,
+    /**
      * Computed boolean property based on `_vertical`, used for convenience.
      */
     _horizontal: {
@@ -24,6 +28,10 @@ Polymer({
       type: Boolean,
       value: true
     },
+    /**
+     * Added for `paper-toast` backwards compatibility.
+     */
+    _message: String,
     /**
      * Used by `paper-toast` #messages to override the `background-color`.
      */
@@ -310,13 +318,16 @@ Polymer({
     if (!Boolean(message)) {
       return; //do nothing if message is blank
     }
-    
+
     this._messageClass = (
       typeof type == 'string'
       && ['error', 'success', 'warning'].includes(type)
       && type || 'error'
     );
 
+    //toast backwards compatibility for method `show()` without optional arguments
+    this._message = message;
+    this._duration = ms;
     this.$.messages.show({text: message, duration: ms});
   },
 });

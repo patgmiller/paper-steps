@@ -203,7 +203,8 @@ Example:
       }
 
       :host paper-toast {
-        position: absolute;
+        /*position: absolute;*/
+        @apply(--paper-steps-paper-toast);
       }
 
       :host paper-toast#messages.error {
@@ -247,7 +248,8 @@ Example:
       <content></content>
     </iron-selector>
 
-    <paper-toast id="messages" class$="{{_messageClass}}">
+    <paper-toast id="messages" class$="{{_messageClass}}"
+      text$="{{_message}}" duration$={{_duration}}>
       <paper-button id="closeMessage" raised>Close</paper-button>
     </paper-toast>
   </template>
