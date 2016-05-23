@@ -209,6 +209,25 @@ suite('<paper-steps> events', function() {
 
 });
 
+suite('<paper-steps> messages', function() {
+
+  setup(function() {
+    el = item = form = null;
+    i = len = 0;
+    steps = fixture('paper-steps-fixture');
+    items = steps.$.steps_content.items;
+    _items = steps.$.selector.$$('template').items; //horizontal
+    form = items[0].$.step_content.querySelector('form[is="iron-form"]');
+  });
+
+  test('paper-steps showMessage displays paper-toast pop up.', function() {
+    sinon.spy(steps.$.messages, "show");
+    steps.showMessage('Testing', 'success');
+    assert(steps.$.messages.show.calledOnce);
+  });
+
+});
+
 suite('<paper-steps> editable', function() {
   setup(function() {
     el = item = form = null;
