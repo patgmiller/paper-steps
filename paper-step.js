@@ -349,7 +349,7 @@ Polymer({
     this.debounce('paper-steps-submit', function() {
       form = that._getForm();
       // submit form if it exists.
-      if (form && form.validate()) {
+      if (form) {
         form.submit();
       }
     }, 300);
