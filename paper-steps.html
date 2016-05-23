@@ -11,7 +11,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../iron-resizable-behavior/iron-resizable-behavior.html">
 <link rel="import" href="../iron-selector/iron-selector.html">
+<link rel="import" href="../paper-button/paper-button.html">
 <link rel="import" href="../paper-styles/color.html">
+<link rel="import" href="../paper-toast/paper-toast.html">
 <link rel="import" href="paper-step.html">
 
 <!--
@@ -199,6 +201,31 @@ Example:
       :host /deep/ #steps_content.vertical paper-step #step_content.last {
         border-left: none;
       }
+
+      :host paper-toast {
+        /*position: absolute;*/
+        @apply(--paper-steps-paper-toast);
+      }
+
+      :host paper-toast#messages.error {
+        background-color: var(--paper-steps-messages-error, --paper-red-900);
+        /*color: */
+      }
+
+      :host paper-toast#messages.success {
+        background-color: var(--paper-steps-messages-success, --paper-green-900);
+        /*color: */
+      }
+
+      :host paper-toast#messages.warning {
+        background-color: var(--paper-steps-messages-warning, --paper-yellow-800);
+        /*color: */
+      }
+
+      :host paper-toast paper-button#closeMessage {
+        background-color: var(--paper-grey-50);
+        color: var(--paper-grey-900);
+      }
     </style>
 
     <iron-selector id="selector"
@@ -220,6 +247,10 @@ Example:
       items="{{_steps}}" >
       <content></content>
     </iron-selector>
+
+    <paper-toast id="messages" class$="{{_messageClass}}">
+      <paper-button id="closeMessage" raised>Close</paper-button>
+    </paper-toast>
   </template>
 
   <script src="paper-steps.js"></script>

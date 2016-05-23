@@ -25,6 +25,10 @@ Polymer({
       value: true
     },
     /**
+     * Used by `paper-toast` #messages to override the `background-color`.
+     */
+    _messageClass: String,
+    /**
      * Index of the currently selected `paper-step` element.
      */
     _selected: {
@@ -140,6 +144,9 @@ Polymer({
       //trigger an initial update
       that._updateVertical();
     }, 250);
+
+    this.$.messages.fitInto = this;
+    this.listen(this.$.closeMessage, 'tap', '_closeMessage');
   },
 
   detached: function() {},
@@ -202,6 +209,9 @@ Polymer({
 
     return steps;
   },
+  _closeMessage: function(e) {
+    this.$.messages.hide();
+  },
   /**
    *
    */
@@ -234,7 +244,13 @@ Polymer({
    *
    */
   _onComplete: function(e) {
-    this.$.selector.items[parseInt(e.detail) - 1].completed = true;
+    try {
+      this.$.selector.items[parseInt(e.detail) - 1].completed = true;
+    } catch (e) {
+      if (e instanceof TypeError) {
+        console.log('TypeError on paper-step-completed', e);
+      }
+    }
   },
   /**
    *
@@ -277,5 +293,34 @@ Polymer({
         this._vertical = ruler.scrollWidth > ruler.offsetWidth;
       }
     }
+  },
+  /**
+   * Display a message using `paper-toast`.
+   *
+   * - `message` (String): The message you want to display to user.
+   * - `type` (String): Changes css class on `paper-toast` element. Accepted values: `error`, `success`, `warning`. Default: `error`.
+   * - `ms` (Number): Is passed as `duration` to `paper-toast`.
+   */
+  showMessage: function(message, type, ms) {
+    var
+      ms = typeof ms == 'number' && ms || 3000,
+      message = message && String(message) || '',
+      $messages = this.$.messages
+    ;
+
+    if (!Boolean(message)) {
+      return; //do nothing if message is blank
+    }
+
+    this._messageClass = (
+      typeof type == 'string'
+      && ['error', 'success', 'warning'].includes(type)
+      && type || 'error'
+    );
+
+    //toast backwards compatibility for method `show()` without optional arguments
+    $messages.text = message;
+    $messages.duration = ms;
+    $messages.show({text: message, duration: ms});
   },
 });
