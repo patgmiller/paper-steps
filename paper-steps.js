@@ -319,10 +319,8 @@ Polymer({
     );
 
     //toast backwards compatibility for method `show()` without optional arguments
+    $messages.text = message;
+    $messages.duration = ms;
     $messages.show({text: message, duration: ms});
-    if ($messages.text !== message) {
-      $messages.text = message;
-      $messages.duration = ms;
-    }
   },
 });
