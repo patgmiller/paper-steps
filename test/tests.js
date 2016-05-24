@@ -150,10 +150,10 @@ suite('<paper-steps> events', function() {
     items = steps.$.steps_content.items;
     _items = steps.$.selector.$$('template').items; //horizontal
     form = items[0].$.step_content.querySelector('form[is="iron-form"]');
+    item = items[0];
   });
 
   test('paper-step is complete after skip pressed.', function() {
-    item = items[0];
     //initially undefined
     expect(item.lastErrorResponse).to.be.undefined;
     expect(item.lastSuccessResponse).to.be.undefined;
@@ -166,10 +166,15 @@ suite('<paper-steps> events', function() {
       expect(this.lastErrorResponse).to.be.undefined;
       expect(this.lastSuccessResponse).to.be.undefined;
     }, 500);
+
   });
 
   test('paper-step is complete after continue pressed.', function() {
-    item = items[0];
+    var
+      selector = steps.$.selector,
+      input = form && form.getEffectiveChildren()[0]
+    ;
+
     //initially undefined
     expect(item.lastErrorResponse).to.be.undefined;
     expect(item.lastSuccessResponse).to.be.undefined;
@@ -181,12 +186,33 @@ suite('<paper-steps> events', function() {
       expect(this.data).to.be.equal(this._getForm().serialize());
       expect(this.lastErrorResponse).to.be.undefined;
       expect(this.lastSuccessResponse).to.be.not.ok;
+      expect(selector.selected).to.be.equal(2);
+    }, 500);
+
+    //go back
+    selector.select(1);
+    item.async(function() {
+      expect(selector.selected).to.be.equal(1);
+      expect(steps.$.steps_content.selected).to.be.equal(1);
+    }, 250);
+
+    //edit input, will trigger complete=false
+    input.value = 'testing';
+    item.async(function() {
+      expect(this.completed).to.be.equal(false);
+    }, 100);
+
+    item.$.continue.click();
+
+    //should still advance
+    item.async(function() {
+      expect(this.completed).to.be.equal(true);
+      expect(selector.selected).to.be.equal(2);
+      expect(steps.$.steps_content.selected).to.be.equal(2);
     }, 500);
   });
 
   test('paper-button only triggers one event: submit, reset, skip.', function() {
-    item = items[0];
-
     //trigger reset click event 100's
     sinon.spy(form, "reset");
     for (i=0, len=100; i<len; i++) {
