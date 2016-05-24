@@ -269,6 +269,14 @@ Polymer({
    *
    */
   _onPreSubmit: function(e) {
+    var
+      form = this._getForm()
+    ;
+
+    if (this.completed) {
+      e.preventDefault();
+      this.fire('paper-step-already-complete', this);
+    }
   },
   /**
    * Handles iron form events for `iron-form-error` and `iron-form-response`.
@@ -301,6 +309,7 @@ Polymer({
     var
       el = this._getPrimaryButton()
     ;
+
     if (Polymer.isInstance(el) && el.disabled !== undefined) {
       el.disabled = true;
     }

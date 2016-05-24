@@ -102,6 +102,7 @@ Polymer({
     'iron-deselect': '_onDeselect',
     'iron-select': '_onSelect',
     'iron-resize': '_onIronResize',
+    'paper-step-already-complete': '_onAlreadyComplete',
     'paper-step-next': '_onNext',
     'paper-step-complete': '_onComplete'
   },
@@ -239,6 +240,9 @@ Polymer({
         return stop(e);
       }
     }
+  },
+  _onAlreadyComplete: function(e) {
+    this.showMessage('Please enter some changes before re-submitting this step.', 'info');
   },
   /**
    *
