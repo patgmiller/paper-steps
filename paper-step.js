@@ -140,7 +140,8 @@ Polymer({
 
   attached: function() {
     var
-      parent = this.parentNode && this.parentNode.indexOf && this.parentNode || null
+      parent = this.parentNode && this.parentNode.indexOf && this.parentNode || null,
+      form = this._getForm()
     ;
 
     // @TODO: finish adding fallback for shadowDom, not yet ready.
@@ -174,6 +175,16 @@ Polymer({
     this.listen(this.$.continue, 'tap', '_submit');
     this.listen(this.$.reset, 'tap', '_reset');
     this.listen(this.$.skip, 'tap', '_skip');
+
+    if (form && Polymer.isInstance(form)) {
+      var i, child, len,
+        children = form.getEffectiveChildren()
+      ;
+      for (i=0, len=children.length; i<len; i++) {
+        child = children[i];
+        this.listen(child, 'change', '_onChange');
+      }
+    }
   },
 
   detached: function() {},
@@ -234,6 +245,11 @@ Polymer({
     }
     return 'icons:check';
     // return 'image:brightness-1';
+  },
+  _onChange: function(e) {
+    if (this.completed) {
+      this.completed = false;
+    }
   },
   /**
    *
