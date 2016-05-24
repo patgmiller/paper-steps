@@ -15,7 +15,8 @@ env:
     - CXX=g++-4.8
 node_js: stable
 addons:
-  firefox: latest
+  # firefox: latest
+  firefox: "44.0.2"
   apt:
     sources:
       - google-chrome
