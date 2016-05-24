@@ -155,6 +155,7 @@ suite('<paper-steps> events', function() {
     items = steps.$.steps_content.items;
     _items = steps.$.selector.$$('template').items; //horizontal
     form = items[0].$.step_content.querySelector('form[is="iron-form"]');
+    item = items[0];
   });
 
   test('paper-step is complete after skip pressed.', function() {
@@ -201,6 +202,26 @@ suite('<paper-steps> events', function() {
         expect(this.lastSuccessResponse).to.be.not.ok;
         // item.async(function() {
         // }, 500);
+      },
+      function() {
+        selector.select(1);
+      },
+      function() {
+        expect(selector.selected).to.be.equal(1);
+        expect(steps.$.steps_content.selected).to.be.equal(1);
+
+        //edit input, will trigger complete=false
+        input.value = 'testing';
+      },
+      function() {
+        expect(this.completed).to.be.equal(false);
+
+        item.$.continue.click();
+      },
+      function() {
+        expect(this.completed).to.be.equal(true);
+        expect(selector.selected).to.be.equal(2);
+        expect(steps.$.steps_content.selected).to.be.equal(2);
       },
     ])
 
