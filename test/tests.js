@@ -22,18 +22,23 @@ suite('<paper-steps> submit button', function() {
   });
 
   test('paper-button continue is disabled / re-enabled on submit.', function() {
-    item = items[0];
-    item.$.continue.click();
 
-    //non-deterministic method of testing disabled state
-    // item.async(function() {
-    //   assert.equal(this.$.continue.disabled, true);
-    // }, 50);
-
-    //event is debounced, so wait
-    item.async(function() {
-      assert.equal(this.$.continue.disabled, false);
-    }, 1200);
+    async.series([
+      function () {
+        item = items[0];
+        item.$.continue.click();
+      },
+      function () {
+        //non-deterministic method of testing disabled state
+        assert.equal(this.$.continue.disabled, true);
+      },
+      function () {
+        //event is debounced, so wait
+        assert.equal(this.$.continue.disabled, false);
+        // item.async(function() {
+        // }, 1200);
+      }
+    ]);
   });
 
 });
@@ -153,71 +158,94 @@ suite('<paper-steps> events', function() {
   });
 
   test('paper-step is complete after skip pressed.', function() {
-    item = items[0];
-    //initially undefined
-    expect(item.lastErrorResponse).to.be.undefined;
-    expect(item.lastSuccessResponse).to.be.undefined;
 
-    item.$.skip.click();
-    //event is debounced, so wait 300ms.
-    item.async(function() {
-      assert.equal(this.completed, true);
-      expect(this.data).to.be.equal({});
-      expect(this.lastErrorResponse).to.be.undefined;
-      expect(this.lastSuccessResponse).to.be.undefined;
-    }, 500);
+    async.series([
+      function() {
+        item = items[0];
+        //initially undefined
+        expect(item.lastErrorResponse).to.be.undefined;
+        expect(item.lastSuccessResponse).to.be.undefined;
+      },
+      function() {
+        item.$.skip.click();
+      },
+      function() {
+        //event is debounced, so wait 300ms.
+        assert.equal(this.completed, true);
+        expect(this.data).to.be.equal({});
+        expect(this.lastErrorResponse).to.be.undefined;
+        expect(this.lastSuccessResponse).to.be.undefined;
+        // item.async(function() {
+        // }, 500);
+      },
+    ]);
   });
 
   test('paper-step is complete after continue pressed.', function() {
-    item = items[0];
-    //initially undefined
-    expect(item.lastErrorResponse).to.be.undefined;
-    expect(item.lastSuccessResponse).to.be.undefined;
 
-    item.$.continue.click();
-    //event is debounced, so wait 300ms.
-    item.async(function() {
-      assert.equal(this.completed, true);
-      expect(this.data).to.be.equal(this._getForm().serialize());
-      expect(this.lastErrorResponse).to.be.undefined;
-      expect(this.lastSuccessResponse).to.be.not.ok;
-    }, 500);
+    async.series([
+      function() {
+        item = items[0];
+        //initially undefined
+        expect(item.lastErrorResponse).to.be.undefined;
+        expect(item.lastSuccessResponse).to.be.undefined;
+      },
+      function() {
+        item.$.continue.click();
+      },
+      function() {
+        //event is debounced, so wait 300ms.
+        assert.equal(this.completed, true);
+        expect(this.data).to.be.equal(this._getForm().serialize());
+        expect(this.lastErrorResponse).to.be.undefined;
+        expect(this.lastSuccessResponse).to.be.not.ok;
+        // item.async(function() {
+        // }, 500);
+      },
+    ])
+
   });
 
   test('paper-button only triggers one event: submit, reset, skip.', function() {
     item = items[0];
-
-    //trigger reset click event 100's
     sinon.spy(form, "reset");
-    for (i=0, len=100; i<len; i++) {
-      item.$.reset.click();
-    }
-    item.async(function() {
-      assert(form.reset.calledOnce);
-    }, 400);
-    form.reset.restore(); //unwrap
 
-    //trigger submit click event 100's
-    sinon.spy(form, "submit");
-    for (i=0, len=100; i<len; i++) {
-      item.$.continue.click();
-    }
-    item.async(function() {
-      assert(form.submit.calledOnce);
-    }, 400);
-    form.submit.restore(); //unwrap
+    async.series([
+      function() {
+        //trigger reset click event 100's
+        for (i=0, len=100; i<len; i++) {
+          item.$.reset.click();
+        }
+      },
+      function() {
+        assert(form.reset.calledOnce);
+        form.reset.restore(); //unwrap
+      },
+      function() {
+        //trigger submit click event 100's
+        sinon.spy(form, "submit");
+        for (i=0, len=100; i<len; i++) {
+          item.$.continue.click();
+        }
+      },
+      function() {
+        assert(form.submit.calledOnce);
+        form.submit.restore(); //unwrap
+      },
+      function() {
+        //trigger skip click event 100's
+        sinon.spy(form, "reset");
+        for (i=0, len=100; i<len; i++) {
+          item.$.skip.click();
+        }
+      },
+      function() {
+        assert(form.reset.calledOnce);
+        form.reset.restore(); //unwrap
+      },
+    ]);
 
-    //trigger skip click event 100's
-    sinon.spy(form, "reset");
-    for (i=0, len=100; i<len; i++) {
-      item.$.skip.click();
-    }
-    item.async(function() {
-      assert(form.reset.calledOnce);
-    }, 400);
-    form.reset.restore(); //unwrap
   });
-
 });
 
 suite('<paper-steps> messages', function() {
@@ -250,27 +278,31 @@ suite('<paper-steps> editable', function() {
 
   test('<paper-step> state can be editable, optional, and selectable', function() {
     //steps: optional (1st) -> editable (2nd)-> [standard] (3rd)
-
-    // skip 1st step, non-editable (non-selectable)
-    item = items[0];
-    assert.equal(item.selectable, true);
-    item.$.skip.click(); //skip this step
-    item.async(function() {
-      assert.equal(this.selectable, false);
-      steps.$.steps_content.select(item);
-      assert.equal(steps.$.steps_content.selected, 1);
-    }, 100);
-
-    // submit 2nd step, editable (selectable)
-    item = items[1];
-    assert.equal(item.editable, true);
-    assert.equal(item.selectable, true);
-    item.$.continue.click(); //submit this step
-    item.async(function() {
-      assert.equal(this.selectable, true);
-      steps.$.steps_content.select(item);
-      assert.equal(steps.$.steps_content.selected, 1);
-    }, 100);
+    async.series([
+      function() {
+        item = items[0];
+        assert.equal(item.selectable, true);
+        item.$.skip.click(); //skip this step
+      },
+      function() {
+        // skip 1st step, non-editable (non-selectable)
+        assert.equal(item.selectable, false);
+        steps.$.steps_content.select(item);
+        assert.equal(steps.$.steps_content.selected, 1);
+      },
+      function() {
+        // submit 2nd step, editable (selectable)
+        item = items[1];
+        assert.equal(item.editable, true);
+        assert.equal(item.selectable, true);
+        item.$.continue.click(); //submit this step
+      },
+      function() {
+        assert.equal(item.selectable, true);
+        steps.$.steps_content.select(item);
+        assert.equal(steps.$.steps_content.selected, 1);
+      }
+    ])
   });
 
 });
@@ -289,22 +321,25 @@ suite('<paper-steps> initial-steps', function() {
       _steps = steps
     ;
 
-    // listen for ready event
-    steps.listen(_steps, 'paper-steps-ready', function(e) {
-      assert.equal(this.initializing, false);
-      assert.equal(this.$.steps_content.selected, 2);
-      assert.equal(this, e.detail);
+    async.series([
+      function() {
+        // listen for ready event
+        steps.listen(_steps, 'paper-steps-ready', function(e) {
+          assert.equal(this.initializing, false);
+          assert.equal(this.$.steps_content.selected, 2);
+          assert.equal(this, e.detail);
 
-      for (i=0, len=2; i<len; i++) {
-        assert.equal(items[i].completed, true);
-      }
-    });
-
-    // wait delay for initialization to finish
-    steps.async(function() {
-      assert.equal(_steps.initializing, false);
-      assert.equal(_steps.steps.$.steps_content.selected, 2);
-    }, 300);
+          for (i=0, len=2; i<len; i++) {
+            assert.equal(items[i].completed, true);
+          }
+        });
+      },
+      function() {
+        // wait delay for initialization to finish
+        assert.equal(_steps.initializing, false);
+        assert.equal(_steps.steps.$.steps_content.selected, 2);
+      },
+    ])
   });
 
 });
