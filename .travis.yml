@@ -15,8 +15,7 @@ env:
     - CXX=g++-4.8
 node_js: stable
 addons:
-  # firefox: latest -> "46" tests pass but has some extra error
-  firefox: "44.0.2"
+  firefox: latest
   apt:
     sources:
       - google-chrome
