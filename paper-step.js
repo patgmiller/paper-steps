@@ -182,7 +182,7 @@ Polymer({
       ;
       for (i=0, len=children.length; i<len; i++) {
         child = children[i];
-        this.listen(child, 'change', '_onChange');
+        this.listen(child, 'keyup', '_onChange');
       }
     }
   },

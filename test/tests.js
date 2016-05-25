@@ -172,10 +172,10 @@ suite('<paper-steps> events', function() {
       },
       function() {
         //event is debounced, so wait 300ms.
-        assert.equal(this.completed, true);
-        expect(this.data).to.be.equal({});
-        expect(this.lastErrorResponse).to.be.undefined;
-        expect(this.lastSuccessResponse).to.be.undefined;
+        assert.equal(item.completed, true);
+        expect(item.data).to.be.equal({});
+        expect(item.lastErrorResponse).to.be.undefined;
+        expect(item.lastSuccessResponse).to.be.undefined;
         // item.async(function() {
         // }, 500);
       },
@@ -183,6 +183,7 @@ suite('<paper-steps> events', function() {
   });
 
   test('paper-step is complete after continue pressed.', function() {
+    var selector = steps.$.selector;
 
     async.series([
       function() {
@@ -196,32 +197,32 @@ suite('<paper-steps> events', function() {
       },
       function() {
         //event is debounced, so wait 300ms.
-        assert.equal(this.completed, true);
-        expect(this.data).to.be.equal(this._getForm().serialize());
-        expect(this.lastErrorResponse).to.be.undefined;
-        expect(this.lastSuccessResponse).to.be.not.ok;
+        assert.equal(item.completed, true);
+        expect(item.data).to.be.equal(item._getForm().serialize());
+        expect(item.lastErrorResponse).to.be.undefined;
+        expect(item.lastSuccessResponse).to.be.not.ok;
         // item.async(function() {
         // }, 500);
       },
       function() {
-        selector.select(1);
+        selector.select(0);
       },
       function() {
-        expect(selector.selected).to.be.equal(1);
-        expect(steps.$.steps_content.selected).to.be.equal(1);
+        expect(selector.selected).to.be.equal(0);
+        expect(steps.$.steps_content.selected).to.be.equal(0);
 
         //edit input, will trigger complete=false
         input.value = 'testing';
       },
       function() {
-        expect(this.completed).to.be.equal(false);
+        expect(item.completed).to.be.equal(false);
 
         item.$.continue.click();
       },
       function() {
-        expect(this.completed).to.be.equal(true);
-        expect(selector.selected).to.be.equal(2);
-        expect(steps.$.steps_content.selected).to.be.equal(2);
+        expect(item.completed).to.be.equal(true);
+        expect(selector.selected).to.be.equal(1);
+        expect(steps.$.steps_content.selected).to.be.equal(1);
       },
     ])
 

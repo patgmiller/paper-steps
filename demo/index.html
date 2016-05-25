@@ -68,7 +68,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <h2>Contact Details</h2>
             <form is="iron-form" method="post" action="http://posttestserver.com/post.php?dir=paper-steps&dump&sleep=1">
               <gold-email-input name="email" label="Email" auto-validate required></gold-email-input>
-              <gold-phone-input name="phone" label="Phone" auto-validate></gold-phone-input>
+              <gold-phone-input name="phone" label="Phone" auto-validate prevent-invalid-input></gold-phone-input>
             </form>
           </paper-step>
           <paper-step label="Enter street address" skip-label="Not Interested" optional>
@@ -77,7 +77,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               <paper-input name="street" label="Street"></paper-input>
               <paper-input name="city" label="City"></paper-input>
               <paper-input name="state" label="State" auto-validate></paper-input>
-              <gold-zip-input name="postal-code" label="Postal Code" auto-validate></gold-zip-input>
+              <gold-zip-input name="postal-code" label="Postal Code" auto-validate prevent-invalid-input></gold-zip-input>
               <paper-input name="country" label="Country" auto-validate></paper-input>
             </form>
           </paper-step>
