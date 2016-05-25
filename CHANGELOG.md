@@ -2,6 +2,13 @@
  - Work in progress.
 
 
+## [0.1.0] - 2016-05-25
+ - Added save last success response and last error response on `iron-form-response` and `iron-form-error` events.
+ - Added save copy of serialized form data to `paper-step` upon successful completion of step.
+ - Added `showMessage` method to display errors, info, success, and warning messages using `paper-toast`.
+ - Fixed a bug in which `paper-step` was bypassing `iron-form` validation behavior which caused `iron-form-presubmit` and `iron-form-invalid` to never be triggered.
+
+
 ## [0.0.6] - 2016-05-19
  - Added `linear` property to `paper-steps`. When `linear` is true, then advancement to another step will be blocked until the step prior to desired step selection has been completed.
 
@@ -42,7 +49,8 @@
  - Setup tests to run on travis-ci.org.
 
 
-[unreleased]: https://github.com/patgmiller/paper-steps/compare/0.0.6...master
+[unreleased]: https://github.com/patgmiller/paper-steps/compare/0.1.0...master
+[0.1.0]: https://github.com/patgmiller/paper-steps/compare/0.0.6...0.1.0
 [0.0.6]: https://github.com/patgmiller/paper-steps/compare/0.0.5...0.0.6
 [0.0.5]: https://github.com/patgmiller/paper-steps/compare/0.0.4...0.0.5
 [0.0.4]: https://github.com/patgmiller/paper-steps/compare/0.0.3...0.0.4
