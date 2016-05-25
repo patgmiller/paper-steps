@@ -61,14 +61,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
                 pattern="^(([a-zA-Z]{1})|([a-zA-Z]{1}[a-zA-Z]{1})|([a-zA-Z]{1}[0-9]{1})|([0-9]{1}[a-zA-Z]{1})|([a-zA-Z0-9][a-zA-Z0-9-_]{1,61}[a-zA-Z0-9]))\.([a-zA-Z]{2,6}|[a-zA-Z0-9-]{2,30}\.[a-zA-Z]{2,3})$"
               ></paper-input>
-              <paper-input name="store-name" label="Store Name" auto-validate required></paper-input>
+              <paper-input name="store_name" label="Store Name" auto-validate required></paper-input>
             </form>
           </paper-step>
           <paper-step label="Add contact information" continue-label="Add Info" optional editable>
             <h2>Contact Details</h2>
             <form is="iron-form" method="post" action="http://posttestserver.com/post.php?dir=paper-steps&dump&sleep=1">
               <gold-email-input name="email" label="Email" auto-validate required></gold-email-input>
-              <gold-phone-input name="phone" label="Phone" auto-validate></gold-phone-input>
+              <gold-phone-input name="phone" label="Phone" auto-validate prevent-invalid-input></gold-phone-input>
             </form>
           </paper-step>
           <paper-step label="Enter street address" skip-label="Not Interested" optional>
@@ -77,7 +77,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               <paper-input name="street" label="Street"></paper-input>
               <paper-input name="city" label="City"></paper-input>
               <paper-input name="state" label="State" auto-validate></paper-input>
-              <gold-zip-input name="postal-code" label="Postal Code" auto-validate></gold-zip-input>
+              <gold-zip-input name="postal-code" label="Postal Code" auto-validate prevent-invalid-input></gold-zip-input>
               <paper-input name="country" label="Country" auto-validate></paper-input>
             </form>
           </paper-step>
@@ -139,7 +139,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </demo-snippet>
 
     <demo-snippet class="demo">
-      <p>Override the primary color style and require the steps to be completed in order.</p>
+      <p>
+        This demo snippet showcases the following features of <strong>paper-steps</strong>:
+      </p>
+      <ul>
+        <li>Override the primary <strong>color style</strong>.</li>
+        <li>Require the steps to be completed in order by setting <strong>linear</strong> to true.</li>
+        <li>Use <strong>showMessage</strong> method to display status information to the user with <strong>paper-toast</strong>.</li>
+      </ul>
       <template>
         <style is="custom-style">
           paper-steps.red,
@@ -149,6 +156,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             --paper-step-primary-color: var(--paper-red-900);
             --paper-step-primary-disabled-color: var(--paper-red-200);
           }
+
+          strong.green {
+            color: var(--paper-green-900);
+            font-style: italic;
+          }
+          strong.red {
+            color: var(--paper-red-900);
+            font-style: italic;
+          }
+          strong.yellow {
+            color: var(--paper-yellow-800);
+            font-style: italic;
+          }
         </style>
         <p>
           <paper-toggle-button class="red third" checked >Horizontal</paper-toggle-button>
@@ -156,14 +176,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <paper-steps class="red third" linear>
           <paper-step label="Styles" editable>
             <h2>Override styles</h2>
-            <form is="iron-form" action="http://posttestserver.com/post.php?dir=paper-steps&dump" method="post">
-              <paper-input name="name" label="Name" placeholder="Enter your name here."></paper-input>
+            <p>
+              A <strong class="red">500 Internal Error</strong> will be returned the first time this step's form is submitted with valid input.
+            </p>
+            <p>
+              A <strong class="yellow">warning message</strong> will be displayed if the form is invalid.
+            </p>
+            <p>
+              A <strong class="green">200 OK</strong> status will return returned for the second and any subsequent attempts.
+            </p>
+            <form is="iron-form" method="post" disable-native-validation-ui
+              action="http://posttestserver.com/post.php?dir=paper-steps&dump&status_code=500" >
+              <paper-input name="name" label="Name" placeholder="Enter your name here." required ></paper-input>
             </form>
           </paper-step >
           <paper-step label="Step #2">
             <h2>Another step</h2>
             <form is="iron-form" action="http://posttestserver.com/post.php?dir=paper-steps&dump" method="post">
-              <paper-input name="profession" label="Profession" placeholder="What do you do for a living?"></paper-input>
+              <paper-input name="profession" label="Profession" placeholder="What do you do for a living?" ></paper-input>
             </form>
           </paper-step>
           <paper-step label="Step #3" editable>
@@ -174,13 +204,43 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           </paper-step>
         </paper-steps>
         <script>
-          document.querySelector('paper-toggle-button.third')
-            .addEventListener('iron-change', function(e) {
-            var steps = document.querySelector('paper-steps.third');
+          var
+            steps = document.querySelector('paper-steps.third'),
+            button = document.querySelector('paper-toggle-button.third'),
+            form = document.querySelector('paper-steps.third form[is="iron-form"]')
+          ;
 
+          button.addEventListener('iron-change', function(e) {
             if (steps.vertical == this.active) {
               steps.vertical = !this.active;
               steps._updateVertical();
+            }
+          });
+
+          //Step #1 will return an HTTP error on the first submission attemp,
+          //but then the next submit will succeed.
+          form.addEventListener('iron-form-error', function(e) {
+            var
+              steps = document.querySelector('paper-steps.third'),
+              request = e.detail
+            ;
+            this.action = this.action.replace(/status_code=\d+/i, '');
+
+            if (request && request.error) {
+              steps.showMessage(request.error);
+            }
+          });
+          form.addEventListener('iron-form-invalid', function(e) {
+            steps.showMessage("Invalid: Please check the form for errors.", 'warning');
+          });
+          form.addEventListener('iron-form-response', function(e) {
+            var
+              request = e.detail,
+              status = request && request.status || 500
+            ;
+
+            if (status && status >= 200 && status < 300) {
+              steps.showMessage("Success: " + request.statusText + ": " + status, 'success');
             }
           });
         </script>

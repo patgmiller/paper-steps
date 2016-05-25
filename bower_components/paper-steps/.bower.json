@@ -25,7 +25,8 @@
     "iron-icon": "~1.0.8",
     "iron-icons": "~1.1.3",
     "paper-styles": "~1.1.4",
-    "paper-button": "~1.0.11"
+    "paper-button": "~1.0.11",
+    "paper-toast": "^1.0.0"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
@@ -41,14 +42,14 @@
     "iron-demo-helpers": "~1.2.3",
     "paper-toggle-button": "~1.1.2"
   },
-  "version": "0.0.6",
-  "_release": "0.0.6",
+  "version": "0.1.0",
+  "_release": "0.1.0",
   "_resolution": {
     "type": "version",
-    "tag": "0.0.6",
-    "commit": "569c2950024c2b87a14bcda8f51dcdf01b615432"
+    "tag": "0.1.0",
+    "commit": "29786baccb61e63cf9ba4deb654f745109b0ce17"
   },
   "_source": "https://github.com/patgmiller/paper-steps.git",
-  "_target": "0.0.6",
+  "_target": "0.1.0",
   "_originalSource": "paper-steps"
 }

@@ -50,6 +50,10 @@ Polymer({
       value: 'Continue'
     },
     /**
+     * A copy of the serialized form data for the last successful submit.
+     */
+     data: Object,
+    /**
      * Used internally to debouce custom events:
      * `paper-step-complete`, and `paper-step-next`.
      */
@@ -66,24 +70,26 @@ Polymer({
       reflectToAttribute: true
     },
     /**
-     * Specify an alternate label to use for the `reset` button.
-     */
-    resetLabel: {
-      type: String,
-      value: 'Reset'
-    },
-    /**
      * The text to display in the steps area next to the image icon.
      */
     label: {
       type: String
     },
+    lastErrorResponse: Object,
+    lastSuccessResponse: Object,
     /**
      * To indicate if the current step required or optional.
      */
     optional: {
       type: Boolean,
       value: false
+    },
+    /**
+     * Specify an alternate label to use for the `reset` button.
+     */
+    resetLabel: {
+      type: String,
+      value: 'Reset'
     },
     selectable: {
       type: Boolean,
@@ -134,7 +140,8 @@ Polymer({
 
   attached: function() {
     var
-      parent = this.parentNode && this.parentNode.indexOf && this.parentNode || null
+      parent = this.parentNode && this.parentNode.indexOf && this.parentNode || null,
+      form = this._getForm()
     ;
 
     // @TODO: finish adding fallback for shadowDom, not yet ready.
@@ -168,6 +175,16 @@ Polymer({
     this.listen(this.$.continue, 'tap', '_submit');
     this.listen(this.$.reset, 'tap', '_reset');
     this.listen(this.$.skip, 'tap', '_skip');
+
+    if (form && Polymer.isInstance(form)) {
+      var i, child, len,
+        children = form.getEffectiveChildren()
+      ;
+      for (i=0, len=children.length; i<len; i++) {
+        child = children[i];
+        this.listen(child, 'keyup', '_onChange');
+      }
+    }
   },
 
   detached: function() {},
@@ -229,6 +246,11 @@ Polymer({
     return 'icons:check';
     // return 'image:brightness-1';
   },
+  _onChange: function(e) {
+    if (this.completed) {
+      this.completed = false;
+    }
+  },
   /**
    *
    */
@@ -247,35 +269,52 @@ Polymer({
    *
    */
   _onPreSubmit: function(e) {
+    var
+      form = this._getForm()
+    ;
+
+    if (this.completed) {
+      e.preventDefault();
+      this.fire('paper-step-already-complete', this);
+    }
   },
   /**
-   *
+   * Handles iron form events for `iron-form-error` and `iron-form-response`.
    */
   _onResponse: function(e) {
     var
       el = this._getPrimaryButton(),
       request = e && e.detail || false
     ;
+
     if (Polymer.isInstance(el) && el.disabled !== undefined) {
       el.disabled = false;
     }
     if (request && request.status === 200) {
+      this.lastSuccessResponse = request;
+      try {
+        this.data = this._getForm().serialize();
+      } catch (ex) {
+        this.data = {}
+      }
       this.completed = true;
+    } else {
+      this.lastErrorResponse = request;
     }
   },
   /**
-   *
+   * Hooks into the `iron-form-submit` event to disable the form submit button.
    */
   _onSubmit: function(e) {
     var
       el = this._getPrimaryButton()
     ;
+
     if (Polymer.isInstance(el) && el.disabled !== undefined) {
       el.disabled = true;
     }
   },
   /**
-   *
    */
   _selectable: function(completed, editable) {
     return editable || !completed;
@@ -335,7 +374,7 @@ Polymer({
     this.debounce('paper-steps-submit', function() {
       form = that._getForm();
       // submit form if it exists.
-      if (form && form.validate()) {
+      if (form) {
         form.submit();
       }
     }, 300);
