@@ -2,11 +2,17 @@
  - Work in progress.
 
 
+## [0.2.0] - 2016-05-27
+ - Added vertical slide animation to transition between steps.
+
+
 ## [0.1.2] - 2016-05-27
  - Bugfix for `showMessage` method to make it compatible with more browsers.
 
+
 ## [0.1.1] - 2016-05-26
  - Changed bower package requirement for `iron-selector`.
+
 
 ## [0.1.0] - 2016-05-25
  - Added save last success response and last error response on `iron-form-response` and `iron-form-error` events.
