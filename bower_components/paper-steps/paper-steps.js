@@ -318,7 +318,7 @@ Polymer({
 
     this._messageClass = (
       typeof type == 'string'
-      && ['error', 'info', 'success', 'warning'].includes(type)
+      && ['error', 'info', 'success', 'warning'].indexOf(type) >= 0
       && type || 'error'
     );
 
