@@ -11,9 +11,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../iron-resizable-behavior/iron-resizable-behavior.html">
 <link rel="import" href="../iron-selector/iron-selector.html">
+<link rel="import" href="../neon-animation/neon-animation-runner-behavior.html">
 <link rel="import" href="../paper-button/paper-button.html">
 <link rel="import" href="../paper-styles/color.html">
 <link rel="import" href="../paper-toast/paper-toast.html">
+<link rel="import" href="height-decrease-animation.html">
+<link rel="import" href="height-increase-animation.html">
 <link rel="import" href="paper-step.html">
 
 <!--
@@ -77,6 +80,10 @@ Example:
         width: 100%;
         z-index: 1;
         cursor: pointer;
+      }
+
+      :host /deep/ [disable_hover_target] .hover-target {
+        display: none;
       }
 
       :host /deep/ .hover-target:hover {
@@ -150,7 +157,7 @@ Example:
 
       :host /deep/ .vertical paper-step .h-label,
       :host /deep/ .vertical paper-step .line,
-      :host /deep/ .vertical paper-step:last-child:not(.iron-selected) #step_content,
+      :host /deep/ .vertical paper-step:last-child:not(.iron-selected) #step_content:not(.animating),
       :host /deep/ #steps_content.horizontal paper-step .h-label,
       :host /deep/ #steps_content.horizontal paper-step .line,
       :host /deep/ #steps_content.horizontal paper-step .stepper-circle,
@@ -202,6 +209,15 @@ Example:
         border-left: none;
       }
 
+      :host /deep/ #step_content.animating,
+      :host /deep/ #step_content.animating-soon {
+        overflow: hidden;
+      }
+
+      :host /deep/ #step_content.animating > div {
+        display: block !important;
+      }
+
       :host paper-toast {
         /*position: absolute;*/
         @apply(--paper-steps-paper-toast);
@@ -232,6 +248,7 @@ Example:
     <iron-selector id="selector"
       class$="{{_cssClass}}" selected="{{_selected}}"
       selectable="paper-step[selectable]"
+      disable_hover_target$="{{_animating}}"
       hidden$="{{_vertical}}">
       <template is="dom-repeat" items="{{_steps}}" as="s">
         <paper-step label="[[s.label]]" optional$="[[s.optional]]"
@@ -245,6 +262,7 @@ Example:
     <iron-selector id="steps_content"
       class$="{{_cssClass}}" selected="{{_selected}}"
       selectable="paper-step[selectable]"
+      disable_hover_target$="{{_animating}}"
       items="{{_steps}}" >
       <content></content>
     </iron-selector>
