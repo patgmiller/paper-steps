@@ -24,6 +24,7 @@
     "iron-selector": "^1.3.0",
     "iron-icon": "~1.0.8",
     "iron-icons": "~1.1.3",
+    "neon-animation": "1.2.3",
     "paper-styles": "~1.1.4",
     "paper-button": "~1.0.11",
     "paper-toast": "^1.0.0"
@@ -42,14 +43,14 @@
     "iron-demo-helpers": "~1.2.3",
     "paper-toggle-button": "~1.1.2"
   },
-  "version": "0.1.2",
-  "_release": "0.1.2",
+  "version": "0.2.0",
+  "_release": "0.2.0",
   "_resolution": {
     "type": "version",
-    "tag": "0.1.2",
-    "commit": "a1fe1c14637f101e0a0df9fbaa00d1cbcc00f292"
+    "tag": "0.2.0",
+    "commit": "763dde4da1f1ab3a3f25f36bdbf80d886f8b8ca7"
   },
   "_source": "https://github.com/patgmiller/paper-steps.git",
-  "_target": "~0.1.2",
+  "_target": "~0.2.0",
   "_originalSource": "paper-steps"
 }

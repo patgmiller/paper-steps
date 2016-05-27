@@ -2,7 +2,7 @@
     "private": true,
     "name": "paper-steps",
     "dependencies": {
-        "paper-steps": "~0.1.2"
+        "paper-steps": "~0.2.0"
     },
     "devDependencies": {
       "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",

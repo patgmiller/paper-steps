@@ -2,6 +2,18 @@
  - Work in progress.
 
 
+## [0.2.0] - 2016-05-27
+ - Added vertical slide animation to transition between steps.
+
+
+## [0.1.2] - 2016-05-27
+ - Bugfix for `showMessage` method to make it compatible with more browsers.
+
+
+## [0.1.1] - 2016-05-26
+ - Changed bower package requirement for `iron-selector`.
+
+
 ## [0.1.0] - 2016-05-25
  - Added save last success response and last error response on `iron-form-response` and `iron-form-error` events.
  - Added save copy of serialized form data to `paper-step` upon successful completion of step.
@@ -49,7 +61,9 @@
  - Setup tests to run on travis-ci.org.
 
 
-[unreleased]: https://github.com/patgmiller/paper-steps/compare/0.1.0...master
+[unreleased]: https://github.com/patgmiller/paper-steps/compare/0.1.2...master
+[0.1.2]: https://github.com/patgmiller/paper-steps/compare/0.1.1...0.1.2
+[0.1.1]: https://github.com/patgmiller/paper-steps/compare/0.1.0...0.1.1
 [0.1.0]: https://github.com/patgmiller/paper-steps/compare/0.0.6...0.1.0
 [0.0.6]: https://github.com/patgmiller/paper-steps/compare/0.0.5...0.0.6
 [0.0.5]: https://github.com/patgmiller/paper-steps/compare/0.0.4...0.0.5

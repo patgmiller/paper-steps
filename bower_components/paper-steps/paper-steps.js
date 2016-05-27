@@ -2,6 +2,27 @@
 Polymer({
   is: 'paper-steps',
   properties: {
+    animationConfig: {
+      value: function() {
+        return {
+          'entry': {
+            name: 'height-increase-animation',
+            timing: {duration: 350},
+          },
+          'exit': {
+            name: 'height-decrease-animation',
+            timing: {duration: 350},
+          },
+        };
+      }
+    },
+    /**
+     * If true, the `paper-steps` element is animating, please wait until done.
+     */
+    _animating: {
+      type: Boolean,
+      value: false
+    },
     /**
      * Computed css class based on `_vertical` property.
      */
@@ -102,12 +123,14 @@ Polymer({
     'iron-deselect': '_onDeselect',
     'iron-select': '_onSelect',
     'iron-resize': '_onIronResize',
+    'neon-animation-finish': '_onNeonAnimationFinish',
     'paper-step-already-complete': '_onAlreadyComplete',
     'paper-step-next': '_onNext',
     'paper-step-complete': '_onComplete'
   },
   behaviors: [
     Polymer.IronResizableBehavior,
+    Polymer.NeonAnimationRunnerBehavior,
   ],
 
   // Element Lifecycle
@@ -230,8 +253,9 @@ Polymer({
       }
     ;
 
-    //if item is not selectable, disable click / touch event.
-    if (selectable !== true) {
+    //if item is not selectable or the step changing animation is currently
+    //happening, disable click / touch event.
+    if (selectable !== true || this._animating) {
       return stop(e);
 
     } else if (this.linear) {
@@ -261,6 +285,30 @@ Polymer({
    */
   _onDeselect: function(e) {
     e.detail.item._selected = false;
+
+    if (!this._initializing && !e.detail.item.duplicate) {
+      var step_content = e.detail.item.$.step_content;
+      step_content.classList.add('animating');
+      this.animationConfig.exit.node = step_content;
+      this._animating = true;
+      this.playAnimation('exit');
+    }
+  },
+  /**
+   *
+   */
+  _onNeonAnimationFinish: function(e) {
+    if (this.animationConfig.exit.node.classList.contains('animating')) {
+      this.animationConfig.exit.node.classList.remove('animating');
+      this.animationConfig.entry.node.style.height = null;
+      this.animationConfig.entry.node.classList.remove('animating-soon');
+      this.animationConfig.entry.node.classList.add('animating');
+      this.playAnimation('entry');
+    }
+    else {
+      this.animationConfig.entry.node.classList.remove('animating');
+      this._animating = false;
+    }
   },
   /**
    *
@@ -275,6 +323,13 @@ Polymer({
    */
   _onSelect: function(e) {
     e.detail.item._selected = true;
+
+    if (!this._initializing && !e.detail.item.duplicate) {
+      var step_content = e.detail.item.$.step_content;
+      step_content.classList.add('animating-soon');
+      step_content.style.height = '0px';
+      this.animationConfig.entry.node = step_content;
+    }
   },
   /**
    *
