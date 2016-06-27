@@ -47,7 +47,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <body unresolved>
     <demo-snippet class="demo">
       <template>
-        <paper-button id="open_dialog_box" raised click="showDialog()">Show dialog</paper-button>
+        <h2><code><paper-steps></code> in a dialog</h2>
+
+        <paper-button id="open_dialog_box" raised >Show dialog</paper-button>
 
         <paper-dialog>
           <h2>Steps in dialog</h2>
@@ -80,9 +82,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <script type="text/javascript">
           var
             button = document.querySelector('#open_dialog_box'),
-            dialog = document.querySelector('#steps_dialog')
+            dialog = document.querySelector('#steps_dialog'),
+            toggle = function(e) {
+              dialog.toggle()
+            }
           ;
 
+          button.addEventListener('tap', toggle);
         </script>
       </template>
     </demo-snippet>
