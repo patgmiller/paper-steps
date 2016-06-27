@@ -66,6 +66,15 @@ Polymer({
       value: false
     },
     /**
+     * Passed onto the `fitInto` property. of `paper-toast` messages element.
+     * Note: The `paper-toast` messages element will be fit into the current
+     * instance of `paper-steps` if you set the `fitInto` html attribute to one
+     * of the following string values: self, this, or paper-steps.
+     *
+     * Otherwise the normal behavior for `paper-toast` will apply.
+     */
+    fitInto: Object,
+    /**
      * If set, and is within the valid range of selectable `paper-step`
      * elements, `paper-steps` will use this value as the beginning step.
      * `paper-steps` will also setp all previous steps to `complete` if
@@ -146,7 +155,14 @@ Polymer({
       that._updateVertical();
     }, 250);
 
-    this.$.messages.fitInto = this;
+    if (Boolean(this.fitInto)) {
+      if (typeof this.fitInto == 'string' &&
+        /^(this|self|paper-steps)$/i.test(this.fitInto)) {
+
+        this.fitInto = this;
+      }
+    }
+
     this.listen(this.$.closeMessage, 'tap', '_closeMessage');
   },
 
