@@ -182,7 +182,7 @@ Polymer({
       ;
       for (i=0, len=children.length; i<len; i++) {
         child = children[i];
-        this.listen(child, 'keyup', '_onChange');
+        this.listen(child, 'keyup', '_onInputChange');
       }
     }
   },
@@ -246,7 +246,7 @@ Polymer({
     return 'icons:check';
     // return 'image:brightness-1';
   },
-  _onChange: function(e) {
+  _onInputChange: function(e) {
     if (this.completed) {
       this.completed = false;
     }

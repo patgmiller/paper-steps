@@ -227,9 +227,12 @@ Polymer({
         }
         that.$.steps_content.selected = initial;
       }
+      console.log(
+        'paper-steps-initialize, is complete', that._initializing, that.classList
+      );
       that._initializing = false;
       that.fire('paper-steps-ready', that);
-    }, 250);
+    }, 1000);
 
     return steps;
   },
