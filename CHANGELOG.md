@@ -1,6 +1,8 @@
 ## [Unreleased][unreleased]
  - Work in progress.
 
+## [0.1.3] - 2016-06-27
+ - Added `fitInto` property which is passed on to the `paper-toast` messages element.
 
 ## [0.1.2] - 2016-05-27
  - Bugfix for `showMessage` method to make it compatible with more browsers.
@@ -55,7 +57,8 @@
  - Setup tests to run on travis-ci.org.
 
 
-[unreleased]: https://github.com/patgmiller/paper-steps/compare/0.1.2...master
+[unreleased]: https://github.com/patgmiller/paper-steps/compare/0.1.3...master
+[0.1.3]: https://github.com/patgmiller/paper-steps/compare/0.1.2...0.1.3
 [0.1.2]: https://github.com/patgmiller/paper-steps/compare/0.1.1...0.1.2
 [0.1.1]: https://github.com/patgmiller/paper-steps/compare/0.1.0...0.1.1
 [0.1.0]: https://github.com/patgmiller/paper-steps/compare/0.0.6...0.1.0
