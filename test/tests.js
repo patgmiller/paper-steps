@@ -201,8 +201,6 @@ suite('<paper-steps> events', function() {
         expect(item.data).to.be.equal(item._getForm().serialize());
         expect(item.lastErrorResponse).to.be.undefined;
         expect(item.lastSuccessResponse).to.be.not.ok;
-        // item.async(function() {
-        // }, 500);
       },
       function() {
         selector.select(0);
@@ -267,6 +265,31 @@ suite('<paper-steps> events', function() {
       },
     ]);
 
+  });
+});
+
+suite('<paper-steps> with iron-selector inputs', function() {
+
+  setup(function() {
+    el = item = form = null;
+    i = len = 0;
+    steps = fixture('paper-steps-iron-selectors');
+    items = steps.$.steps_content.items;
+    _items = steps.$.selector.$$('template').items; //horizontal
+    form = items[0].$.step_content.querySelector('form[is="iron-form"]');
+    item = items[0];
+  });
+
+  test('ignores inputs which implement iron-slector behavior', function() {
+    var triggered = false;
+    steps.addEventListener('iron-activate', function(e) {
+      triggered = true;
+    });
+
+    steps.$.selector.select(1);
+    expect(triggered).to.be.equal(false);
+    expect(steps.$.selector.selected).to.be.equal(1);
+    // debugger;
   });
 });
 
