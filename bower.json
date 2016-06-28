@@ -40,6 +40,9 @@
     "gold-cc-input": "~1.0.7",
     "gold-zip-input": "~1.0.5",
     "iron-demo-helpers": "~1.2.3",
-    "paper-toggle-button": "~1.1.2"
+    "paper-toggle-button": "~1.1.2",
+    "paper-dropdown-menu": "^1.2.2",
+    "paper-listbox": "^1.1.2",
+    "paper-menu": "^1.2.2"
   }
 }

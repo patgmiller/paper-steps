@@ -16,6 +16,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
     <script src="../../web-component-tester/browser.js"></script>
     <link rel="import" href="../../iron-form/iron-form.html">
+    <link rel="import" href="../../paper-dropdown-menu/paper-dropdown-menu.html">
+    <link rel="import" href="../../paper-item/paper-item.html">
+    <link rel="import" href="../../paper-listbox/paper-listbox.html">
 
     <!-- Step 1: import the element to test -->
     <link rel="import" href="../paper-steps.html">
@@ -63,6 +66,32 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <form is="iron-form" id="test_form" method="post"
               action="http://posttestserver.com/post.php?dir=paper-steps">
               <paper-input name="test-step-1" label="Test"></paper-input>
+            </form>
+          </paper-step>
+          <paper-step label="step 2">
+            <form is="iron-form" id="test_form" method="post"
+              action="http://posttestserver.com/post.php?dir=paper-steps">
+              <paper-input name="test-step-2" label="Test"></paper-input>
+            </form>
+          </paper-step>
+        </paper-steps>
+      </template>
+    </test-fixture>
+
+    <test-fixture id="paper-steps-iron-selectors">
+      <template>
+        <paper-steps linear>
+          <paper-step label="step 1" optional editable>
+            <form is="iron-form" id="test_form" method="post"
+              action="http://posttestserver.com/post.php?dir=paper-steps">
+              <paper-dropdown-menu name="items" label="Select a item" required>
+                <paper-listbox id="selector" class="dropdown-content">
+                  <paper-item>Item 1</paper-item>
+                  <paper-item>Item 2</paper-item>
+                  <paper-item>Item 3</paper-item>
+                  <paper-item>Item 4</paper-item>
+                </paper-listbox>
+              </paper-dropdown-menu>
             </form>
           </paper-step>
           <paper-step label="step 2">

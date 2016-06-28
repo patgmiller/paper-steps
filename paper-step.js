@@ -184,6 +184,7 @@ Polymer({
         child = children[i];
         this.listen(child, 'keyup', '_onChange');
       }
+      this.listen(form, 'iron-activate', '_onActivate');
     }
   },
 
@@ -246,6 +247,18 @@ Polymer({
     return 'icons:check';
     // return 'image:brightness-1';
   },
+  /**
+   * Event handler to ignore form elements which trigger any iron-select
+   * events.
+   */
+  _onActivate: function(e) {
+    //ignore iron-selector events from form children
+    e.stopPropagation();
+  },
+  /**
+   * Event handler to change the completed state of a `paper-step` once
+   * any form inputs are changed.
+   */
   _onChange: function(e) {
     if (this.completed) {
       this.completed = false;

@@ -31,9 +31,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
 		<link rel="import" href="../../iron-form/iron-form.html">
 		<link rel="import" href="../../paper-button/paper-button.html">
-		<link rel="import" href="../../paper-toggle-button/paper-toggle-button.html">
+		<link rel="import" href="../../paper-dropdown-menu/paper-dropdown-menu.html">
 		<link rel="import" href="../../paper-input/paper-input.html">
 		<link rel="import" href="../../paper-input/paper-textarea.html">
+		<link rel="import" href="../../paper-item/paper-item.html">
+		<link rel="import" href="../../paper-listbox/paper-listbox.html">
+		<link rel="import" href="../../paper-toggle-button/paper-toggle-button.html">
     <link rel="import" href="../paper-steps.html">
     <link rel="import" href="../paper-step.html">
     <style>
@@ -85,6 +88,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <h2>Setup Monthly Subscription</h2>
             <form is="iron-form" method="post"  action="http://posttestserver.com/post.php?dir=paper-steps&dump&sleep=1">
               <paper-input name="name" label="Name" required></paper-input>
+              <paper-dropdown-menu name="type" label="Card Type" required>
+                <paper-listbox class="dropdown-content">
+                  <paper-item>Visa</paper-item>
+                  <paper-item>Master Card</paper-item>
+                  <paper-item>Discover</paper-item>
+                  <paper-item>Amex</paper-item>
+                </paper-listbox>
+              </paper-dropdown-menu>
               <gold-cc-input name="card" label="Card" auto-validate required></gold-cc-input>
               <gold-cc-expiration-input name="expiration" label="Expiration" required></gold-cc-expiration-input>
             </form>
