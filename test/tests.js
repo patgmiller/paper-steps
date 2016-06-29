@@ -17,7 +17,7 @@ suite('<paper-steps> submit button', function() {
   setup(function() {
     el = item = null;
     i = len = 0;
-    steps = fixture('paper-steps-fixture-disabled-submit');
+    steps = fixture('paper-steps-fixture-submit');
     items = steps.$.steps_content.items;
   });
 
@@ -35,8 +35,30 @@ suite('<paper-steps> submit button', function() {
       function () {
         //event is debounced, so wait
         assert.equal(this.$.continue.disabled, false);
-        // item.async(function() {
-        // }, 1200);
+      }
+    ]);
+  });
+
+});
+
+suite('<paper-steps> linear behavior', function() {
+
+  setup(function() {
+    item = null;
+    steps = fixture('paper-steps-fixture-linear');
+    items = steps.$.steps_content.items;
+  });
+
+  test('linear does not loop back to first step on complete.', function() {
+    // last step
+    item = items[items.length-1];
+
+    async.series([
+      function() {
+        item.$.continue.click();
+      },
+      function() {
+        epect(steps.$.selector.selected).to.be.equal(item);
       }
     ]);
   });
