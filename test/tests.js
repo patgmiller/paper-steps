@@ -59,7 +59,7 @@ suite('<paper-steps> properties and defaults', function() {
     assert.equal(steps._cssClass, 'horizontal');
   });
 
-  test('paper-step defines the "label" property.', function() {
+  test('defines the "label" property.', function() {
     assert.equal(items[0].label, 'step 1');
     assert.equal(items[1].label, 'step 2');
     assert.equal(items[2].label, '');
@@ -71,7 +71,7 @@ suite('<paper-steps> properties and defaults', function() {
     assert.equal(items[2].step, 3);
   });
 
-  test('paper-step adds first/last optional/required classes.', function() {
+  test('adds first/last optional/required classes.', function() {
     for (i=0, item, len=items.length; i<len; i++) {
       item = items[i];
       el = item.$.step_content;
@@ -102,7 +102,7 @@ suite('<paper-steps> properties and defaults', function() {
     }
   });
 
-  test('paper-step can be editable, optional, and selectable.', function() {
+  test('can be editable, optional, and selectable.', function() {
     var
       editable = [true, false, false],
       optional = [true, false, false],
@@ -131,7 +131,7 @@ suite('<paper-steps> properties and defaults', function() {
     }
   });
 
-  test('paper-steps[linear] progression.', function() {
+  test('[linear] progression.', function() {
     var selector = steps.$.selector;
     for(i=1, len=items.length; i<len; i++) {
       selector.select(i);
@@ -158,7 +158,7 @@ suite('<paper-steps> events', function() {
     item = items[0];
   });
 
-  test('paper-step is complete after skip pressed.', function() {
+  test('is complete after skip pressed.', function() {
 
     async.series([
       function() {
@@ -182,7 +182,7 @@ suite('<paper-steps> events', function() {
     ]);
   });
 
-  test('paper-step is complete after continue pressed.', function() {
+  test('is complete after continue pressed.', function() {
     var selector = steps.$.selector;
 
     async.series([
@@ -304,7 +304,7 @@ suite('<paper-steps> messages', function() {
     form = items[0].$.step_content.querySelector('form[is="iron-form"]');
   });
 
-  test('paper-steps showMessage displays paper-toast pop up.', function() {
+  test('showMessage displays paper-toast pop up.', function() {
     sinon.spy(steps.$.messages, "show");
     steps.showMessage('Testing', 'success');
     assert(steps.$.messages.show.calledOnce);
@@ -321,7 +321,7 @@ suite('<paper-steps> editable', function() {
     form = items[0].$.step_content.querySelector('form[is="iron-form"]');
   });
 
-  test('<paper-step> state can be editable, optional, and selectable', function() {
+  test('state can be editable, optional, and selectable', function() {
     //steps: optional (1st) -> editable (2nd)-> [standard] (3rd)
     async.series([
       function() {
@@ -361,7 +361,7 @@ suite('<paper-steps> initial-steps', function() {
     items = steps.$.steps_content.items;
   });
 
-  test('<paper-steps> begins on step #3', function() {
+  test('begins on step #3', function() {
     var
       _steps = steps
     ;
@@ -383,8 +383,37 @@ suite('<paper-steps> initial-steps', function() {
         // wait delay for initialization to finish
         assert.equal(_steps.initializing, false);
         assert.equal(_steps.steps.$.steps_content.selected, 2);
+      }
+    ]);
+  });
+
+  test('is all clean after reset()', function() {
+    var
+      _steps = steps,
+      selector = steps.$.selector
+    ;
+
+    async.series([
+      function() {
+        // listen for ready event
+        steps.listen(_steps, 'paper-steps-ready', function(e) {
+          assert.equal(this.$.steps_content.selected, 2);
+
+          for (i=0, len=2; i<len; i++) {
+            assert.equal(items[i].completed, true);
+          }
+        });
       },
-    ])
+      function() {
+        steps.reset();
+      },
+      function() {
+        for (i=0, len=2; i<len; i++) {
+          assert.equal(items[i].completed, false);
+          assert.equal(selector.items[i].completed, false);
+        }
+      }
+    ]);
   });
 
 });
