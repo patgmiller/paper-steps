@@ -112,8 +112,9 @@ Polymer({
     'iron-select': '_onSelect',
     'iron-resize': '_onIronResize',
     'paper-step-already-complete': '_onAlreadyComplete',
-    'paper-step-next': '_onNext',
-    'paper-step-complete': '_onComplete'
+    'paper-step-complete': '_onComplete',
+    'paper-step-incomplete': '_onIncomplete',
+    'paper-step-next': '_onNext'
   },
   behaviors: [
     Polymer.IronResizableBehavior,
@@ -239,6 +240,7 @@ Polymer({
       selector = this.$.selector,
       items = selector && selector.items,
       previous = selector && item.step > 1 && items[item.step-2],
+      last = selector && items[items.length-1],
       stop = function(evt) {
         evt.preventDefault();
         evt.stopPropagation();
@@ -268,7 +270,19 @@ Polymer({
       this.$.selector.items[parseInt(e.detail) - 1].completed = true;
     } catch (e) {
       if (e instanceof TypeError) {
-        console.log('TypeError on paper-step-completed', e);
+        console.log('TypeError on paper-step-complete', e);
+      }
+    }
+  },
+  /**
+   *
+   */
+  _onIncomplete: function(e) {
+    try {
+      this.$.selector.items[parseInt(e.detail) - 1].completed = false;
+    } catch (e) {
+      if (e instanceof TypeError) {
+        console.log('TypeError on paper-step-incomplete', e);
       }
     }
   },
@@ -282,7 +296,16 @@ Polymer({
    *
    */
   _onNext: function(e) {
+    var
+      step = e.detail && e.detail,
+      selector = this.$.selector,
+      items = selector && selector.items
+    ;
+
     if (this._initializing != true) {
+      if (this.linear && step == items.length) {
+        return;
+      }
       this.$.steps_content.selectNext();
     }
   },
@@ -313,6 +336,31 @@ Polymer({
         this._vertical = ruler.scrollWidth > ruler.offsetWidth;
       }
     }
+  },
+  /**
+   */
+  reset: function() {
+    var
+      i, len, forms, selector, items,
+      that = this
+    ;
+
+    this.debounce('paper-steps-reset', function() {
+      forms = that.$.steps_content && that.$.steps_content.items,
+      selector = that.$.selector,
+      items = selector && selector.items
+
+      if (forms.length) {
+        for (i = 0, len = forms.length; i < len; i++) {
+          forms[i]._reset();
+        }
+      }
+
+      that._closeMessage();
+      if (selector && typeof selector.select == 'function') {
+        selector.select(0);
+      }
+    }, 300);
   },
   /**
    * Display a message using `paper-toast`.

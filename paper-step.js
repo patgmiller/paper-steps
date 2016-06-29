@@ -265,19 +265,22 @@ Polymer({
     }
   },
   /**
-   *
+   * Notify parent of completed state change.
    */
   _onComplete: function(_new, _old) {
-    if (this.duplicate === false && _new === true) {
-      this.fire('paper-step-complete', this.step);
-      this.fire('paper-step-next', this.step);
+    if (this.duplicate === false) {
+      if (_new === true) {
+        this.fire('paper-step-complete', this.step);
+        this.fire('paper-step-next', this.step);
+      } else if (_new === false) {
+        this.fire('paper-step-incomplete', this.step);
+      }
     }
   },
   /**
    *
    */
-  _onError: function(e) {
-  },
+  _onError: function(e) {},
   /**
    *
    */
