@@ -240,6 +240,7 @@ Polymer({
       selector = this.$.selector,
       items = selector && selector.items,
       previous = selector && item.step > 1 && items[item.step-2],
+      last = selector && items[items.length-1],
       stop = function(evt) {
         evt.preventDefault();
         evt.stopPropagation();
@@ -295,7 +296,16 @@ Polymer({
    *
    */
   _onNext: function(e) {
+    var
+      step = e.detail && e.detail,
+      selector = this.$.selector,
+      items = selector && selector.items
+    ;
+
     if (this._initializing != true) {
+      if (this.linear && step == items.length) {
+        return;
+      }
       this.$.steps_content.selectNext();
     }
   },
