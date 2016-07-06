@@ -76,7 +76,7 @@ Polymer({
     initial: {
       type: Object,
       observer: '_onChangeInitial'
-    }
+    },
     /**
      * The text to display in the steps area next to the image icon.
      */
