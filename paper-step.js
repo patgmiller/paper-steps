@@ -70,6 +70,14 @@ Polymer({
       reflectToAttribute: true
     },
     /**
+     * An object of initial values for this `paper-step`, the object should be
+      * name value pairs which correspond to the form input names.
+     */
+    initial: {
+      type: Object,
+      observer: '_onChangeInitial'
+    }
+    /**
      * The text to display in the steps area next to the image icon.
      */
     label: {
@@ -265,6 +273,17 @@ Polymer({
     }
   },
   /**
+   *
+   */
+  _onChangeInitial: function(_new, _old) {
+    // _new instanceof Object
+    //loop over form.elements
+    // if input.name != "" then set it with input.value = 'value'
+
+    // loop over name value pairs
+    //  form.querySelector('[name="name"] input').value = 'value'
+  },
+  /**
    * Notify parent of completed state change.
    */
   _onComplete: function(_new, _old) {
@@ -394,5 +413,14 @@ Polymer({
         form.submit();
       }
     }, 300);
+  },
+  /**
+   *
+   */
+  setInitial: function(name, value) {
+    // name instanceof String or Number
+    //public helper method to set form imput value
+    // if form.querySelector('[name="industry"] input') then set .value='value'
+    // else if form.querySelector('[name="industry"]') then self .value='value'
   }
 });

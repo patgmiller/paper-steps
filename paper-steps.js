@@ -75,6 +75,14 @@ Polymer({
      */
     fitInto: Object,
     /**
+     * An array of initial values for each `paper-step`. Each item should be an
+     * object containing name value pairs which correspond to the form input names.
+     */
+    initial: {
+      type: Array,
+      observer: '_onChangeInitial'
+    },
+    /**
      * If set, and is within the valid range of selectable `paper-step`
      * elements, `paper-steps` will use this value as the beginning step.
      * `paper-steps` will also setp all previous steps to `complete` if
@@ -261,6 +269,16 @@ Polymer({
   },
   _onAlreadyComplete: function(e) {
     this.showMessage('Please enter some changes before re-submitting this step.', 'info');
+  },
+  /**
+   *
+   */
+  _onChangeInitial: function(_new, _old) {
+    // verify is array :: _new instanceof Array
+
+
+    // for this.$.steps_content.items
+    //  item.initial = _new[index]
   },
   /**
    *
