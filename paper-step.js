@@ -278,8 +278,12 @@ Polymer({
   _onChangeInitial: function(_new, _old) {
     var
       i, len, input, elems, key, value,
+      changed = [],
       form = this._getForm(),
-      initial = _new
+      initial = _new,
+      allowedInput = function(value) {
+        return value !== undefined && value !== null;
+      }
     ;
 
     // _new instanceof Object
@@ -294,14 +298,15 @@ Polymer({
         // if input.name != "" then set it with input.value = 'value'
         if (Boolean(input) && input.name != "") {
           try {
-            value = initial[input.name] || undefined;
-            if (value != undefined) {
+            value = initial[input.name] || null;
+            if (allowedInput(value)) {
               if (Polymer.isInstance(input)) {
                 input.set('value', value);
                 input.fire('blur', value);
               } else {
                 input.value = value;
               }
+              changed.push(input.name);
             }
           } catch (e) {
             // console.log('Error while setting initial for "'+ input.name +'": ' + e);
@@ -312,7 +317,8 @@ Polymer({
       // loop over name value pairs
       for (key in initial) {
         input = form.querySelector('[name="'+ key +'"] input');
-        if (Boolean(input)) {
+        value = initial[key] || null;
+        if (allowedInput(value) && Boolean(input) && !changed.includes(key)) {
           try {
             if (Polymer.isInstance(input)) {
               input.set('value', initial[key]);
