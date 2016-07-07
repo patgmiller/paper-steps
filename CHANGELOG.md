@@ -1,6 +1,10 @@
 ## [Unreleased][unreleased]
  - Work in progress.
 
+
+## [0.1.6] - 2016-07-07
+ - Added property `initial` to `paper-steps` and `paper-step` with on change observer.
+
 ## [0.1.5] - 2016-06-29
  - Added helper method `reset` to `paper-steps`
  - Bugfix: Iterator step state unchanged when `complete=true`, Issue [#24](https://github.com/patgmiller/paper-steps/issues/24).
@@ -64,7 +68,8 @@
  - Setup tests to run on travis-ci.org.
 
 
-[unreleased]: https://github.com/patgmiller/paper-steps/compare/0.1.5...master
+[unreleased]: https://github.com/patgmiller/paper-steps/compare/0.1.6...master
+[0.1.6]: https://github.com/patgmiller/paper-steps/compare/0.1.5...0.1.6
 [0.1.5]: https://github.com/patgmiller/paper-steps/compare/0.1.4...0.1.5
 [0.1.4]: https://github.com/patgmiller/paper-steps/compare/0.1.3...0.1.4
 [0.1.3]: https://github.com/patgmiller/paper-steps/compare/0.1.2...0.1.3
