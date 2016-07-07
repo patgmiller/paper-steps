@@ -412,7 +412,7 @@ suite('<paper-steps> initial-steps', function() {
   test('sets initial values', function() {
     var
       initial = [
-        {'test-step-1': 'one'},
+        {'test-step-1': 'one', 'test-step-1-2': null},
         {'test-step-2': 'two'},
         {'test-step-3': 'three'}
       ]
