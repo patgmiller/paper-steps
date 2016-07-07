@@ -276,12 +276,57 @@ Polymer({
    *
    */
   _onChangeInitial: function(_new, _old) {
-    // _new instanceof Object
-    //loop over form.elements
-    // if input.name != "" then set it with input.value = 'value'
+    var
+      i, len, input, elems, key, value,
+      form = this._getForm(),
+      initial = _new
 
-    // loop over name value pairs
-    //  form.querySelector('[name="name"] input').value = 'value'
+    ;
+
+    // _new instanceof Object
+    if (form && Boolean(initial) && initial instanceof Object) {
+      elems = form.elements;
+
+      // loop over form.elements and set inputs with non-empty name value from
+      // initial object
+      for (i=0, len=elems.length; i<len; i++) {
+        input = elems[i];
+
+        // if input.name != "" then set it with input.value = 'value'
+        if (Boolean(input) && input.name != "") {
+          try {
+            value = initial[input.name] || undefined;
+            if (value != undefined) {
+              if (Polymer.isInstance(input)) {
+                input.set('value', value);
+                input.fire('blur', value);
+              } else {
+                input.value = value;
+              }
+            }
+          } catch (e) {
+            console.log('Error while setting initial for "'+ input.name +'": ' + e);
+          }
+        }
+      }
+
+      // loop over name value pairs
+      for (key in initial) {
+        input = form.querySelector('[name="'+ key +'"] input');
+        if (Boolean(input)) {
+          try {
+            if (Polymer.isInstance(input)) {
+              input.set('value', initial[key]);
+              input.fire('blur', value);
+            } else {
+              input.value = initial[key];
+            }
+          } catch (e) {
+            console.log('Error while setting initial for "'+ input.name +'": ' + e);
+          }
+        }
+      }
+    }
   },
   /**
    * Notify parent of completed state change.
