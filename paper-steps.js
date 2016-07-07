@@ -274,11 +274,23 @@ Polymer({
    *
    */
   _onChangeInitial: function(_new, _old) {
+    var
+      i, len, items, step, obj,
+      initial = _new || undefined
+    ;
     // verify is array :: _new instanceof Array
+    if (Boolean(_new) && _new instanceof Array) {
+      items = this.$.steps_content.items;
+      for (i=0, len=items.length; i<len; i++) {
+        try {
+          step = items[i], obj = initial[i];
+          if (obj instanceof Object) {
+            step.initial = obj;
+          }
+        } catch (e) {}
+      }
+    }
 
-
-    // for this.$.steps_content.items
-    //  item.initial = _new[index]
   },
   /**
    *

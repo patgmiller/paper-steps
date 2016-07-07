@@ -409,6 +409,44 @@ suite('<paper-steps> initial-steps', function() {
     ]);
   });
 
+  test('sets initial values', function() {
+    var
+      initial = [
+        {'test-step-1': 'one'},
+        {'test-step-2': 'two'},
+        {'test-step-3': 'three'}
+      ]
+    ;
+
+    async.series([
+      function() {
+        steps.initial = initial;
+      },
+      function() {
+        item = items[0];
+        form = item._getForm();
+
+        expect(form.serialize()).to.be.equal({
+          'test-step-1': 'one', 'test-step-2': 'foo bar'
+        })
+
+        item = item[1];
+        form = item._getForm()
+
+        expect(form.serialize()).to.be.equal({
+          'test-step-2': 'two'
+        })
+
+        item = item[2];
+        form = item._getForm();
+
+        expect(form.serialize()).to.be.equal({
+          'test-step-3': 'three'
+        })
+      }
+    ])
+  });
+
   test('is all clean after reset()', function() {
     var
       _steps = steps,

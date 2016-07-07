@@ -280,7 +280,6 @@ Polymer({
       i, len, input, elems, key, value,
       form = this._getForm(),
       initial = _new
-
     ;
 
     // _new instanceof Object
@@ -305,7 +304,7 @@ Polymer({
               }
             }
           } catch (e) {
-            console.log('Error while setting initial for "'+ input.name +'": ' + e);
+            // console.log('Error while setting initial for "'+ input.name +'": ' + e);
           }
         }
       }
@@ -322,7 +321,7 @@ Polymer({
               input.value = initial[key];
             }
           } catch (e) {
-            console.log('Error while setting initial for "'+ input.name +'": ' + e);
+            // console.log('Error while setting initial for "'+ input.name +'": ' + e);
           }
         }
       }
@@ -458,14 +457,5 @@ Polymer({
         form.submit();
       }
     }, 300);
-  },
-  /**
-   *
-   */
-  setInitial: function(name, value) {
-    // name instanceof String or Number
-    //public helper method to set form imput value
-    // if form.querySelector('[name="industry"] input') then set .value='value'
-    // else if form.querySelector('[name="industry"]') then self .value='value'
   }
 });
