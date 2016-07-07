@@ -70,6 +70,14 @@ Polymer({
       reflectToAttribute: true
     },
     /**
+     * An object of initial values for this `paper-step`, the object should be
+      * name value pairs which correspond to the form input names.
+     */
+    initial: {
+      type: Object,
+      observer: '_onChangeInitial'
+    },
+    /**
      * The text to display in the steps area next to the image icon.
      */
     label: {
@@ -262,6 +270,61 @@ Polymer({
   _onChange: function(e) {
     if (this.completed) {
       this.completed = false;
+    }
+  },
+  /**
+   *
+   */
+  _onChangeInitial: function(_new, _old) {
+    var
+      i, len, input, elems, key, value,
+      form = this._getForm(),
+      initial = _new
+    ;
+
+    // _new instanceof Object
+    if (form && Boolean(initial) && initial instanceof Object) {
+      elems = form.elements;
+
+      // loop over form.elements and set inputs with non-empty name value from
+      // initial object
+      for (i=0, len=elems.length; i<len; i++) {
+        input = elems[i];
+
+        // if input.name != "" then set it with input.value = 'value'
+        if (Boolean(input) && input.name != "") {
+          try {
+            value = initial[input.name] || undefined;
+            if (value != undefined) {
+              if (Polymer.isInstance(input)) {
+                input.set('value', value);
+                input.fire('blur', value);
+              } else {
+                input.value = value;
+              }
+            }
+          } catch (e) {
+            // console.log('Error while setting initial for "'+ input.name +'": ' + e);
+          }
+        }
+      }
+
+      // loop over name value pairs
+      for (key in initial) {
+        input = form.querySelector('[name="'+ key +'"] input');
+        if (Boolean(input)) {
+          try {
+            if (Polymer.isInstance(input)) {
+              input.set('value', initial[key]);
+              input.fire('blur', value);
+            } else {
+              input.value = initial[key];
+            }
+          } catch (e) {
+            // console.log('Error while setting initial for "'+ input.name +'": ' + e);
+          }
+        }
+      }
     }
   },
   /**
