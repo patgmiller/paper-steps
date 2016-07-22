@@ -203,29 +203,32 @@ Example:
       }
 
       :host paper-toast {
-        /*position: absolute;*/
         @apply(--paper-steps-paper-toast);
       }
 
       :host paper-toast#messages.error {
+        color: var(--paper-steps-messages-error-color, rgba(255,255,255));
         background-color: var(--paper-steps-messages-error, --paper-red-900);
       }
 
       :host paper-toast#messages.info {
-        background-color: var(--paper-steps-messages-error, --paper-indigo-900);
+        color: var(--paper-steps-messages-info-color, rgba(255,255,255,0.87));
+        background-color: var(--paper-steps-messages-info, --paper-indigo-900);
       }
 
       :host paper-toast#messages.success {
+        color: var(--paper-steps-messages-success-color, rgba(255,255,255,0.87));
         background-color: var(--paper-steps-messages-success, --paper-green-900);
       }
 
       :host paper-toast#messages.warning {
+        color: var(--paper-steps-messages-warning-color, rgba(0,0,0,0.87));
         background-color: var(--paper-steps-messages-warning, --paper-yellow-800);
       }
 
       :host paper-toast paper-button#closeMessage {
-        background-color: var(--paper-grey-50);
         color: var(--paper-grey-900);
+        background-color: var(--paper-grey-50);
       }
     </style>
 
