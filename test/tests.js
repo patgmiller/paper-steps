@@ -88,6 +88,7 @@ suite('<paper-steps> properties and defaults', function() {
   });
 
   test('default steps are: 1, 2, and 3.', function() {
+    // debugger;
     assert.equal(items[0].step, 1);
     assert.equal(items[1].step, 2);
     assert.equal(items[2].step, 3);
@@ -176,8 +177,8 @@ suite('<paper-steps> events', function() {
     steps = fixture('paper-steps-fixture');
     items = steps.$.steps_content.items;
     _items = steps.$.selector.$$('template').items; //horizontal
-    form = items[0].$.step_content.querySelector('form[is="iron-form"]');
     item = items[0];
+    form = item._getForm();
   });
 
   test('is complete after skip pressed.', function() {
@@ -249,7 +250,6 @@ suite('<paper-steps> events', function() {
   });
 
   test('paper-button only triggers one event: submit, reset, skip.', function() {
-    item = items[0];
     sinon.spy(form, "reset");
 
     async.series([
