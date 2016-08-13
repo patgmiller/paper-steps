@@ -88,7 +88,6 @@ suite('<paper-steps> properties and defaults', function() {
   });
 
   test('default steps are: 1, 2, and 3.', function() {
-    // debugger;
     assert.equal(items[0].step, 1);
     assert.equal(items[1].step, 2);
     assert.equal(items[2].step, 3);

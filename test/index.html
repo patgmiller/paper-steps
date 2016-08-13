@@ -15,16 +15,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </head>
   <body>
     <script>
-      // Load and run all tests (.html, .js):
       WCT.loadSuites([
         'basic-test.html',
-        /*
-          Shadow dom behaves much differently than shady dom (polymer default),
-          but shadow will become default in future.
-
-          See `shadow` in global settings for polymer.
-        */
-        // 'basic-test.html?dom=shadow'
+        'basic-test.html?dom=shadow'
       ]);
     </script>
 
