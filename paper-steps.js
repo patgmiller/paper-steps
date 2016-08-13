@@ -122,7 +122,8 @@ Polymer({
     'paper-step-already-complete': '_onAlreadyComplete',
     'paper-step-complete': '_onComplete',
     'paper-step-incomplete': '_onIncomplete',
-    'paper-step-next': '_onNext'
+    'paper-step-next': '_onNext',
+    'closeMessage.tap': '_closeMessage'
   },
   behaviors: [
     Polymer.IronResizableBehavior,
@@ -171,8 +172,6 @@ Polymer({
         this.fitInto = this;
       }
     }
-
-    this.listen(this.$.closeMessage, 'tap', '_closeMessage');
   },
 
   detached: function() {},
