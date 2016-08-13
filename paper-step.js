@@ -140,7 +140,10 @@ Polymer({
 
     //after form submitted, IronRequestElement inevent.detail object
     'iron-form-response': '_onResponse',
-    'iron-form-submit': '_onSubmit' //after submitted
+    'iron-form-submit': '_onSubmit', //after submitted
+    'continue.tap': '_submit',
+    'reset.tap': '_reset',
+    'skip.tap': '_skip'
   },
 
   // Element Lifecycle
@@ -161,7 +164,7 @@ Polymer({
       }
     }
 
-    //
+    // debugger;
     if (!parent || parent.hasOwnProperty('indexOf') || typeof parent.indexOf != 'function') {
       this.step = 1;
       this.steps = 1;
@@ -179,10 +182,6 @@ Polymer({
     if (!Boolean(this.steps)) {
       this.steps = parent.items.length;
     }
-
-    this.listen(this.$.continue, 'tap', '_submit');
-    this.listen(this.$.reset, 'tap', '_reset');
-    this.listen(this.$.skip, 'tap', '_skip');
 
     if (form && Polymer.isInstance(form)) {
       var i, child, len,
@@ -219,10 +218,11 @@ Polymer({
    */
   _getForm: function() {
     var
-      el = Polymer.dom(this.$.step_content),
+      el = Polymer.dom(this),
       form = el && el.node &&
-        el.node.querySelector('div form[is="iron-form"]')
+        el.node.querySelector('form[is="iron-form"]')
     ;
+    // debugger;
     return form || false;
   },
   /**
