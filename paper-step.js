@@ -155,10 +155,13 @@ Polymer({
       form = this._getForm()
     ;
 
-    // @TODO: finish adding fallback for shadowDom, not yet ready.
-    if (!Boolean(parent) && this.shadowRoot) {
+    if (!Boolean(parent)) {
       try {
-        parent = this.parentNode.$.selector;
+        if (this.duplicate) {
+          parent = this.parentNode.$.selector;
+        } else {
+          parent = this.parentNode.$.steps_content;
+        }
       } catch (e) {
         parent = null;
       }
@@ -222,7 +225,6 @@ Polymer({
       form = el && el.node &&
         el.node.querySelector('form[is="iron-form"]')
     ;
-    // debugger;
     return form || false;
   },
   /**
