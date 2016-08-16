@@ -1,5 +1,5 @@
 ## [Unreleased][unreleased]
- - Work in progress.
+ - Added support for Shadow DOM.
 
 
 ## [0.1.6] - 2016-07-07
