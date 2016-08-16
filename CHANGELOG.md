@@ -1,6 +1,7 @@
 ## [Unreleased][unreleased]
  - Added support for Shadow DOM.
-
+ - Added material design color correction for `paper-toast` messages.
+ - Bugfix for when `paper-steps` is used in `paper-drawer-panel`.
 
 ## [0.1.6] - 2016-07-07
  - Added property `initial` to `paper-steps` and `paper-step` with on change observer.
