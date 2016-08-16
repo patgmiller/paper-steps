@@ -176,8 +176,8 @@ suite('<paper-steps> events', function() {
     steps = fixture('paper-steps-fixture');
     items = steps.$.steps_content.items;
     _items = steps.$.selector.$$('template').items; //horizontal
-    form = items[0].$.step_content.querySelector('form[is="iron-form"]');
     item = items[0];
+    form = item._getForm();
   });
 
   test('is complete after skip pressed.', function() {
@@ -249,7 +249,6 @@ suite('<paper-steps> events', function() {
   });
 
   test('paper-button only triggers one event: submit, reset, skip.', function() {
-    item = items[0];
     sinon.spy(form, "reset");
 
     async.series([

@@ -122,7 +122,8 @@ Polymer({
     'paper-step-already-complete': '_onAlreadyComplete',
     'paper-step-complete': '_onComplete',
     'paper-step-incomplete': '_onIncomplete',
-    'paper-step-next': '_onNext'
+    'paper-step-next': '_onNext',
+    'closeMessage.tap': '_closeMessage'
   },
   behaviors: [
     Polymer.IronResizableBehavior,
@@ -171,8 +172,6 @@ Polymer({
         this.fitInto = this;
       }
     }
-
-    this.listen(this.$.closeMessage, 'tap', '_closeMessage');
   },
 
   detached: function() {},
@@ -195,13 +194,21 @@ Polymer({
    */
   __total: function(steps) {
     var
-      i, items, steps = steps && steps.length || 1,
+      i, item, items, steps = steps && steps.length || 1,
       that = this
     ;
     items = this.$.steps_content.items;
-    if (steps && items.length === steps && this.actionsDisabled) {
+    if (steps && items.length === steps) {
       for (i=0; i < steps; i++) {
-        items[i].actionsDisabled = true;
+        item = items[i];
+        if (item.step == 0) {
+          items[i].step = i+1;
+          items[i].steps = steps;
+        }
+
+        if(this.actionsDisabled) {
+          item.actionsDisabled = true;
+        }
       }
     }
 
