@@ -1,4 +1,7 @@
 ## [Unreleased][unreleased]
+
+## [0.1.7] - 2017-08-07
+ - Updated dependencies.
  - Added support for Shadow DOM.
  - Added material design color correction for `paper-toast` messages.
  - Bugfix for when `paper-steps` is used in `paper-drawer-panel`.
@@ -69,7 +72,8 @@
  - Setup tests to run on travis-ci.org.
 
 
-[unreleased]: https://github.com/patgmiller/paper-steps/compare/0.1.6...master
+[unreleased]: https://github.com/patgmiller/paper-steps/compare/0.1.7...master
+[0.1.7]: https://github.com/patgmiller/paper-steps/compare/0.1.6...0.1.7
 [0.1.6]: https://github.com/patgmiller/paper-steps/compare/0.1.5...0.1.6
 [0.1.5]: https://github.com/patgmiller/paper-steps/compare/0.1.4...0.1.5
 [0.1.4]: https://github.com/patgmiller/paper-steps/compare/0.1.3...0.1.4
